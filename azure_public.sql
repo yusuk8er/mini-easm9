@@ -2,11 +2,13 @@
 -- 事前に: steampipe plugin install azure
 -- 列は aws_public.sql と揃える（provider, resource_type, resource_id, dns_name, ip, region）
 
+-- azure_public_ip の FQDN 列はプラグインのバージョンで名称が異なるため、
+-- 確実に存在する ip_address のみを使う（FQDN は外部偵察側で補完される）
 select
   'azure'                        as provider,
   'public_ip'                    as resource_type,
   id                             as resource_id,
-  dns_settings ->> 'fqdn'        as dns_name,
+  null                           as dns_name,
   ip_address                     as ip,
   region                         as region
 from azure_public_ip

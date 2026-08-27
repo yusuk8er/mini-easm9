@@ -55,7 +55,7 @@ where not encrypted
 union all
 
 select
-  'aws', arn, 'acm-cert-expiring', 'medium',
+  'aws', certificate_arn, 'acm-cert-expiring', 'medium',
   'ACM certificate ' || domain_name || ' expires within 30 days ('
     || to_char(not_after, 'YYYY-MM-DD') || ')'
 from aws_acm_certificate

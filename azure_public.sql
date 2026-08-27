@@ -1,0 +1,54 @@
+-- 外部公開されている Azure リソース
+-- 事前に: steampipe plugin install azure
+-- 列は aws_public.sql と揃える（provider, resource_type, resource_id, dns_name, ip, region）
+
+select
+  'azure'                        as provider,
+  'public_ip'                    as resource_type,
+  id                             as resource_id,
+  dns_settings ->> 'fqdn'        as dns_name,
+  ip_address                     as ip,
+  region                         as region
+from azure_public_ip
+where ip_address is not null
+
+union all
+
+select
+  'azure', 'app_service', id, default_site_hostname, null, region
+from azure_app_service_web_app
+
+union all
+
+select
+  'azure', 'function_app', id, default_hostname, null, region
+from azure_app_service_function_app
+
+union all
+
+select
+  'azure', 'storage', id, name || '.blob.core.windows.net', null, region
+from azure_storage_account
+where allow_blob_public_access
+
+union all
+
+select
+  'azure', 'sql_server', id, fully_qualified_domain_name, null, region
+from azure_sql_server
+where public_network_access = 'Enabled'
+
+union all
+
+select
+  'azure', 'api_management', id, gateway_url, null, region
+from azure_api_management
+
+union all
+
+select
+  'azure', 'container_app', id, configuration -> 'ingress' ->> 'fqdn', null, region
+from azure_container_app
+where configuration -> 'ingress' ->> 'external' = 'true'
+
+order by resource_type, dns_name

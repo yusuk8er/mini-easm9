@@ -1,0 +1,52 @@
+# 誤検知を抑えるための nuclei 設定
+# 使い方: nuclei -config nuclei-config.yaml -l targets.txt
+#
+# 方針:
+#   - 推測で判定するテンプレートを使わない
+#   - 実際のレスポンスで確認できたものだけを報告する
+#   - 攻撃的・破壊的なテンプレートを使わない
+
+# 報告する深刻度。low/info はノイズになるため出さない
+severity: critical,high,medium
+
+# 使うカテゴリを絞る
+# exposure    : 公開されるべきでないファイルが実際に取得できた（事実ベース）
+# takeover    : サブドメイン乗っ取りが可能な状態（事実ベース）
+# misconfig   : 設定ミス（実レスポンスで確認）
+# default-login : 既定の認証情報で実際にログインできた
+# ssl         : 証明書の問題
+tags:
+  - cve             # 既知CVE。実レスポンスで検証するため誤検知は少ない
+  - vulnerabilities # 検証済みの脆弱性テンプレート
+  - exposure        # 公開されるべきでないファイルが実際に取得できた
+  - takeover        # サブドメイン乗っ取りが可能な状態
+  - misconfig       # 設定ミス（実レスポンスで確認）
+  - default-login   # 既定の認証情報で実際にログインできた
+  - ssl             # 証明書の問題
+
+# 誤検知・過負荷の原因になるカテゴリを明示的に除外
+exclude-tags:
+  - fuzz          # パラメータ総当たり。誤検知の温床
+  - dast          # 動的解析。クロール前提で誤検知が多い
+  - dos           # サービス停止を伴う
+  - intrusive     # 侵襲的な動作
+  - brute         # 総当たり認証
+  - xss           # 反射型の判定は誤検知が多い
+  - sqli          # 同上
+  - info          # 情報レベルはノイズ
+
+# ディレクトリ単位の除外
+exclude-templates:
+  - dast/
+  - http/fuzzing/
+
+# 負荷を抑える。相手に迷惑をかけない範囲で
+rate-limit: 150
+bulk-size: 25
+concurrency: 25
+timeout: 5
+retries: 1
+
+# リダイレクトは追わない（ログイン画面に飛ばされた結果を
+# 検出とみなす誤検知を防ぐ）
+disable-redirects: true

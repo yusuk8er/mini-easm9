@@ -1,0 +1,106 @@
+name: mini-easm
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'asset (棚卸しのみ) / full (診断込み) / validate (SQL検証のみ)'
+        default: asset
+  schedule:
+    - cron: '0 20 * * 0'
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: false   # go.sum が無いので Go モジュールキャッシュは使わない
+
+      - name: cache tools
+        id: cache-tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/bin
+            ~/.local/nuclei-templates
+            ~/.config/nuclei
+          # ツールを追加したらキーを変える。さもないと古いキャッシュが復元され
+          # 新しいツールがインストールされない
+          key: easm-tools-v4-nmap
+
+      - name: install tools
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpcap-dev dnsutils nmap
+          go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+          go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+          go install github.com/projectdiscovery/httpx/cmd/httpx@latest
+          go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
+          go install github.com/projectdiscovery/tlsx/cmd/tlsx@latest
+          go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: set PATH
+        run: echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: validate SQL
+        if: github.event.inputs.mode == 'validate'
+        run: |
+          sudo /bin/sh -c "$(curl -fsSL https://steampipe.io/install/steampipe.sh)"
+          bash validate-sql.sh aws azure gcp
+
+      - name: install steampipe
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: |
+          if [ -n "$AWS_ACCESS_KEY_ID" ]; then
+            sudo /bin/sh -c "$(curl -fsSL https://steampipe.io/install/steampipe.sh)"
+            steampipe plugin install aws
+          else
+            echo "AWS キー未設定のためスキップ"
+          fi
+
+      - name: scan
+        if: github.event.inputs.mode != 'validate'
+        env:
+          MODE: ${{ github.event.inputs.mode || 'full' }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ap-northeast-1
+        run: bash scan.sh
+
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event.inputs.mode != 'validate'
+        with:
+          name: easm-result
+          path: snapshots/
+          retention-days: 30
+
+      - name: save snapshot
+        if: github.event.inputs.mode != 'validate'
+        run: |
+          git config user.name mini-easm
+          git config user.email mini-easm@users.noreply.github.com
+          git add -A snapshots assets.csv risks.csv || true
+          git commit -m "scan $(date -u +%F)" || echo "変更なし"
+          git push || echo "push できませんでした"
+
+      - name: report
+        if: github.event.inputs.mode != 'validate'
+        env:
+          WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          bash report.sh > report.md || true
+          cat report.md >> $GITHUB_STEP_SUMMARY
+          if [ -n "$WEBHOOK" ]; then
+            jq -Rs '{text: .}' report.md | curl -sS -X POST -H 'Content-Type: application/json' -d @- "$WEBHOOK"
+          fi

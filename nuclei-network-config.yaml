@@ -1,0 +1,23 @@
+# ネットワーク層（HTTP以外）の検出設定
+# 使い方: nuclei -config nuclei-network-config.yaml -l hostports.txt
+#
+# 方針は HTTP 側と同じ:
+#   - 実際の応答で確認できたものだけを報告する
+#   - 総当たり・破壊的なテンプレートは使わない
+
+severity: critical,high,medium
+
+# 除外は HTTP 側と同じ基準
+exclude-tags:
+  - fuzz
+  - dast
+  - dos
+  - intrusive
+  - brute
+  - info
+
+rate-limit: 150
+bulk-size: 25
+concurrency: 25
+timeout: 5
+retries: 1

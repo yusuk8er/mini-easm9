@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mini-easm — 外部公開資産</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16181d; --muted:#6d7370; --paper:#eceeec; --card:#fff;
+    --rule:#d3d7d4; --pine:#1b4d3e; --alarm:#a3231c; --amber:#8a5a00;
+    --sans:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+       font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 64px}
+
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:20px}
+  h1{font-size:19px;font-weight:600;margin:0;letter-spacing:.01em}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+
+  .strip{display:flex;gap:2px;height:44px;align-items:flex-end;margin-bottom:6px;
+         padding:0;border-bottom:1px solid var(--rule);overflow:hidden}
+  .tick{flex:1 1 3px;min-width:2px;background:var(--rule);cursor:pointer;
+        border:0;padding:0;transition:height .15s}
+  .tick:focus-visible{outline:2px solid var(--pine);outline-offset:1px}
+  .tick.s-ok{height:40%;background:#b9c0bb}
+  .tick.s-out{height:60%;background:#8a938c}
+  .tick.s-unmapped{height:85%;background:var(--amber)}
+  .tick.s-alert{height:100%;background:var(--alarm)}
+  .striplabel{font-family:var(--mono);font-size:11px;color:var(--muted);
+              display:flex;justify-content:space-between;margin-bottom:26px}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+         gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:26px}
+  .tile{background:var(--card);padding:14px 16px}
+  .tile dt{font-size:12px;color:var(--muted);text-transform:none;margin:0 0 4px}
+  .tile dd{margin:0;font-family:var(--mono);font-size:26px;font-weight:500;line-height:1}
+  .tile dd.alarm{color:var(--alarm)}
+  .tile dd.amber{color:var(--amber)}
+
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .chip{font-family:var(--sans);font-size:13px;padding:5px 12px;border:1px solid var(--rule);
+        background:var(--card);color:var(--ink);cursor:pointer;border-radius:0}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  input[type=search]{flex:1;min-width:180px;font-family:var(--mono);font-size:13px;
+        padding:6px 10px;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:0}
+  input[type=search]:focus-visible{outline:2px solid var(--pine);outline-offset:-1px;border-color:var(--pine)}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--rule)}
+  th{font-size:12px;font-weight:600;color:var(--muted);text-align:left;padding:9px 12px;
+     border-bottom:1px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none}
+  th:focus-visible{outline:2px solid var(--pine);outline-offset:-2px}
+  td{padding:10px 12px;border-bottom:1px solid #e8eae8;font-size:13px;vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .host{font-family:var(--mono);font-weight:500;word-break:break-all}
+  .sub{font-family:var(--mono);font-size:11px;color:var(--muted);word-break:break-all}
+  .flag{display:inline-block;font-size:11px;padding:2px 7px;border:1px solid currentColor;white-space:nowrap}
+  .f-alert{color:var(--alarm)} .f-unmapped{color:var(--amber)}
+  .f-out{color:var(--muted)} .f-ok{color:var(--pine)}
+  tr.r-alert td:first-child{box-shadow:inset 3px 0 0 var(--alarm)}
+  tr.r-unmapped td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
+  .empty{padding:40px 12px;text-align:center;color:var(--muted);font-size:14px}
+  .note{margin-top:18px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:640px){.col-hide{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1 id="h1">セキュリティリスク</h1>
+  <span class="meta" id="meta">読み込み中…</span>
+</header>
+
+<div class="controls" style="margin-bottom:18px">
+  <button class="chip" id="v-risk" aria-pressed="true" onclick="setView('risk')">リスク</button>
+  <button class="chip" id="v-asset" aria-pressed="false" onclick="setView('asset')">資産</button>
+</div>
+
+<div class="strip" id="strip" role="img" aria-label="資産ごとの状態を1本の目盛りで表した帯"></div>
+<div class="striplabel"><span>1資産＝1目盛り／高いほど要確認</span><span id="striphint"></span></div>
+
+<dl class="tiles" id="tiles"></dl>
+
+<div class="controls" id="filters"></div>
+
+<table id="tbl">
+  <thead id="thead"></thead>
+  <tbody id="rows"></tbody>
+</table>
+<p class="empty" id="empty" hidden>該当なし</p>
+
+<p class="note" id="src"></p>
+
+</div>
+<script>
+const DEMO_ASSETS = `host,owner,state,ip,cname,cloud_provider,cloud_resource_type,cloud_resource_id,port,status,title,tech
+assets.example.co.jp,広報チーム,managed,,d1x.cloudfront.net,aws,cloudfront,arn:aws:cloudfront::1,443,200,Assets,CloudFront
+api.example.co.jp,プラットフォーム部,managed,,alb-prod.elb.amazonaws.com,aws,alb,arn:aws:elb:prod,443,200,API,nginx
+db.example.co.jp,,shadow,203.0.113.20,,,,,3306,,,
+old-cms.example.co.jp,,shadow,203.0.113.44,,,,,443,200,Corporate,WordPress;PHP
+vpn.example.co.jp,情報システム部,external,198.51.100.7,,,,,443,200,SSL VPN,FortiOS
+demo.example.co.jp,営業企画,unmapped,,demo-app.azurewebsites.net,azure,unmapped,,443,200,Demo,ASP.NET
+gone.example.co.jp,,shadow,,deleted.s3.amazonaws.com,aws,unmapped,,,,,
+campaign.example.jp,,shadow,,site.netlify.app,saas,unmapped,,443,200,Campaign,`;
+
+const DEMO_RISKS = `host,owner,severity,confidence,risk_id,detail,source
+arn:aws:s3:::backup-prod,,critical,confirmed,s3-public-access,S3バケット backup-prod がパブリックアクセス可能,steampipe
+db.example.co.jp,,critical,confirmed,mysql-exposed,MySQL が外部公開 (3306/tcp),naabu
+sg-0abc123,,critical,confirmed,sg-open-to-world,セキュリティグループ web-sg が 3389/tcp を 0.0.0.0/0 に開放,steampipe
+db.example.co.jp,,high,confirmed,ssh-exposed,SSH が外部公開 (22/tcp),naabu
+gone.example.co.jp,,high,confirmed,dangling-cname,CNAME先が解決できない: deleted.s3.amazonaws.com（乗っ取りの可能性）,dnsx
+old-cms.example.co.jp,,high,confirmed,git-config-exposure,.git/config が公開されている,nuclei
+old-cms.example.co.jp,,high,confirmed,tls-expired,証明書が失効済み (期限 2025-04-01),tlsx
+old-cms.example.co.jp,,medium,confirmed,tls-old-version,古いTLSバージョンが有効 (tls10),tlsx
+demo.example.co.jp,営業企画,medium,single,exposed-panel,管理画面が公開,nuclei
+api.example.co.jp,プラットフォーム部,medium,single,missing-hsts,HSTS ヘッダなし,nuclei`;
+
+function parseCSV(t){
+  if(t.charCodeAt(0)===0xFEFF)t=t.slice(1);   // Excel用のBOMを除去
+  const rows=[];let f='',row=[],q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){ if(c==='"'){ if(t[i+1]==='"'){f+='"';i++} else q=false } else f+=c }
+    else if(c==='"')q=true;
+    else if(c===','){row.push(f);f=''}
+    else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}
+    else if(c!=='\r')f+=c}
+  if(f||row.length){row.push(f);rows.push(row)}
+  const head=rows.shift()||[];
+  return rows.filter(r=>r.length>1).map(r=>Object.fromEntries(head.map((h,i)=>[h.trim(),(r[i]||'').trim()])));
+}
+
+const ASSET_LABEL={shadow:'持ち主不明',unmapped:'未マップ',external:'クラウド外',managed:'管理下'};
+const ASSET_CLS={shadow:'alert',unmapped:'unmapped',external:'out',managed:'ok'};
+const SEV_LABEL={critical:'致命的',high:'高',medium:'中',low:'低'};
+const SEV_CLS={critical:'alert',high:'alert',medium:'unmapped',low:'out'};
+const SEV_ORDER={critical:0,high:1,medium:2,low:3};
+
+let VIEW='risk', ASSETS=[], RISKS=[], filter='all', query='', sortKey='', asc=true;
+
+const CFG={
+  risk:{
+    title:'セキュリティリスク',
+    striplabel:'1指摘＝1目盛り／高いほど深刻',
+    placeholder:'ホスト, 内容で絞り込み',
+    filters:[['all','すべて'],['confirmed','確認済み'],['single','要確認'],['critical','致命的'],['high','高']],
+    cols:[['host','対象'],['detail','内容'],['source','検出元'],['severity','深刻度']],
+    data:()=>RISKS,
+    cls:r=>SEV_CLS[r.severity]||'out',
+    tiles:d=>{
+      const c={critical:0,high:0,confirmed:0,single:0};
+      d.forEach(r=>{if(c[r.severity]!==undefined)c[r.severity]++;c[r.confidence]!==undefined&&c[r.confidence]++});
+      return [['指摘',d.length,''],['致命的',c.critical,'alarm'],['高',c.high,'alarm'],['要確認',c.single,'amber']];
+    },
+    match:(r,f)=>f==='confirmed'||f==='single'?r.confidence===f:r.severity===f,
+    sort:(a,b)=>(SEV_ORDER[a.severity]??9)-(SEV_ORDER[b.severity]??9)
+                ||(a.confidence==='confirmed'?0:1)-(b.confidence==='confirmed'?0:1)
+                ||a.host.localeCompare(b.host),
+    search:r=>r.host+r.detail+r.risk_id+r.owner,
+    row:r=>`
+      <td><div class="host">${esc(r.host)}</div>
+          ${r.owner?`<div class="sub">${esc(r.owner)}</div>`:'<div class="sub">持ち主不明</div>'}</td>
+      <td class="col-hide"><div class="sub">${esc(r.detail)}</div>
+          <div class="sub" style="opacity:.6">${esc(r.risk_id)}</div></td>
+      <td class="col-hide"><div class="sub">${esc(r.source)}</div></td>
+      <td><span class="flag f-${SEV_CLS[r.severity]||'out'}">${SEV_LABEL[r.severity]||r.severity}</span>
+          <div class="sub">${r.confidence==='confirmed'?'確認済み':'要確認'}</div></td>`
+  },
+  asset:{
+    title:'外部公開資産',
+    striplabel:'1資産＝1目盛り／高いほど要確認',
+    placeholder:'ホスト, 持ち主, 技術で絞り込み',
+    filters:[['all','すべて'],['shadow','持ち主不明'],['unmapped','未マップ'],['external','クラウド外'],['managed','管理下']],
+    cols:[['host','ホスト'],['owner','持ち主'],['cloud','クラウド'],['state','判定']],
+    data:()=>ASSETS,
+    cls:r=>ASSET_CLS[r.state]||'ok',
+    tiles:d=>{
+      const c={shadow:0,unmapped:0,external:0,managed:0};
+      d.forEach(r=>{if(c[r.state]!==undefined)c[r.state]++});
+      return [['資産',d.length,''],['持ち主不明',c.shadow,'alarm'],['未マップ',c.unmapped,'amber'],['管理下',c.managed,'']];
+    },
+    match:(r,f)=>r.state===f,
+    sort:(a,b)=>({shadow:0,unmapped:1,external:2,managed:3}[a.state]??9)
+                -({shadow:0,unmapped:1,external:2,managed:3}[b.state]??9)
+                ||a.host.localeCompare(b.host),
+    search:r=>r.host+r.owner+r.tech+r.ip+r.cname+r.cloud_resource_type,
+    row:r=>`
+      <td><div class="host">${esc(r.host)||'(名前なし)'}</div>
+          <div class="sub">${esc(r.ip||r.cname||'')}</div></td>
+      <td class="col-hide">${r.owner?`<div class="sub">${esc(r.owner)}</div>`:'<span class="flag f-alert">不明</span>'}</td>
+      <td class="col-hide"><div class="sub">${esc(r.cloud_provider||'—')}${r.cloud_resource_type?' / '+esc(r.cloud_resource_type):''}</div></td>
+      <td><span class="flag f-${ASSET_CLS[r.state]||'ok'}">${ASSET_LABEL[r.state]||r.state}</span></td>`
+  }
+};
+
+function esc(x){return String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function setView(v){
+  VIEW=v; filter='all'; query=''; sortKey='';
+  document.getElementById('v-risk').setAttribute('aria-pressed',v==='risk');
+  document.getElementById('v-asset').setAttribute('aria-pressed',v==='asset');
+  document.getElementById('h1').textContent=CFG[v].title;
+  render();
+}
+
+function view(){
+  const cfg=CFG[VIEW];
+  let d=cfg.data().filter(r=>{
+    if(filter!=='all'&&!cfg.match(r,filter))return false;
+    if(!query)return true;
+    return cfg.search(r).toLowerCase().includes(query);
+  });
+  d.sort(sortKey?((a,b)=>((a[sortKey]||'')<(b[sortKey]||'')?-1:(a[sortKey]||'')>(b[sortKey]||'')?1:0)*(asc?1:-1)):cfg.sort);
+  return d;
+}
+
+function render(){
+  const cfg=CFG[VIEW], all=cfg.data(), v=view();
+
+  document.getElementById('tiles').innerHTML=cfg.tiles(all)
+    .map(([k,n,cl])=>`<div class="tile"><dt>${k}</dt><dd class="${cl}">${n}</dd></div>`).join('');
+
+  document.getElementById('strip').innerHTML=all.map((r,i)=>{
+    const c=cfg.cls(r);
+    return `<button class="tick s-${c}" data-i="${i}" aria-label="${esc(r.host)}"></button>`;
+  }).join('');
+
+  document.getElementById('filters').innerHTML=
+    cfg.filters.map(([f,l])=>`<button class="chip" data-f="${f}" aria-pressed="${filter===f}">${l}</button>`).join('')
+    +`<input type="search" id="q" placeholder="${cfg.placeholder}" aria-label="絞り込み" value="${esc(query)}">`;
+
+  document.getElementById('thead').innerHTML='<tr>'+cfg.cols.map(([k,l],i)=>
+    `<th data-k="${k}" tabindex="0"${i>0&&i<cfg.cols.length-1?' class="col-hide"':''}>${l}</th>`).join('')+'</tr>';
+
+  document.getElementById('rows').innerHTML=v.map(r=>
+    `<tr class="r-${cfg.cls(r)}">${cfg.row(r)}</tr>`).join('');
+
+  document.getElementById('empty').hidden=v.length>0;
+  document.getElementById('striphint').textContent=`${v.length} / ${all.length} 件表示`;
+  document.querySelector('.striplabel span').textContent=cfg.striplabel;
+  bind();
+}
+
+function bind(){
+  document.querySelectorAll('#filters .chip').forEach(b=>b.onclick=()=>{filter=b.dataset.f;render()});
+  const q=document.getElementById('q');
+  if(q)q.oninput=e=>{query=e.target.value.toLowerCase().trim();render()};
+  document.querySelectorAll('#thead th').forEach(th=>{
+    const go=()=>{const k=th.dataset.k;asc=(sortKey===k)?!asc:true;sortKey=k;render()};
+    th.onclick=go;
+    th.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}};
+  });
+}
+
+document.getElementById('strip').onclick=e=>{
+  const t=e.target.closest('.tick');if(!t)return;
+  query=(CFG[VIEW].data()[t.dataset.i]||{}).host?.toLowerCase()||'';render();
+};
+
+async function grab(name,demo){
+  try{
+    const r=await fetch(name,{cache:'no-store'});
+    if(!r.ok)throw 0;
+    return {rows:parseCSV(await r.text()),live:true};
+  }catch{ return {rows:parseCSV(demo),live:false}; }
+}
+
+(async()=>{
+  const a=await grab('assets.csv',DEMO_ASSETS);
+  const r=await grab('risks.csv',DEMO_RISKS);
+  ASSETS=a.rows; RISKS=r.rows;
+  document.getElementById('meta').textContent=
+    `${RISKS.length} risks · ${ASSETS.length} assets · ${new Date().toISOString().slice(0,10)}`;
+  document.getElementById('src').textContent=
+    (a.live||r.live)?'source: assets.csv / risks.csv':'source: サンプルデータ（CSVが見つかりません）';
+  render();
+})();
+</script>
+</body>
+</html>

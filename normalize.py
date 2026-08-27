@@ -1,0 +1,518 @@
+#!/usr/bin/env python3
+"""外部偵察の結果とクラウド資産を突合して assets.csv を作る。
+
+設計方針:
+  - 依存は標準ライブラリのみ。DBを持たない。
+  - 出力は必ずソート済み。差分は git diff に任せる。
+  - 突合は「IP完全一致」と「CNAMEの部分一致」だけ。
+    IPレンジ判定やARN逆引きのような凝った処理はやらない。
+"""
+import csv
+import json
+import sys
+from pathlib import Path
+
+FIELDS = [
+    "host", "owner", "state", "ip", "cname", "cloud_provider",
+    "cloud_resource_type", "cloud_resource_id", "port", "status", "title",
+    "tech", "cpe", "findings",
+]
+
+CLOUD_HINTS = (
+    ("amazonaws.com", "aws"), ("cloudfront.net", "aws"), ("awsglobalaccelerator.com", "aws"),
+    ("azurewebsites.net", "azure"), ("blob.core.windows.net", "azure"),
+    ("cloudapp.azure.com", "azure"), ("azurefd.net", "azure"), ("trafficmanager.net", "azure"),
+    ("googleusercontent.com", "gcp"), ("run.app", "gcp"), ("appspot.com", "gcp"),
+    ("storage.googleapis.com", "gcp"),
+    ("herokuapp.com", "saas"), ("netlify.app", "saas"), ("vercel.app", "saas"),
+    ("github.io", "saas"), ("firebaseapp.com", "saas"), ("pages.dev", "saas"),
+    ("squarespace.com", "saas"), ("wixsite.com", "saas"), ("shopify.com", "saas"),
+    ("hubspot.net", "saas"), ("sendgrid.net", "saas"), ("zendesk.com", "saas"),
+)
+
+
+def load_owners(path):
+    """owners.yaml を読む。PyYAML なしで済むよう単純なコロン区切りで扱う。"""
+    owners = []
+    if not path.exists():
+        return owners
+    for line in path.read_text(errors="replace").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        key, _, val = line.partition(":")
+        key, val = key.strip().lower().rstrip("."), val.strip()
+        if key and val:
+            owners.append((key, val))
+    # 長いキー（より具体的な指定）を優先する
+    owners.sort(key=lambda kv: -len(kv[0]))
+    return owners
+
+
+def find_owner(host, owners):
+    h = (host or "").lower().rstrip(".")
+    for key, val in owners:
+        if h == key or h.endswith("." + key):
+            return val
+    return ""
+
+
+def classify(row, owner):
+    """3分類 + 要確認。
+
+    shadow   : 持ち主不明。最優先で調べる
+    unmapped : クラウドっぽいが自社アカウントに無い
+    managed  : クラウド資産と突合できた
+    external : クラウド外（オンプレ等）で持ち主が分かっている
+    """
+    if not owner:
+        if row.get("cloud_resource_id"):
+            return "managed"      # 自社アカウント内にあるので持ち主は追える
+        return "shadow"
+    if row.get("cloud_resource_type") == "unmapped":
+        return "unmapped"
+    if row.get("cloud_resource_id"):
+        return "managed"
+    return "external"
+
+
+# 主要な製品名 -> CPE のベンダー/製品 部分
+TECH_TO_CPE = {
+    "nginx": ("nginx", "nginx"),
+    "apache http server": ("apache", "http_server"),
+    "apache": ("apache", "http_server"),
+    "apache tomcat": ("apache", "tomcat"),
+    "iis": ("microsoft", "internet_information_services"),
+    "microsoft-iis": ("microsoft", "internet_information_services"),
+    "php": ("php", "php"),
+    "openssl": ("openssl", "openssl"),
+    "openssh": ("openbsd", "openssh"),
+    "wordpress": ("wordpress", "wordpress"),
+    "drupal": ("drupal", "drupal"),
+    "joomla": ("joomla", "joomla"),
+    "jira": ("atlassian", "jira"),
+    "confluence": ("atlassian", "confluence"),
+    "jenkins": ("jenkins", "jenkins"),
+    "gitlab": ("gitlab", "gitlab"),
+    "grafana": ("grafana", "grafana"),
+    "elasticsearch": ("elastic", "elasticsearch"),
+    "kibana": ("elastic", "kibana"),
+    "tomcat": ("apache", "tomcat"),
+    "node.js": ("nodejs", "node.js"),
+    "express": ("openjsf", "express"),
+    "microsoft asp.net": ("microsoft", "asp.net"),
+    "asp.net": ("microsoft", "asp.net"),
+    "fortios": ("fortinet", "fortios"),
+    "pulse secure": ("pulsesecure", "pulse_connect_secure"),
+    "citrix": ("citrix", "netscaler_application_delivery_controller"),
+    "exchange": ("microsoft", "exchange_server"),
+    "postfix": ("postfix", "postfix"),
+    "mysql": ("oracle", "mysql"),
+    "postgresql": ("postgresql", "postgresql"),
+    "redis": ("redis", "redis"),
+    "mongodb": ("mongodb", "mongodb"),
+}
+
+
+def cpe_from_tech(tech_list):
+    """httpx の tech 表記から CPE 2.3 文字列を組み立てる。
+
+    httpx の -cpe は対応製品が限られており空になることが多い。
+    tech には 'Nginx:1.10.3' のように製品名とバージョンが出るので、
+    そこから CPE を組み立てて補う。
+    バージョンが取れないときは '*' のままにする。
+    """
+    out = []
+    for t in tech_list or []:
+        name, _, ver = t.partition(":")
+        key = name.strip().lower()
+        vendor_product = TECH_TO_CPE.get(key)
+        if not vendor_product:
+            # 'Apache HTTP Server' のような表記ゆれを部分一致で拾う
+            for k, v in TECH_TO_CPE.items():
+                if k in key or key in k:
+                    vendor_product = v
+                    break
+        if not vendor_product:
+            continue
+        vendor, product = vendor_product
+        version = ver.strip() or "*"
+        out.append(f"cpe:2.3:a:{vendor}:{product}:{version}:*:*:*:*:*:*:*")
+    return out
+
+
+def extract_cpe(rec):
+    """httpx の cpe 出力を集める。
+
+    httpx が返す CPE はバージョンが '*' のまま（既知の制約）。
+    tech フィールドに 'Apache HTTP Server:2.4.7' 形式でバージョンが出ることが
+    あるので、製品名が一致したら CPE の version 部分に流し込む。
+    あくまで参考値であり、これで CVE を確定してはいけない。
+    """
+    raw = rec.get("cpe") or rec.get("cpes") or []
+    if isinstance(raw, str):
+        raw = [raw]
+    if not raw:
+        # httpx が CPE を返さない場合は tech から組み立てる
+        return sorted(set(cpe_from_tech(rec.get("tech", []))))
+
+    # tech から 製品名 -> バージョン の対応を作る
+    versions = {}
+    for t in rec.get("tech", []) or []:
+        if ":" in t:
+            name, _, ver = t.partition(":")
+            versions[name.lower().replace(" ", "_")] = ver.strip()
+
+    out = []
+    for cpe in raw:
+        parts = cpe.split(":")
+        if len(parts) >= 6 and parts[5] == "*":
+            product = parts[4].lower()
+            for name, ver in versions.items():
+                if product in name or name in product:
+                    parts[5] = ver
+                    cpe = ":".join(parts)
+                    break
+        out.append(cpe)
+    return out
+
+
+def read_jsonl(path):
+    if not path.exists():
+        return
+    for line in path.read_text(errors="replace").splitlines():
+        line = line.strip()
+        if line:
+            try:
+                yield json.loads(line)
+            except json.JSONDecodeError:
+                continue
+
+
+def load_cloud(path):
+    """dns_name / ip をキーにした逆引き表を作る。"""
+    by_dns, by_ip = {}, {}
+    if not path.exists():
+        return by_dns, by_ip
+    with path.open(newline="") as f:
+        for row in csv.DictReader(f):
+            rec = (row.get("provider"), row.get("resource_type"),
+                   row.get("resource_id"))
+            dns = (row.get("dns_name") or "").strip().lower()
+            ip = (row.get("ip") or "").strip()
+            if dns:
+                by_dns[dns] = rec
+            if ip:
+                by_ip[ip] = rec
+    return by_dns, by_ip
+
+
+def match_cloud(ips, cnames, by_dns, by_ip):
+    for ip in ips:
+        if ip in by_ip:
+            return by_ip[ip]
+    for cname in cnames:
+        c = cname.lower().rstrip(".")
+        if c in by_dns:
+            return by_dns[c]
+        # ALB や CloudFront は末尾一致で拾えることが多い
+        for dns, rec in by_dns.items():
+            if c.endswith(dns) or dns.endswith(c):
+                return rec
+    # 資産に紐づかなくてもプロバイダだけは推定できる
+    for c in cnames:
+        cl = c.lower()
+        for needle, prov in CLOUD_HINTS:
+            if needle in cl:
+                return (prov, "unmapped", "")
+    return ("", "", "")
+
+
+RISK_FIELDS = [
+    "host", "owner", "severity", "confidence", "risk_id", "detail", "source",
+]
+
+SEV_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
+
+# 到達性リスク: 外部に出ているべきでないポート
+DANGEROUS_PORTS = {
+    22: ("ssh-exposed", "high", "SSH exposed to internet"),
+    23: ("telnet-exposed", "critical", "Telnet exposed to internet"),
+    445: ("smb-exposed", "critical", "SMB exposed to internet"),
+    1433: ("mssql-exposed", "critical", "SQL Server exposed to internet"),
+    3306: ("mysql-exposed", "critical", "MySQL exposed to internet"),
+    3389: ("rdp-exposed", "critical", "RDP exposed to internet"),
+    5432: ("postgres-exposed", "critical", "PostgreSQL exposed to internet"),
+    5900: ("vnc-exposed", "critical", "VNC exposed to internet"),
+    6379: ("redis-exposed", "critical", "Redis exposed to internet"),
+    9200: ("elastic-exposed", "critical", "Elasticsearch exposed to internet"),
+    11211: ("memcached-exposed", "critical", "Memcached exposed to internet"),
+    27017: ("mongodb-exposed", "critical", "MongoDB exposed to internet"),
+    21: ("ftp-exposed", "medium", "FTP exposed to internet"),
+}
+
+
+PRIVATE_PREFIXES = ("127.", "10.", "192.168.", "169.254.", "0.", "::1", "fe80:", "fc", "fd")
+
+
+def is_private(ip):
+    ip = (ip or "").strip()
+    if not ip:
+        return False
+    if ip.startswith(PRIVATE_PREFIXES):
+        return True
+    if ip.startswith("172."):
+        try:
+            return 16 <= int(ip.split(".")[1]) <= 31
+        except (IndexError, ValueError):
+            return False
+    return False
+
+
+def build_risks(out, owners, waf_hosts):
+    """確度の高い順にリスクを組み立てる。
+
+    confirmed : 観測できた事実（ポート開放、証明書の内容、クラウド設定）
+                または nuclei が2回とも検出したもの
+    single    : nuclei が1回だけ検出したもの。人による確認が必要
+    """
+    risks = []
+
+    def add(host, sev, conf, rid, detail, source):
+        risks.append({
+            "host": host, "owner": find_owner(host, owners),
+            "severity": sev, "confidence": conf,
+            "risk_id": rid, "detail": detail, "source": source,
+        })
+
+    # 1. 開放ポート（TCP接続が成立した事実）
+    for r in read_jsonl(out / "ports.jsonl"):
+        port = r.get("port")
+        host = (r.get("host") or r.get("ip") or "").lower()
+        # スキャン元マシン自身や社内NWを誤って報告しない
+        if is_private(r.get("ip")) or is_private(host):
+            continue
+        if port in DANGEROUS_PORTS and host:
+            rid, sev, label = DANGEROUS_PORTS[port]
+            add(host, sev, "confirmed", rid, f"{label} ({port}/tcp)", "naabu")
+
+    # 2. 証明書（中身を読んだ結果）
+    for r in read_jsonl(out / "tls.jsonl"):
+        host = (r.get("host") or "").lower()
+        if not host:
+            continue
+        if r.get("expired"):
+            add(host, "high", "confirmed", "tls-expired",
+                f"TLS certificate expired (not_after: {r.get('not_after', 'unknown')})", "tlsx")
+        if r.get("self_signed"):
+            add(host, "medium", "confirmed", "tls-self-signed",
+                "Self-signed TLS certificate", "tlsx")
+        if r.get("mismatched"):
+            add(host, "medium", "confirmed", "tls-mismatch",
+                "TLS certificate hostname mismatch", "tlsx")
+        for v in (r.get("tls_version") or []) if isinstance(r.get("tls_version"), list) else [r.get("tls_version")]:
+            if v and str(v).lower() in ("tls10", "tls11", "ssl30"):
+                add(host, "medium", "confirmed", "tls-old-version",
+                    f"Obsolete TLS version enabled ({v})", "tlsx")
+
+    # 3. 乗っ取り可能な DNS レコード（CNAME先が存在しない）
+    for r in read_jsonl(out / "dns.jsonl"):
+        host = (r.get("host") or "").lower()
+        cnames = r.get("cname") or []
+        if cnames and not (r.get("a") or []):
+            add(host, "high", "confirmed", "dangling-cname",
+                f"Dangling CNAME (possible takeover): {cnames[0]}", "dnsx")
+
+    # 4. クラウドの設定リスク（設定値そのもの）
+    cr = out / "cloud_risks.csv"
+    if cr.exists():
+        with cr.open(newline="") as f:
+            for row in csv.DictReader(f):
+                if not row.get("risk_id"):
+                    continue
+                risks.append({
+                    "host": row.get("resource_id", ""),
+                    "owner": "",
+                    "severity": row.get("severity", "medium"),
+                    "confidence": "confirmed",
+                    "risk_id": row.get("risk_id", ""),
+                    "detail": row.get("detail", ""),
+                    "source": "steampipe",
+                })
+
+    # 5. サービス識別（バナー観測なので事実ベース）
+    #    ポート番号だけでは分からない「実際に何が動いているか」を補う
+    svc_by_host = {}
+    for r in read_jsonl(out / "services.jsonl"):
+        host = (r.get("host") or r.get("ip") or "").lower()
+        svc = (r.get("service") or r.get("protocol") or "").lower()
+        # nmap は http-proxy / ms-wbt-server 等の別名を返すため寄せる
+        svc = {"ms-wbt-server": "rdp", "microsoft-ds": "smb",
+               "ms-sql-s": "mssql", "postgres": "postgresql"}.get(svc, svc)
+        port = r.get("port")
+        ver = r.get("version") or ""
+        if not host or not svc:
+            continue
+        svc_by_host.setdefault(host, []).append(f"{svc}:{port}")
+        label = f"{svc.upper()}{' ' + ver if ver else ''} on {port}/tcp"
+        if svc in ("telnet", "vnc", "rdp", "smb", "ftp"):
+            sev = "critical" if svc in ("telnet", "vnc", "smb") else "high"
+            add(host, sev, "confirmed", f"{svc}-service-exposed",
+                f"{label} (remote access service reachable from internet)", "nmap")
+        elif svc in ("mysql", "postgresql", "redis", "mongodb", "mssql", "elasticsearch"):
+            add(host, "critical", "confirmed", f"{svc}-service-exposed",
+                f"{label} (database reachable from internet)", "nmap")
+        elif svc in ("smtp", "pop3", "imap") and ver:
+            add(host, "medium", "confirmed", f"{svc}-banner",
+                f"{label} (mail service banner discloses version)", "nmap")
+
+    # 6. DNS サーバの検査（dig の応答そのもの）
+    for r in read_jsonl(out / "dns_risks.jsonl"):
+        add((r.get("host") or "").lower(), r.get("severity", "medium"), "confirmed",
+            r.get("risk_id", ""), r.get("detail", ""), "dig")
+
+    # 7. ネットワーク層の指摘（nuclei の network/dns/ssl テンプレート）
+    for r in read_jsonl(out / "netfindings.jsonl"):
+        host = (r.get("host") or "").lower().split(":")[0]
+        info = r.get("info") or {}
+        add(host, info.get("severity", "medium"), r.get("confidence", "single"),
+            r.get("template-id", ""), info.get("name", ""), "nuclei-net")
+
+    # 8. Web の指摘（nuclei）
+    for r in read_jsonl(out / "findings.jsonl"):
+        host = (r.get("host") or "").lower().split(":")[0]
+        info = r.get("info") or {}
+        conf = r.get("confidence", "single")
+        # WAF の背後にあるホストは応答が歪むため確度を下げる
+        if host in waf_hosts and conf == "confirmed":
+            conf = "single"
+        add(host, info.get("severity", "medium"), conf,
+            r.get("template-id", ""), info.get("name", ""), "nuclei")
+
+    # 同一の指摘を1件にまとめる（naabu が host と ip の両方で返すことがある）
+    seen_r, uniq = set(), []
+    for r in risks:
+        k = (r["host"], r["risk_id"], r["detail"])
+        if k not in seen_r:
+            seen_r.add(k)
+            uniq.append(r)
+    risks = uniq
+
+    risks.sort(key=lambda r: (SEV_ORDER.get(r["severity"], 9),
+                              0 if r["confidence"] == "confirmed" else 1,
+                              r["host"], r["risk_id"]))
+    return risks
+
+
+def main(outdir):
+    out = Path(outdir)
+    owners = load_owners(Path(__file__).resolve().parent / "owners.yaml")
+    by_dns, by_ip = load_cloud(out / "cloud.csv")
+
+    dns_map = {}
+    for rec in read_jsonl(out / "dns.jsonl"):
+        host = rec.get("host", "").lower()
+        if host:
+            dns_map[host] = (rec.get("a") or [], rec.get("cname") or [])
+
+    findings = {}
+    for f in read_jsonl(out / "findings.jsonl"):
+        host = (f.get("host") or "").lower()
+        sev = (f.get("info") or {}).get("severity", "")
+        name = f.get("template-id", "")
+        findings.setdefault(host, []).append(f"{sev}:{name}")
+
+    rows = []
+    seen = set()
+    for h in read_jsonl(out / "http.jsonl"):
+        host = (h.get("host") or h.get("input") or "").lower()
+        ips, cnames = dns_map.get(host, ([], []))
+        prov, rtype, rid = match_cloud(ips, cnames, by_dns, by_ip)
+        url_host = (h.get("url") or "").replace("https://", "").replace("http://", "")
+        key = h.get("url", host)
+        if key in seen:
+            continue
+        seen.add(key)
+        row = {
+            "host": host,
+            "owner": "",
+            "state": "",
+            "ip": ";".join(sorted(ips)),
+            "cname": ";".join(sorted(c.rstrip(".") for c in cnames)),
+            "cloud_provider": prov,
+            "cloud_resource_type": rtype,
+            "cloud_resource_id": rid,
+            "port": h.get("port", ""),
+            "status": h.get("status_code", ""),
+            "title": (h.get("title") or "").replace("\n", " ")[:80],
+            "tech": ";".join(h.get("tech", []) or []),
+            "cpe": ";".join(extract_cpe(h)),
+            "findings": ";".join(sorted(findings.get(url_host.split(":")[0], []))),
+        }
+        row["owner"] = find_owner(host, owners)
+        row["state"] = classify(row, row["owner"])
+        rows.append(row)
+
+    # クラウドにあるのに外部偵察で出てこなかった資産も残す(ドメイン未割当のELB等)
+    external_ids = {r["cloud_resource_id"] for r in rows if r["cloud_resource_id"]}
+    if (out / "cloud.csv").exists():
+        with (out / "cloud.csv").open(newline="") as f:
+            for row in csv.DictReader(f):
+                if row.get("resource_id") in external_ids:
+                    continue
+                r2 = {
+                    "host": (row.get("dns_name") or "").lower(),
+                    "owner": "",
+                    "state": "",
+                    "ip": row.get("ip") or "",
+                    "cname": "",
+                    "cloud_provider": row.get("provider", ""),
+                    "cloud_resource_type": row.get("resource_type", ""),
+                    "cloud_resource_id": row.get("resource_id", ""),
+                    "port": "", "status": "", "title": "",
+                    "tech": "", "cpe": "", "findings": "",
+                }
+                r2["owner"] = find_owner(r2["host"], owners)
+                r2["state"] = "managed"
+                rows.append(r2)
+
+    rows.sort(key=lambda r: (r["host"], str(r["port"]), r["cloud_resource_id"]))
+
+    with (out / "assets.csv").open("w", newline="", encoding="utf-8-sig") as f:
+        w = csv.DictWriter(f, fieldnames=FIELDS)
+        w.writeheader()
+        w.writerows(rows)
+
+    # WAF の背後は応答が歪むため確度を下げる。
+    # ただし cdn_name は「IPがそのクラウド事業者のもの」を示すだけで
+    # WAF の有無とは無関係なので、判定に使ってはいけない。
+    # 実際に WAF 製品が検出されたホストだけを対象にする。
+    waf_hosts = set()
+    for h in read_jsonl(out / "http.jsonl"):
+        host = (h.get("host") or "").lower()
+        if not host:
+            continue
+        waf = h.get("waf")
+        cdn_type = (h.get("cdn_type") or "").lower()
+        if waf or cdn_type == "waf":
+            waf_hosts.add(host)
+    risks = build_risks(out, owners, waf_hosts)
+    with (out / "risks.csv").open("w", newline="", encoding="utf-8-sig") as f:
+        w = csv.DictWriter(f, fieldnames=RISK_FIELDS)
+        w.writeheader()
+        w.writerows(risks)
+
+    counts = {}
+    for r in rows:
+        counts[r["state"]] = counts.get(r["state"], 0) + 1
+    conf = sum(1 for r in risks if r["confidence"] == "confirmed")
+    print(f"    assets.csv: {len(rows)} 行")
+    print(f"    risks.csv:  {len(risks)} 件 (確認済み {conf} / 要確認 {len(risks) - conf})")
+    print(f"    持ち主不明 {counts.get('shadow', 0)} / "
+          f"未マップ {counts.get('unmapped', 0)} / "
+          f"管理下 {counts.get('managed', 0)} / "
+          f"クラウド外 {counts.get('external', 0)}")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1] if len(sys.argv) > 1 else "snapshots")

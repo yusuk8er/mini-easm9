@@ -1,4 +1,4 @@
 ﻿host,owner,severity,confidence,risk_id,detail,source
-scanme.nmap.org,,high,confirmed,ssh-exposed,SSH exposed to internet (22/tcp),naabu
+scanme.nmap.org,,high,confirmed,ssh-exposed,SSH exposed to internet (22/tcp) - OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13,naabu
 scanme.nmap.org,,medium,confirmed,CVE-2023-48795,OpenSSH Terrapin Attack - Detection,nuclei
 scanme.nmap.org,,medium,confirmed,ssh-weak-algo-supported,SSH Weak Algorithms Supported,nuclei

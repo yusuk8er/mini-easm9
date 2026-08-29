@@ -176,6 +176,7 @@ nuclei が high / critical のみ実行されます。
 |---|---|---|
 | 開いているポート | naabu | confirmed（接続成立の事実） |
 | 動いているサービスとバージョン | nmap -sV | confirmed（バナー観測） |
+| 非標準ポートで動くDB・リモートアクセス | nmap -sV | confirmed。ポート番号では判定できないものを補う |
 | SSH / RDP / Telnet / VNC / SMB の外部公開 | naabu + nmap -sV | confirmed |
 | データベースの外部公開 | naabu + nmap -sV | confirmed |
 | TLS証明書の失効・自己署名・不一致・旧バージョン | tlsx | confirmed |
@@ -226,3 +227,28 @@ python3 add-license-header.py --check  # 不足しているファイルを一覧
 
 **Nmap は GPL 派生の独自ライセンス（NPSL）** です。同梱・再頒布する場合は
 条項の確認が必要です。本ツールは実行環境にあるものを呼び出す形にしています。
+
+
+## サービス識別とポートスキャンの関係
+
+危険ポートの検出（naabu）とサービス識別（nmap -sV）は役割が異なります。
+
+| 状況 | 検出 |
+|---|---|
+| 3306 が開いている | `mysql-exposed`。nmap で版が取れていれば末尾に付加される |
+| 8081 で MongoDB が動いている | `mongodb-service-exposed`。**ポート番号だけでは判定できない** |
+
+同じポートが両方で検出されることはありません（`DANGEROUS_PORTS` に載っているポートは
+サービス識別側で除外しています）。
+
+出力例:
+
+```
+critical  mysql-exposed              MySQL exposed to internet (3306/tcp) - MySQL 5.7.31
+critical  mongodb-service-exposed    MONGODB MongoDB 4.0 on 8081/tcp (database reachable from internet)
+high      ssh-exposed                SSH exposed to internet (22/tcp) - OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13
+```
+
+バージョン表記は nmap がバナーから読み取った値です。**この値だけでCVEを断定してはいけません**
+（詳細は `FALSE-POSITIVES.md`）。パッチレベル（`2ubuntu2.13` 等）まで取れることがあるため、
+バックポート適用の有無を判断する材料としては有用です。

@@ -301,6 +301,29 @@ def build_risks(out, owners, waf_hosts):
             "risk_id": rid, "detail": detail, "source": source,
         })
 
+    # 0. サービス識別の結果を先に読み込む。
+    #    ポート由来の指摘に「実際に何が動いているか」を添えるために使う
+    svc_map = {}
+    for r in read_jsonl(out / "services.jsonl"):
+        host = (r.get("host") or r.get("ip") or "").lower()
+        port = r.get("port")
+        if not host or port is None:
+            continue
+        # extrainfo は "Ubuntu Linux; protocol 2.0" のように冗長なことが多いため、
+        # 一覧の可読性を優先して version / product だけを使う
+        label = (r.get("version") or r.get("product") or "").strip()
+        if label:
+            svc_map[(host, port)] = label
+            # IP でも引けるようにしておく
+            ip = (r.get("ip") or "").strip()
+            if ip:
+                svc_map[(ip, port)] = label
+
+    def with_version(host, port, detail):
+        """検出内容にサービスのバージョンを付け足す"""
+        label = svc_map.get((host, port))
+        return f"{detail} - {label}" if label else detail
+
     # 1. 開放ポート（TCP接続が成立した事実）
     for r in read_jsonl(out / "ports.jsonl"):
         port = r.get("port")
@@ -310,7 +333,8 @@ def build_risks(out, owners, waf_hosts):
             continue
         if port in DANGEROUS_PORTS and host:
             rid, sev, label = DANGEROUS_PORTS[port]
-            add(host, sev, "confirmed", rid, f"{label} ({port}/tcp)", "naabu")
+            add(host, sev, "confirmed", rid,
+                with_version(host, port, f"{label} ({port}/tcp)"), "naabu")
 
     # 2. 証明書（中身を読んだ結果）
     for r in read_jsonl(out / "tls.jsonl"):
@@ -371,6 +395,9 @@ def build_risks(out, owners, waf_hosts):
             continue
         svc_by_host.setdefault(host, []).append(f"{svc}:{port}")
         label = f"{svc.upper()}{' ' + ver if ver else ''} on {port}/tcp"
+        # ポート番号で既に指摘済みのものは重複させない
+        if port in DANGEROUS_PORTS:
+            continue
         if svc in ("telnet", "vnc", "rdp", "smb", "ftp"):
             sev = "critical" if svc in ("telnet", "vnc", "smb") else "high"
             add(host, sev, "confirmed", f"{svc}-service-exposed",

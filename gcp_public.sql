@@ -25,9 +25,9 @@ where load_balancing_scheme = 'EXTERNAL'
 union all
 
 select
-  'gcp', 'cloud_run', name, split_part(urls[1], '//', 2), null, location
+  'gcp', 'cloud_run', name, split_part(uri, '//', 2), null, location
 from gcp_cloud_run_service
-where array_length(urls, 1) > 0
+where uri is not null
 
 union all
 

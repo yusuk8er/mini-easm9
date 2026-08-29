@@ -23,7 +23,7 @@ from azure_app_service_web_app
 union all
 
 select
-  'azure', 'function_app', id, default_hostname, null, region
+  'azure', 'function_app', id, default_site_hostname, null, region
 from azure_app_service_function_app
 
 union all
@@ -46,11 +46,7 @@ select
   'azure', 'api_management', id, gateway_url, null, region
 from azure_api_management
 
-union all
-
-select
-  'azure', 'container_app', id, configuration -> 'ingress' ->> 'fqdn', null, region
-from azure_container_app
-where configuration -> 'ingress' ->> 'external' = 'true'
+-- 注: azure_container_app は Steampipe の azure プラグインに存在しないため対象外。
+--     Container Apps は外部偵察側（DNS）で検出されます。
 
 order by resource_type, dns_name

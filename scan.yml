@@ -39,15 +39,40 @@ jobs:
       - name: install tools
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libpcap-dev dnsutils nmap
+          # 足りないものだけ入れる。ランナーに最初から入っていることが多い
+          missing=""
+          command -v dig  >/dev/null 2>&1 || missing="$missing dnsutils"
+          command -v nmap >/dev/null 2>&1 || missing="$missing nmap"
+          [ -f /usr/include/pcap.h ]      || missing="$missing libpcap-dev"
+
+          if [ -n "$missing" ]; then
+            # packages.microsoft.com が 403 を返して apt-get update 全体を
+            # 失敗させることがある。今回使わないリポジトリなので外しておく
+            sudo rm -f /etc/apt/sources.list.d/microsoft* \
+                       /etc/apt/sources.list.d/azure-cli* 2>/dev/null || true
+            sudo apt-get update || true
+            sudo apt-get install -y $missing || true
+          fi
+
           go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
           go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest
           go install github.com/projectdiscovery/httpx/cmd/httpx@latest
-          go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
           go install github.com/projectdiscovery/tlsx/cmd/tlsx@latest
           go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+          # naabu は libpcap-dev が要る。導入に失敗しても止めない
+          # （scan.sh 側でポートスキャンをスキップして続行する）
+          go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest || \
+            echo "naabu の導入に失敗しました。ポートスキャンはスキップされます"
           echo "$HOME/go/bin" >> $GITHUB_PATH
+
+          echo "--- 導入結果 ---"
+          for t in subfinder dnsx httpx tlsx nuclei naabu nmap dig; do
+            if [ -x "$HOME/go/bin/$t" ] || command -v "$t" >/dev/null 2>&1; then
+              echo "  $t: OK"
+            else
+              echo "  $t: なし"
+            fi
+          done
 
       - name: set PATH
         run: echo "$HOME/go/bin" >> $GITHUB_PATH

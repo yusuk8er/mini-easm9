@@ -130,7 +130,10 @@ if [[ "$live_count" -gt "$MAX_LIVE" ]]; then
 fi
 
 # ポートスキャン。開いているポートは接続できた事実なので誤検知なし
-if [[ "$MODE" == "full" ]]; then
+if [[ "$MODE" == "full" ]] && ! command -v naabu >/dev/null 2>&1; then
+  echo "    naabu が見つかりません。ポートスキャンをスキップします"
+fi
+if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
   # 上位1000ポート
   naabu -list "$WORK/live.txt" -silent -json -top-ports "$TOP_PORTS" \
         -scan-type c -rate 1000 -c 50 -retries 2 -timeout 1200 -warm-up-time 1 > "$WORK/ports1.jsonl" || true

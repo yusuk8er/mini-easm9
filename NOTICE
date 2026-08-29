@@ -1,0 +1,58 @@
+mini-easm
+Copyright 2026 Yusuke Hirose
+
+This product includes software developed by third parties.
+本ツールは、以下のオープンソースソフトウェアを利用しています。
+いずれも実行時に利用者の環境へ導入されるものであり、
+本リポジトリには同梱していません。
+
+---------------------------------------------------------------------
+ProjectDiscovery スイート
+  subfinder / dnsx / naabu / httpx / tlsx / nuclei
+  Copyright (c) ProjectDiscovery, Inc.
+  License: MIT
+  https://github.com/projectdiscovery
+
+nuclei-templates
+  Copyright (c) ProjectDiscovery, Inc. and contributors
+  License: MIT
+  https://github.com/projectdiscovery/nuclei-templates
+
+---------------------------------------------------------------------
+Steampipe
+  Copyright (c) Turbot HQ, Inc.
+  License: AGPL-3.0（本体・FDW）
+  https://github.com/turbot/steampipe
+
+Steampipe プラグイン (aws / azure / gcp)
+  Copyright (c) Turbot HQ, Inc.
+  License: Apache-2.0
+  https://hub.steampipe.io
+
+---------------------------------------------------------------------
+Nmap
+  Copyright (c) Nmap Software LLC
+  License: Nmap Public Source License (NPSL)
+  https://nmap.org
+
+  注: Nmap は GPL 派生の独自ライセンスです。再頒布や製品への
+      組み込みを行う場合は、必ずライセンス全文を確認してください。
+      本ツールは Nmap を同梱せず、実行環境にあるものを呼び出します。
+
+---------------------------------------------------------------------
+BIND 9 (dig)
+  Copyright (c) Internet Systems Consortium, Inc. ("ISC")
+  License: MPL-2.0
+  https://www.isc.org/bind/
+
+---------------------------------------------------------------------
+実行基盤
+  GitHub Actions（GitHub, Inc.）
+  各アクション (actions/checkout, actions/setup-go, actions/cache,
+  actions/upload-artifact, aws-actions/configure-aws-credentials)
+  License: MIT
+
+---------------------------------------------------------------------
+ライセンス表記は 2026年8月 時点の情報です。
+各ソフトウェアのライセンスは変更される可能性があるため、
+再頒布や社外提供にあたっては最新の条項を確認してください。

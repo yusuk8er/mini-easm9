@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
+# Copyright 2026 Yusuke Hirose
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # mini-easm: 外部公開資産の棚卸し + ネットワーク診断
 #
 # 誤検知を抑えるための方針:
@@ -174,10 +190,23 @@ if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
     cut -d: -f1 "$WORK/hostports.txt" | sort -u > "$WORK/nmap_hosts.txt"
     nmap_ports=$(cut -d: -f2 "$WORK/hostports.txt" | sort -un | paste -sd, -)
     if [[ -n "$nmap_ports" ]]; then
-      timeout 1200 nmap -sV --version-intensity 4 -Pn -n -T4 \
+      echo "    nmap: $(wc -l < "$WORK/nmap_hosts.txt") ホスト / ポート $nmap_ports"
+      # -n は名前解決を省略するが、-iL にホスト名を渡す場合は解決が必要なので付けない
+      timeout 1200 nmap -sV --version-intensity 4 -Pn -T4 \
         -p "$nmap_ports" -iL "$WORK/nmap_hosts.txt" \
-        -oX "$WORK/nmap.xml" > /dev/null 2> "$WORK/nmap.err" || true
-      python3 "$ROOT/nmap2jsonl.py" "$WORK/nmap.xml" "$OUT/services.jsonl"
+        -oX "$WORK/nmap.xml" > "$WORK/nmap.out" 2> "$WORK/nmap.err" || true
+      if [[ ! -s "$WORK/nmap.xml" ]]; then
+        echo "    !! nmap がXMLを出力しませんでした"
+        [[ -s "$WORK/nmap.err" ]] && head -5 "$WORK/nmap.err" | sed 's/^/       /'
+        [[ -s "$WORK/nmap.out" ]] && head -5 "$WORK/nmap.out" | sed 's/^/       /'
+        : > "$OUT/services.jsonl"
+      else
+        python3 "$ROOT/nmap2jsonl.py" "$WORK/nmap.xml" "$OUT/services.jsonl"
+        if [[ ! -s "$OUT/services.jsonl" ]]; then
+          echo "    !! XMLは出たが解析結果が0件。XMLの冒頭:"
+          head -c 400 "$WORK/nmap.xml" | sed 's/^/       /'
+        fi
+      fi
     else
       : > "$OUT/services.jsonl"
     fi

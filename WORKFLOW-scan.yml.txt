@@ -40,7 +40,28 @@ jobs:
           go-version: '1.22'
           cache: false   # go.sum が無いので Go モジュールキャッシュは使わない
 
-      - name: cache tools
+      # システムパッケージはホーム配下に入らないためキャッシュできない。
+      # キャッシュの有無にかかわらず毎回導入する
+      - name: install system packages
+        run: |
+          missing=""
+          command -v dig  >/dev/null 2>&1 || missing="$missing dnsutils"
+          command -v nmap >/dev/null 2>&1 || missing="$missing nmap"
+          [ -f /usr/include/pcap.h ]      || missing="$missing libpcap-dev"
+
+          if [ -n "$missing" ]; then
+            echo "導入するパッケージ:$missing"
+            # packages.microsoft.com が 403 を返して apt-get update 全体を
+            # 失敗させることがある。今回使わないリポジトリなので外しておく
+            sudo rm -f /etc/apt/sources.list.d/microsoft* \
+                       /etc/apt/sources.list.d/azure-cli* 2>/dev/null || true
+            sudo apt-get update || true
+            sudo apt-get install -y $missing || true
+          else
+            echo "システムパッケージは導入済み"
+          fi
+
+      - name: cache go tools
         id: cache-tools
         uses: actions/cache@v4
         with:
@@ -50,48 +71,37 @@ jobs:
             ~/.config/nuclei
           # ツールを追加したらキーを変える。さもないと古いキャッシュが復元され
           # 新しいツールがインストールされない
-          key: easm-tools-v4-nmap
+          key: easm-gotools-v5
 
-      - name: install tools
+      - name: install go tools
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
-          # 足りないものだけ入れる。ランナーに最初から入っていることが多い
-          missing=""
-          command -v dig  >/dev/null 2>&1 || missing="$missing dnsutils"
-          command -v nmap >/dev/null 2>&1 || missing="$missing nmap"
-          [ -f /usr/include/pcap.h ]      || missing="$missing libpcap-dev"
-
-          if [ -n "$missing" ]; then
-            # packages.microsoft.com が 403 を返して apt-get update 全体を
-            # 失敗させることがある。今回使わないリポジトリなので外しておく
-            sudo rm -f /etc/apt/sources.list.d/microsoft* \
-                       /etc/apt/sources.list.d/azure-cli* 2>/dev/null || true
-            sudo apt-get update || true
-            sudo apt-get install -y $missing || true
-          fi
-
           go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
           go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest
           go install github.com/projectdiscovery/httpx/cmd/httpx@latest
           go install github.com/projectdiscovery/tlsx/cmd/tlsx@latest
           go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
           # naabu は libpcap-dev が要る。導入に失敗しても止めない
-          # （scan.sh 側でポートスキャンをスキップして続行する）
           go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest || \
             echo "naabu の導入に失敗しました。ポートスキャンはスキップされます"
-          echo "$HOME/go/bin" >> $GITHUB_PATH
-
-          echo "--- 導入結果 ---"
-          for t in subfinder dnsx httpx tlsx nuclei naabu nmap dig; do
-            if [ -x "$HOME/go/bin/$t" ] || command -v "$t" >/dev/null 2>&1; then
-              echo "  $t: OK"
-            else
-              echo "  $t: なし"
-            fi
-          done
 
       - name: set PATH
         run: echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: verify tools
+        run: |
+          echo "--- 導入結果 ---"
+          fail=0
+          for t in subfinder dnsx httpx tlsx nuclei naabu nmap dig jq; do
+            if command -v "$t" >/dev/null 2>&1; then
+              echo "  $t: OK"
+            else
+              echo "  $t: なし"
+              fail=1
+            fi
+          done
+          [ "$fail" = "1" ] && echo "※ 一部のツールがありません。該当する検査はスキップされます"
+          exit 0
 
       - name: validate SQL
         if: github.event.inputs.mode == 'validate'

@@ -37,6 +37,27 @@ trap 'rm -rf "$WORK"' EXIT
 # 診断の深さ。既定は full。asset を指定すると資産棚卸しのみ
 MODE="${MODE:-full}"
 
+# 診断情報の保存先。アーティファクトに同梱されるので、
+# 失敗時にログを探さなくても原因が追える
+DBG="$OUT/debug"
+mkdir -p "$DBG"
+{
+  echo "date: $(date -u +%FT%TZ)"
+  echo "mode: $MODE"
+  echo ""
+  echo "--- ツールの導入状況 ---"
+  for t in subfinder dnsx naabu httpx tlsx nuclei nmap dig jq steampipe python3; do
+    if command -v "$t" >/dev/null 2>&1; then
+      printf '%-12s %s\n' "$t" "$(command -v "$t")"
+    else
+      printf '%-12s %s\n' "$t" "見つかりません"
+    fi
+  done
+  echo ""
+  echo "--- バージョン ---"
+  nmap --version 2>&1 | head -2 || echo "nmap: 実行できません"
+} > "$DBG/tools.txt" 2>&1
+
 # 各フェーズの所要時間を記録する（どこが遅いか分かるように）
 _T0=$(date +%s)
 _LAST=$_T0
@@ -47,6 +68,23 @@ lap() {
 }
 
 echo "==> [1/7] クラウド側: 外部公開リソースを取得"
+# 認証情報を扱えない場合に備え、手動で用意された CSV があればそれを使う。
+# クラウド管理者が手元で SQL を実行し、CSV だけを持ち込む運用を想定している。
+if [[ -s "$ROOT/cloud-manual.csv" ]]; then
+  cp "$ROOT/cloud-manual.csv" "$OUT/cloud.csv"
+  echo "    cloud-manual.csv を使用 ($(( $(wc -l < "$OUT/cloud.csv") - 1 )) 件)"
+  if [[ -s "$ROOT/cloud-risks-manual.csv" ]]; then
+    cp "$ROOT/cloud-risks-manual.csv" "$OUT/cloud_risks.csv"
+    echo "    cloud-risks-manual.csv を使用 ($(( $(wc -l < "$OUT/cloud_risks.csv") - 1 )) 件)"
+  else
+    echo "provider,resource_id,risk_id,severity,detail" > "$OUT/cloud_risks.csv"
+  fi
+  MANUAL_CLOUD=1
+else
+  MANUAL_CLOUD=0
+fi
+
+if [[ "$MANUAL_CLOUD" == "0" ]]; then
 echo "provider,resource_type,resource_id,dns_name,ip,region" > "$OUT/cloud.csv"
 for sql in "$ROOT"/*_public.sql; do
   name="$(basename "$sql" _public.sql)"
@@ -62,9 +100,13 @@ for sql in "$ROOT"/*_public.sql; do
   fi
 done
 echo "    合計 $(( $(wc -l < "$OUT/cloud.csv") - 1 )) 件"
+fi
 
 lap "クラウド資産"
 echo "==> [2/7] クラウド側: 設定リスクを取得"
+if [[ "$MANUAL_CLOUD" == "1" ]]; then
+  echo "    手動CSVを使用中のためスキップ"
+else
 # 設定値をそのまま読むため誤検知は発生しない
 echo "provider,resource_id,risk_id,severity,detail" > "$OUT/cloud_risks.csv"
 for sql in "$ROOT"/*_risks.sql; do
@@ -74,6 +116,7 @@ for sql in "$ROOT"/*_risks.sql; do
   fi
 done
 echo "    $(( $(wc -l < "$OUT/cloud_risks.csv") - 1 )) 件"
+fi
 
 lap "クラウド設定"
 echo "==> [3/7] シードドメインを決定"
@@ -81,7 +124,7 @@ echo "==> [3/7] シードドメインを決定"
 if [[ -f "$ROOT/seeds.txt" ]]; then
   grep -vE '^\s*(#|$)' "$ROOT/seeds.txt" >> "$WORK/seeds.txt" || true
 fi
-if steampipe plugin list 2>/dev/null | grep -q 'turbot/aws@'; then
+if [[ "$MANUAL_CLOUD" == "0" ]] && steampipe plugin list 2>/dev/null | grep -q 'turbot/aws@'; then
   steampipe query --output csv "$ROOT/aws_seeds.sql" 2>/dev/null \
     | tail -n +2 >> "$WORK/seeds.txt" || true
 fi
@@ -195,16 +238,24 @@ if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
       timeout 1200 nmap -sV --version-intensity 4 -Pn -T4 \
         -p "$nmap_ports" -iL "$WORK/nmap_hosts.txt" \
         -oX "$WORK/nmap.xml" > "$WORK/nmap.out" 2> "$WORK/nmap.err" || true
+      # 診断用に入出力を残す
+      cp "$WORK/nmap_hosts.txt" "$DBG/nmap_hosts.txt" 2>/dev/null || true
+      echo "$nmap_ports" > "$DBG/nmap_ports.txt"
+      cp "$WORK/nmap.err" "$DBG/nmap.err" 2>/dev/null || true
+      cp "$WORK/nmap.out" "$DBG/nmap.out" 2>/dev/null || true
+      cp "$WORK/nmap.xml" "$DBG/nmap.xml" 2>/dev/null || true
+
       if [[ ! -s "$WORK/nmap.xml" ]]; then
-        echo "    !! nmap がXMLを出力しませんでした"
+        echo "    !! nmap がXMLを出力しませんでした（debug/nmap.err を参照）"
         [[ -s "$WORK/nmap.err" ]] && head -5 "$WORK/nmap.err" | sed 's/^/       /'
         [[ -s "$WORK/nmap.out" ]] && head -5 "$WORK/nmap.out" | sed 's/^/       /'
         : > "$OUT/services.jsonl"
       else
-        python3 "$ROOT/nmap2jsonl.py" "$WORK/nmap.xml" "$OUT/services.jsonl"
+        python3 "$ROOT/nmap2jsonl.py" "$WORK/nmap.xml" "$OUT/services.jsonl" \
+          2> "$DBG/nmap2jsonl.err" || true
         if [[ ! -s "$OUT/services.jsonl" ]]; then
-          echo "    !! XMLは出たが解析結果が0件。XMLの冒頭:"
-          head -c 400 "$WORK/nmap.xml" | sed 's/^/       /'
+          echo "    !! XMLは出たが解析結果が0件（debug/nmap.xml を参照）"
+          head -c 300 "$WORK/nmap.xml" | sed 's/^/       /'
         fi
       fi
     else
@@ -212,7 +263,12 @@ if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
     fi
   else
     : > "$OUT/services.jsonl"
-    echo "    nmap が見つかりません（サービス識別をスキップ）"
+    if ! command -v nmap >/dev/null 2>&1; then
+      echo "    !! nmap が見つかりません（サービス識別をスキップ）"
+      echo "nmap not found in PATH" > "$DBG/nmap.err"
+    else
+      echo "    対象ポートがないためサービス識別をスキップ"
+    fi
   fi
 else
   : > "$OUT/ports.jsonl"
@@ -246,7 +302,7 @@ if [[ "$MODE" == "full" ]]; then
   } | sort -u > "$WORK/tlstargets.txt"
 
   tlsx -l "$WORK/tlstargets.txt" -silent -json -expired -self-signed -mismatched \
-       -untrusted -so -tls-version -cipher > "$OUT/tls.jsonl" 2>/dev/null || true
+       -untrusted -so -tls-version -cipher > "$OUT/tls.jsonl" 2> "$DBG/tlsx.err" || true
   echo "    $(wc -l < "$OUT/tls.jsonl") 件 / 対象 $(wc -l < "$WORK/tlstargets.txt") 件"
 else
   : > "$OUT/tls.jsonl"

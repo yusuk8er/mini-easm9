@@ -1,1 +1,2 @@
 ﻿host,owner,state,ip,cname,cloud_provider,cloud_resource_type,cloud_resource_id,port,status,title,tech,cpe,findings
+scanme.nmap.org,,shadow,45.33.32.156,,,,,80,200,Go ahead and ScanMe!,Apache HTTP Server:2.4.7;Ubuntu,cpe:2.3:a:apache:http_server:2.4.7:*:*:*:*:*:*:*,medium:CVE-2023-48795;medium:ssh-weak-algo-supported

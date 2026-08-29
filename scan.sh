@@ -70,15 +70,24 @@ if steampipe plugin list 2>/dev/null | grep -q 'turbot/aws@'; then
     | tail -n +2 >> "$WORK/seeds.txt" || true
 fi
 sort -u -o "$WORK/seeds.txt" "$WORK/seeds.txt"
+# seeds.txt が空でも、hosts.txt に直接指定があれば実行できるようにする
 if [[ ! -s "$WORK/seeds.txt" ]]; then
-  echo "    シードが空です。seeds.txt にドメインを書いてください" >&2
-  exit 1
+  if [[ -s "$ROOT/hosts.txt" ]] && grep -qvE '^\s*(#|$)' "$ROOT/hosts.txt"; then
+    echo "    シードは空。hosts.txt の直接指定のみで実行します"
+  else
+    echo "    調査対象がありません。seeds.txt にドメインを、" >&2
+    echo "    または hosts.txt にホスト名を記載してください" >&2
+    exit 1
+  fi
 fi
 echo "    $(wc -l < "$WORK/seeds.txt") ドメイン"
 
 lap "シード"
 echo "==> [4/7] 外部偵察: subfinder -> dnsx -> naabu -> httpx"
-subfinder -dL "$WORK/seeds.txt" -silent -all > "$WORK/subs.txt" || true
+: > "$WORK/subs.txt"
+if [[ -s "$WORK/seeds.txt" ]]; then
+  subfinder -dL "$WORK/seeds.txt" -silent -all > "$WORK/subs.txt" || true
+fi
 
 # hosts.txt があれば、列挙を経由せずそのまま対象に加える。
 # 証明書に大量のSANが入っているドメインなど、列挙が暴れる相手に使う
@@ -111,8 +120,10 @@ jq -r '
   | select([.a[] | test("^(127\\.|10\\.|192\\.168\\.|169\\.254\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|0\\.|::1$|fe80:|f[cd])")] | all | not)
   | .host' "$OUT/dns.jsonl" 2>/dev/null | sort -u > "$WORK/live.txt" || : > "$WORK/live.txt"
 
-_all=$(jq -r 'select(.a != null) | .host' "$OUT/dns.jsonl" 2>/dev/null | sort -u | wc -l 2>/dev/null || echo 0)
-_kept=$(wc -l < "$WORK/live.txt" 2>/dev/null || echo 0)
+# パイプの途中が失敗すると wc の出力と echo の両方が入って数値にならないため、
+# 失敗し得るコマンドだけを個別に保護する
+_all=$( (jq -r 'select(.a != null) | .host' "$OUT/dns.jsonl" 2>/dev/null || true) | sort -u | wc -l )
+_kept=$(wc -l < "$WORK/live.txt")
 if [[ "${_all:-0}" -gt "${_kept:-0}" ]]; then
   echo "    プライベートIPのため除外: $(( _all - _kept )) 件"
 fi

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.94SVN scan initiated Sat Aug 29 11:19:50 2026 as: nmap -sV -&#45;version-intensity 4 -Pn -T4 -p 22,80,443,8080,8443,9929,31337 -iL /tmp/tmp.2PNyjbAMnx/nmap_hosts.txt -oX /tmp/tmp.2PNyjbAMnx/nmap.xml -->
+<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 4 -Pn -T4 -p 22,80,443,8080,8443,9929,31337 -iL /tmp/tmp.2PNyjbAMnx/nmap_hosts.txt -oX /tmp/tmp.2PNyjbAMnx/nmap.xml" start="1788002390" startstr="Sat Aug 29 11:19:50 2026" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="7" services="22,80,443,8080,8443,9929,31337"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1788002391" endtime="1788002397"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="45.33.32.156" addrtype="ipv4"/>
+<hostnames>
+<hostname name="scanme.nmap.org" type="user"/>
+<hostname name="scanme.nmap.org" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" product="OpenSSH" version="6.6.1p1 Ubuntu 2ubuntu2.13" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:6.6.1p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.7" extrainfo="(Ubuntu)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.7</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="nping-echo" product="Nping echo" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="31337"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="tcpwrapped" method="probed" conf="8"/></port>
+</ports>
+<times srtt="64355" rttvar="12451" to="114159"/>
+</host>
+<runstats><finished time="1788002397" timestr="Sat Aug 29 11:19:57 2026" summary="Nmap done at Sat Aug 29 11:19:57 2026; 1 IP address (1 host up) scanned in 6.56 seconds" elapsed="6.56" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

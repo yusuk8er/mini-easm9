@@ -1,0 +1,19 @@
+date: 2026-08-29T11:19:44Z
+mode: full
+
+--- ツールの導入状況 ---
+subfinder    /home/runner/go/bin/subfinder
+dnsx         /home/runner/go/bin/dnsx
+naabu        /home/runner/go/bin/naabu
+httpx        /home/runner/go/bin/httpx
+tlsx         /home/runner/go/bin/tlsx
+nuclei       /home/runner/go/bin/nuclei
+nmap         /usr/bin/nmap
+dig          /usr/bin/dig
+jq           /usr/bin/jq
+steampipe    見つかりません
+python3      /usr/bin/python3
+
+--- バージョン ---
+Nmap version 7.94SVN ( https://nmap.org )
+Platform: x86_64-pc-linux-gnu

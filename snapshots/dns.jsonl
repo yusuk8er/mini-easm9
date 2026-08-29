@@ -1,1 +1,1 @@
-{"host":"scanme.nmap.org","ttl":2009,"resolver":["1.0.0.1:53","8.8.8.8:53"],"a":["45.33.32.156"],"all":["scanme.nmap.org.\t2009\tIN\tA\t45.33.32.156"],"status_code":"NOERROR","timestamp":"2026-08-29T10:49:46.755176376Z","query-time":"36ms"}
+{"host":"scanme.nmap.org","ttl":3600,"resolver":["1.0.0.1:53","8.8.8.8:53"],"a":["45.33.32.156"],"all":["scanme.nmap.org.\t3600\tIN\tA\t45.33.32.156"],"status_code":"NOERROR","timestamp":"2026-08-29T11:19:45.676870944Z","query-time":"34ms"}

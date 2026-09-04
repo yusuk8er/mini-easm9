@@ -30,8 +30,7 @@ from pathlib import Path
 
 FIELDS = [
     "host", "owner", "state", "ip", "cname", "cloud_provider",
-    "cloud_resource_type", "cloud_resource_id", "port", "status", "title",
-    "tech", "cpe", "findings",
+    "port", "status", "title", "tech", "cpe", "findings",
 ]
 
 CLOUD_HINTS = (
@@ -74,22 +73,17 @@ def find_owner(host, owners):
 
 
 def classify(row, owner):
-    """3分類 + 要確認。
+    """2分類。
 
-    shadow   : 持ち主不明。最優先で調べる
-    unmapped : クラウドっぽいが自社アカウントに無い
-    managed  : クラウド資産と突合できた
-    external : クラウド外（オンプレ等）で持ち主が分かっている
+    shadow : 持ち主台帳に載っていない。調べるべき対象
+    known  : 持ち主が判明している
+
+    クラウド連携を行わない構成のため、「自社アカウントに存在するか」による
+    クラウドの認証情報を扱わないため、「自社アカウントに存在するか」による
+    判定は行わない。CNAME から推定した事業者は cloud_provider 列に
+    参考情報として残す。
     """
-    if not owner:
-        if row.get("cloud_resource_id"):
-            return "managed"      # 自社アカウント内にあるので持ち主は追える
-        return "shadow"
-    if row.get("cloud_resource_type") == "unmapped":
-        return "unmapped"
-    if row.get("cloud_resource_id"):
-        return "managed"
-    return "external"
+    return "known" if owner else "shadow"
 
 
 # 主要な製品名 -> CPE のベンダー/製品 部分
@@ -205,43 +199,18 @@ def read_jsonl(path):
                 continue
 
 
-def load_cloud(path):
-    """dns_name / ip をキーにした逆引き表を作る。"""
-    by_dns, by_ip = {}, {}
-    if not path.exists():
-        return by_dns, by_ip
-    with path.open(newline="") as f:
-        for row in csv.DictReader(f):
-            rec = (row.get("provider"), row.get("resource_type"),
-                   row.get("resource_id"))
-            dns = (row.get("dns_name") or "").strip().lower()
-            ip = (row.get("ip") or "").strip()
-            if dns:
-                by_dns[dns] = rec
-            if ip:
-                by_ip[ip] = rec
-    return by_dns, by_ip
+def guess_cloud(cnames):
+    """CNAME の文字列からクラウド事業者を推定する。
 
-
-def match_cloud(ips, cnames, by_dns, by_ip):
-    for ip in ips:
-        if ip in by_ip:
-            return by_ip[ip]
-    for cname in cnames:
-        c = cname.lower().rstrip(".")
-        if c in by_dns:
-            return by_dns[c]
-        # ALB や CloudFront は末尾一致で拾えることが多い
-        for dns, rec in by_dns.items():
-            if c.endswith(dns) or dns.endswith(c):
-                return rec
-    # 資産に紐づかなくてもプロバイダだけは推定できる
-    for c in cnames:
+    クラウドの認証情報は使用せず、DNSの応答だけで判定する。
+    自社アカウントに存在するかまでは分からないため、あくまで参考情報。
+    """
+    for c in cnames or []:
         cl = c.lower()
         for needle, prov in CLOUD_HINTS:
             if needle in cl:
-                return (prov, "unmapped", "")
-    return ("", "", "")
+                return prov
+    return ""
 
 
 RISK_FIELDS = [
@@ -363,23 +332,6 @@ def build_risks(out, owners, waf_hosts):
             add(host, "high", "confirmed", "dangling-cname",
                 f"Dangling CNAME (possible takeover): {cnames[0]}", "dnsx")
 
-    # 4. クラウドの設定リスク（設定値そのもの）
-    cr = out / "cloud_risks.csv"
-    if cr.exists():
-        with cr.open(newline="") as f:
-            for row in csv.DictReader(f):
-                if not row.get("risk_id"):
-                    continue
-                risks.append({
-                    "host": row.get("resource_id", ""),
-                    "owner": "",
-                    "severity": row.get("severity", "medium"),
-                    "confidence": "confirmed",
-                    "risk_id": row.get("risk_id", ""),
-                    "detail": row.get("detail", ""),
-                    "source": "steampipe",
-                })
-
     # 5. サービス識別（バナー観測なので事実ベース）
     #    ポート番号だけでは分からない「実際に何が動いているか」を補う
     svc_by_host = {}
@@ -450,7 +402,6 @@ def build_risks(out, owners, waf_hosts):
 def main(outdir):
     out = Path(outdir)
     owners = load_owners(Path(__file__).resolve().parent / "owners.yaml")
-    by_dns, by_ip = load_cloud(out / "cloud.csv")
 
     dns_map = {}
     for rec in read_jsonl(out / "dns.jsonl"):
@@ -470,7 +421,7 @@ def main(outdir):
     for h in read_jsonl(out / "http.jsonl"):
         host = (h.get("host") or h.get("input") or "").lower()
         ips, cnames = dns_map.get(host, ([], []))
-        prov, rtype, rid = match_cloud(ips, cnames, by_dns, by_ip)
+        prov = guess_cloud(cnames)
         url_host = (h.get("url") or "").replace("https://", "").replace("http://", "")
         key = h.get("url", host)
         if key in seen:
@@ -483,8 +434,6 @@ def main(outdir):
             "ip": ";".join(sorted(ips)),
             "cname": ";".join(sorted(c.rstrip(".") for c in cnames)),
             "cloud_provider": prov,
-            "cloud_resource_type": rtype,
-            "cloud_resource_id": rid,
             "port": h.get("port", ""),
             "status": h.get("status_code", ""),
             "title": (h.get("title") or "").replace("\n", " ")[:80],
@@ -496,30 +445,7 @@ def main(outdir):
         row["state"] = classify(row, row["owner"])
         rows.append(row)
 
-    # クラウドにあるのに外部偵察で出てこなかった資産も残す(ドメイン未割当のELB等)
-    external_ids = {r["cloud_resource_id"] for r in rows if r["cloud_resource_id"]}
-    if (out / "cloud.csv").exists():
-        with (out / "cloud.csv").open(newline="") as f:
-            for row in csv.DictReader(f):
-                if row.get("resource_id") in external_ids:
-                    continue
-                r2 = {
-                    "host": (row.get("dns_name") or "").lower(),
-                    "owner": "",
-                    "state": "",
-                    "ip": row.get("ip") or "",
-                    "cname": "",
-                    "cloud_provider": row.get("provider", ""),
-                    "cloud_resource_type": row.get("resource_type", ""),
-                    "cloud_resource_id": row.get("resource_id", ""),
-                    "port": "", "status": "", "title": "",
-                    "tech": "", "cpe": "", "findings": "",
-                }
-                r2["owner"] = find_owner(r2["host"], owners)
-                r2["state"] = "managed"
-                rows.append(r2)
-
-    rows.sort(key=lambda r: (r["host"], str(r["port"]), r["cloud_resource_id"]))
+    rows.sort(key=lambda r: (r["host"], str(r["port"])))
 
     with (out / "assets.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
@@ -548,13 +474,13 @@ def main(outdir):
     counts = {}
     for r in rows:
         counts[r["state"]] = counts.get(r["state"], 0) + 1
+    cloudish = sum(1 for r in rows if r.get("cloud_provider"))
     conf = sum(1 for r in risks if r["confidence"] == "confirmed")
     print(f"    assets.csv: {len(rows)} 行")
     print(f"    risks.csv:  {len(risks)} 件 (確認済み {conf} / 要確認 {len(risks) - conf})")
     print(f"    持ち主不明 {counts.get('shadow', 0)} / "
-          f"未マップ {counts.get('unmapped', 0)} / "
-          f"管理下 {counts.get('managed', 0)} / "
-          f"クラウド外 {counts.get('external', 0)}")
+          f"判明済み {counts.get('known', 0)} "
+          f"(うちクラウド上と推定 {cloudish})")
 
 
 if __name__ == "__main__":

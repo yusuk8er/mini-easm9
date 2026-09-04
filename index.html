@@ -120,14 +120,14 @@
 </div>
 <script>
 const DEMO_ASSETS = `host,owner,state,ip,cname,cloud_provider,cloud_resource_type,cloud_resource_id,port,status,title,tech
-assets.example.co.jp,広報チーム,managed,,d1x.cloudfront.net,aws,cloudfront,arn:aws:cloudfront::1,443,200,Assets,CloudFront
-api.example.co.jp,プラットフォーム部,managed,,alb-prod.elb.amazonaws.com,aws,alb,arn:aws:elb:prod,443,200,API,nginx
+assets.example.co.jp,広報チーム,known,,d1x.cloudfront.net,aws,cloudfront,arn:aws:cloudfront::1,443,200,Assets,CloudFront
+api.example.co.jp,プラットフォーム部,known,,alb-prod.elb.amazonaws.com,aws,alb,arn:aws:elb:prod,443,200,API,nginx
 db.example.co.jp,,shadow,203.0.113.20,,,,,3306,,,
 old-cms.example.co.jp,,shadow,203.0.113.44,,,,,443,200,Corporate,WordPress;PHP
-vpn.example.co.jp,情報システム部,external,198.51.100.7,,,,,443,200,SSL VPN,FortiOS
-demo.example.co.jp,営業企画,unmapped,,demo-app.azurewebsites.net,azure,unmapped,,443,200,Demo,ASP.NET
-gone.example.co.jp,,shadow,,deleted.s3.amazonaws.com,aws,unmapped,,,,,
-campaign.example.jp,,shadow,,site.netlify.app,saas,unmapped,,443,200,Campaign,`;
+vpn.example.co.jp,情報システム部,known,198.51.100.7,,,,,443,200,SSL VPN,FortiOS
+demo.example.co.jp,営業企画,known,,demo-app.azurewebsites.net,azure,known,,443,200,Demo,ASP.NET
+gone.example.co.jp,,shadow,,deleted.s3.amazonaws.com,aws,known,,,,,
+campaign.example.jp,,shadow,,site.netlify.app,saas,known,,443,200,Campaign,`;
 
 const DEMO_RISKS = `host,owner,severity,confidence,risk_id,detail,source
 arn:aws:s3:::backup-prod,,critical,confirmed,s3-public-access,S3バケット backup-prod がパブリックアクセス可能,steampipe
@@ -155,8 +155,8 @@ function parseCSV(t){
   return rows.filter(r=>r.length>1).map(r=>Object.fromEntries(head.map((h,i)=>[h.trim(),(r[i]||'').trim()])));
 }
 
-const ASSET_LABEL={shadow:'持ち主不明',unmapped:'未マップ',external:'クラウド外',managed:'管理下'};
-const ASSET_CLS={shadow:'alert',unmapped:'unmapped',external:'out',managed:'ok'};
+const ASSET_LABEL={shadow:'持ち主不明',known:'判明済み'};
+const ASSET_CLS={shadow:'alert',known:'ok'};
 const SEV_LABEL={critical:'致命的',high:'高',medium:'中',low:'低'};
 const SEV_CLS={critical:'alert',high:'alert',medium:'unmapped',low:'out'};
 const SEV_ORDER={critical:0,high:1,medium:2,low:3};
@@ -195,18 +195,18 @@ const CFG={
     title:'外部公開資産',
     striplabel:'1資産＝1目盛り／高いほど要確認',
     placeholder:'ホスト, 持ち主, 技術で絞り込み',
-    filters:[['all','すべて'],['shadow','持ち主不明'],['unmapped','未マップ'],['external','クラウド外'],['managed','管理下']],
+    filters:[['all','すべて'],['shadow','持ち主不明'],['known','判明済み']],
     cols:[['host','ホスト'],['owner','持ち主'],['cloud','クラウド'],['state','判定']],
     data:()=>ASSETS,
     cls:r=>ASSET_CLS[r.state]||'ok',
     tiles:d=>{
-      const c={shadow:0,unmapped:0,external:0,managed:0};
+      const c={shadow:0,known:0};
       d.forEach(r=>{if(c[r.state]!==undefined)c[r.state]++});
-      return [['資産',d.length,''],['持ち主不明',c.shadow,'alarm'],['未マップ',c.unmapped,'amber'],['管理下',c.managed,'']];
+      const cloudish=d.filter(r=>r.cloud_provider).length;
+      return [['資産',d.length,''],['持ち主不明',c.shadow,'alarm'],['判明済み',c.known,''],['クラウド上と推定',cloudish,'amber']];
     },
     match:(r,f)=>r.state===f,
-    sort:(a,b)=>({shadow:0,unmapped:1,external:2,managed:3}[a.state]??9)
-                -({shadow:0,unmapped:1,external:2,managed:3}[b.state]??9)
+    sort:(a,b)=>({shadow:0,known:1}[a.state]??9)-({shadow:0,known:1}[b.state]??9)
                 ||a.host.localeCompare(b.host),
     search:r=>r.host+r.owner+r.tech+r.ip+r.cname+r.cloud_resource_type,
     row:r=>`

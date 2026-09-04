@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'asset (棚卸しのみ) / full (診断込み) / validate (SQL検証のみ)'
+        description: 'asset (棚卸しのみ) / full (診断込み) / discover (関連ドメイン探索)'
         default: asset
   schedule:
     - cron: '0 20 * * 0'
@@ -103,41 +103,29 @@ jobs:
           [ "$fail" = "1" ] && echo "※ 一部のツールがありません。該当する検査はスキップされます"
           exit 0
 
-      - name: validate SQL
-        if: github.event.inputs.mode == 'validate'
+      - name: discover related domains
+        if: github.event.inputs.mode == 'discover'
         run: |
-          sudo /bin/sh -c "$(curl -fsSL https://steampipe.io/install/steampipe.sh)"
-          bash validate-sql.sh aws azure gcp
-
-      - name: install steampipe
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        run: |
-          if [ -n "$AWS_ACCESS_KEY_ID" ]; then
-            sudo /bin/sh -c "$(curl -fsSL https://steampipe.io/install/steampipe.sh)"
-            steampipe plugin install aws
-          else
-            echo "AWS キー未設定のためスキップ"
-          fi
+          python3 discover.py
+          echo "### 関連ドメインの候補" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat candidates.csv >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: scan
-        if: github.event.inputs.mode != 'validate'
+        if: github.event.inputs.mode != 'discover'
         env:
           MODE: ${{ github.event.inputs.mode || 'full' }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ap-northeast-1
         run: bash scan.sh
 
       - uses: actions/upload-artifact@v4
-        if: always() && github.event.inputs.mode != 'validate'
+        if: always()
         with:
           name: easm-result
           path: snapshots/
           retention-days: 30
 
       - name: save snapshot
-        if: github.event.inputs.mode != 'validate'
         run: |
           git config user.name mini-easm
           git config user.email mini-easm@users.noreply.github.com
@@ -146,7 +134,6 @@ jobs:
           git push || echo "push できませんでした"
 
       - name: report
-        if: github.event.inputs.mode != 'validate'
         env:
           WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |

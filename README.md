@@ -1,6 +1,6 @@
 # mini-easm
 
-外部公開資産の棚卸し・クラウドリソースの可視化・シャドーIT検出に絞った、
+外部公開資産の棚卸しとシャドーIT検出に絞った、
 サーバもDBもWeb UIも持たない最小構成のASM。
 
 **脆弱性スキャンは行いません。** 資産の把握だけが目的です。
@@ -27,27 +27,97 @@ nuclei による脆弱性スキャンは既定で無効です。送るのは
 ## 構成
 
 ```
-Route53 ──┐
-seeds.txt ─┴─> subfinder ──> dnsx ──> httpx
-                              │         │
-Steampipe(AWS/Azure/GCP) ──> cloud.csv ─┴─> normalize.py <── owners.yaml
-                                                 │
-                                          snapshots/assets.csv
-                                                 │
-                                          git commit ──> git diff ──> Slack
+seeds.txt ──┬─> subfinder ──> dnsx ──> naabu ──> nmap ──> httpx
+hosts.txt ──┘                   │                          │
+                                └──> tlsx / dig ──> nuclei ─┤
+                                                            ↓
+                                        normalize.py <── owners.yaml
+                                                            ↓
+                                              assets.csv / risks.csv
+                                                            ↓
+                                        git commit ──> git diff ──> Slack
 ```
 
-## 判定の4分類
+## 判定の2分類
 
 | 判定 | 意味 | やること |
 |---|---|---|
-| `shadow` | 持ち主不明 | **最優先で調べる。** 分かったら `owners.yaml` に追記 |
-| `unmapped` | クラウドっぽいが自社アカウントに無い | 別アカウント？個人アカウント？を確認 |
-| `managed` | 自社クラウドアカウント内で突合できた | 通常は放置でよい |
-| `external` | クラウド外（オンプレ等）で持ち主が判明 | 通常は放置でよい |
+| `shadow` | 持ち主台帳に載っていない | **最優先で調べる。** 分かったら `owners.yaml` に追記 |
+| `known` | 持ち主が判明している | 通常は放置でよい |
 
-運用の中心は `shadow` を減らしていく作業です。
-初回は大量に出ますが、`owners.yaml` が埋まるにつれ減っていきます。
+これとは別に `cloud_provider` 列に、CNAME から推定したクラウド事業者が入ります
+（`aws` / `azure` / `gcp` / `saas`）。**認証情報は不要で、DNSの応答だけから判定します。**
+
+`shadow` かつ `cloud_provider` に値がある資産が、シャドーITの最有力候補です。
+
+```
+demo.example.co.jp  →  CNAME: demo.azurewebsites.net
+                       持ち主不明 + Azure上と推定 → 要調査
+```
+
+## 関連ドメインの探索（discover）
+
+`seeds.txt` に書いたドメインの配下しか探索しないため、
+**別ドメインで取得された資産は見つかりません**。
+マーケティング部門が独自に取得したキャンペーンサイトなどが典型です。
+
+`discover.py` は、証明書透明性ログを2つの手がかりで検索し、
+把握できていないドメインの候補を洗い出します。
+
+| 手がかり | 内容 |
+|---|---|
+| SANピボット | 既知ドメインの証明書に同居している別ドメインを見つける |
+| 組織名検索 | 証明書の Subject Organization で横断検索する |
+
+```bash
+python3 discover.py
+```
+
+GitHub Actions から実行する場合は、モードに `discover` を指定します。
+
+### 発見したドメインは自動でスキャンされません
+
+結果は `candidates.csv` に列挙されるだけです。
+
+```csv
+domain,source,evidence,decision
+example-campaign.jp,san-pivot,O=Lets Encrypt,
+example-holdings.co.jp,org-search,Example Corporation,
+```
+
+**1件ずつ自社のものか確認し、自社資産と判断できたものだけを
+`seeds.txt` に追記してください。**
+
+証明書の組織名は他社と重複することがあり、SANに取引先のドメインが
+含まれることもあります。確認せずに追加すると、他社の資産を
+スキャンすることになり法的な問題になります。
+
+### 組織名を指定する
+
+`org-names.txt` に自社の組織名（証明書に記載される英語表記）を書きます。
+表記ゆれがある場合は複数行に分けてください。
+
+DV証明書には組織名が入らないため、この手がかりは
+OV/EV証明書を使っている場合にのみ有効です。
+
+## クラウド連携について
+
+クラウドの認証情報を扱う機能は本ツールに含まれていません。
+
+このため、以下は検出できません。
+
+- クラウドの設定不備（セキュリティグループの開放、ストレージの公開設定など）
+- ドメインが割り当てられていないクラウドリソース
+- 自組織のクラウドアカウントに存在するかによる確定的な突合
+
+**持ち主台帳に基づくシャドーIT検出は、認証情報なしで動作します。**
+また `cloud_provider` 列には CNAME から推定した事業者が入るため、
+「Azure上にあるが自社はAzureを使っていない」といった判断は可能です。
+
+クラウドの設定不備を網羅的に確認したい場合は、
+Prowler や Scout Suite などのCSPMツール、
+またはクラウド事業者が提供する監査機能の利用を検討してください。
+
 
 ## そぎ落としたもの（と、その理由）
 
@@ -70,8 +140,7 @@ Steampipe(AWS/Azure/GCP) ──> cloud.csv ─┴─> normalize.py <── owner
 ローカルで動かす場合:
 
 ```bash
-brew install steampipe jq
-steampipe plugin install aws     # 必要に応じて azure / gcp も
+brew install jq nmap
 go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 go install github.com/projectdiscovery/dnsx/cmd/dnsx@latest
 go install github.com/projectdiscovery/httpx/cmd/httpx@latest
@@ -95,37 +164,6 @@ chmod +x *.sh
 ワイルドカード証明書を長く運用している企業や、CI/CDで検証環境を自動生成している場合、
 1ドメインで数百〜数千件になることは珍しくありません。
 
-## クラウドの認証情報を扱えない場合
-
-組織の方針でアクセスキーを共有できないことがあります。その場合、
-**クラウド管理者に手元でSQLを実行してもらい、CSVだけを受け取る**運用ができます。
-
-1. クラウド管理者に `FOR-CLOUD-ADMIN.md` を渡す
-2. `cloud-manual.csv` と `cloud-risks-manual.csv` を出力してもらう
-3. リポジトリのルートに置く
-
-これらのファイルがあると、スキャン時に Steampipe を呼ばず、CSVの内容をそのまま使います。
-認証情報がリポジトリを離れることはありません。
-
-```
-    cloud-manual.csv を使用 (42 件)
-    手動CSVを使用中のためスキップ
-```
-
-CSVが古くても動作します。その間に増えたクラウド資産は「未マップ」として
-検出され、次回の更新で解消します。
-
-## 対応クラウドを増やす
-
-`*_public.sql` を置くだけで自動的に対象になります
-（プラグイン未導入のものはスキップ）。同梱: aws / azure / gcp
-
-列名は Steampipe のバージョンで変わることがあります。エラーが出たら
-`steampipe query "select * from azure_public_ip limit 1"` で実際の列を確認してください。
-
-**外部偵察側（subfinder→dnsx→httpx）はクラウドに依存しません。**
-オンプレでも他社SaaSでも、DNSに載っていれば検出されます。
-クラウドプラグインは「外から名前で辿れない資産」を補完する役割です。
 
 ## UI
 
@@ -149,7 +187,7 @@ python3 -m http.server 8000
 | owner | `owners.yaml` から引いた持ち主。空なら不明 |
 | state | shadow / unmapped / managed / external |
 | ip / cname | 解決結果 |
-| cloud_provider / cloud_resource_type / cloud_resource_id | 突合したクラウドリソース |
+| cloud_provider | CNAME から推定したクラウド事業者（aws / azure / gcp / saas） |
 | port / status / title / tech | httpx の検出結果 |
 | cpe | httpx の出力、または `tech` から組み立てた CPE。**CVE特定には使わないこと** |
 | findings | 既定では空（脆弱性スキャン無効のため） |
@@ -183,7 +221,6 @@ nuclei が high / critical のみ実行されます。
 | DNSゾーン転送(AXFR)の許可 | dig | confirmed |
 | オープンリゾルバ | dig | confirmed |
 | サブドメイン乗っ取り可能な状態 | dnsx | confirmed |
-| クラウドの設定リスク | steampipe | confirmed（設定値そのもの） |
 | VPN機器・ネットワーク機器のCVE | nuclei (http/network) | 2回照合で confirmed / single |
 | Webアプリの既知CVE | nuclei | 2回照合で confirmed / single |
 | SSH / SMTP / FTP など非HTTPの指摘 | nuclei -type network | 2回照合で confirmed / single |
@@ -220,10 +257,6 @@ python3 add-license-header.py --check  # 不足しているファイルを一覧
 
 利用しているサードパーティOSSの帰属表示は `NOTICE` にまとめています。
 いずれも実行時に導入されるものであり、本リポジトリには同梱していません。
-
-**Steampipe は本体が AGPL-3.0** です。CLIをそのまま呼び出す現在の使い方では
-制約はありませんが、改変してネットワーク越しのサービスとして提供する場合は
-ソース開示義務が生じます。SaaS化を検討する際は必ず確認してください。
 
 **Nmap は GPL 派生の独自ライセンス（NPSL）** です。同梱・再頒布する場合は
 条項の確認が必要です。本ツールは実行環境にあるものを呼び出す形にしています。

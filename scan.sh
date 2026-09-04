@@ -22,7 +22,7 @@
 #   2. 観測できた事実と、実レスポンスで確認できたものだけを報告する
 #   3. nuclei の検出は2回とも出たものだけを confirmed とする
 #
-# 前提コマンド: steampipe, subfinder, dnsx, httpx, naabu, tlsx, nuclei, jq
+# 前提コマンド: subfinder, dnsx, httpx, naabu, tlsx, nuclei, nmap, dig, jq
 set -Eeuo pipefail
 
 # どのコマンドで落ちたかを必ず表示する
@@ -46,7 +46,7 @@ mkdir -p "$DBG"
   echo "mode: $MODE"
   echo ""
   echo "--- ツールの導入状況 ---"
-  for t in subfinder dnsx naabu httpx tlsx nuclei nmap dig jq steampipe python3; do
+  for t in subfinder dnsx naabu httpx tlsx nuclei nmap dig jq python3; do
     if command -v "$t" >/dev/null 2>&1; then
       printf '%-12s %s\n' "$t" "$(command -v "$t")"
     else
@@ -67,66 +67,10 @@ lap() {
   _LAST=$now
 }
 
-echo "==> [1/7] クラウド側: 外部公開リソースを取得"
-# 認証情報を扱えない場合に備え、手動で用意された CSV があればそれを使う。
-# クラウド管理者が手元で SQL を実行し、CSV だけを持ち込む運用を想定している。
-if [[ -s "$ROOT/cloud-manual.csv" ]]; then
-  cp "$ROOT/cloud-manual.csv" "$OUT/cloud.csv"
-  echo "    cloud-manual.csv を使用 ($(( $(wc -l < "$OUT/cloud.csv") - 1 )) 件)"
-  if [[ -s "$ROOT/cloud-risks-manual.csv" ]]; then
-    cp "$ROOT/cloud-risks-manual.csv" "$OUT/cloud_risks.csv"
-    echo "    cloud-risks-manual.csv を使用 ($(( $(wc -l < "$OUT/cloud_risks.csv") - 1 )) 件)"
-  else
-    echo "provider,resource_id,risk_id,severity,detail" > "$OUT/cloud_risks.csv"
-  fi
-  MANUAL_CLOUD=1
-else
-  MANUAL_CLOUD=0
-fi
-
-if [[ "$MANUAL_CLOUD" == "0" ]]; then
-echo "provider,resource_type,resource_id,dns_name,ip,region" > "$OUT/cloud.csv"
-for sql in "$ROOT"/*_public.sql; do
-  name="$(basename "$sql" _public.sql)"
-  if steampipe plugin list 2>/dev/null | grep -q "turbot/${name}@"; then
-    printf "    %s ... " "$name"
-    if steampipe query --output csv "$sql" 2>"$WORK/${name}.err" | tail -n +2 >> "$OUT/cloud.csv"; then
-      echo "ok"
-    else
-      echo "失敗 (詳細: $WORK/${name}.err)"
-    fi
-  else
-    echo "    $name ... スキップ (プラグイン未導入)"
-  fi
-done
-echo "    合計 $(( $(wc -l < "$OUT/cloud.csv") - 1 )) 件"
-fi
-
-lap "クラウド資産"
-echo "==> [2/7] クラウド側: 設定リスクを取得"
-if [[ "$MANUAL_CLOUD" == "1" ]]; then
-  echo "    手動CSVを使用中のためスキップ"
-else
-# 設定値をそのまま読むため誤検知は発生しない
-echo "provider,resource_id,risk_id,severity,detail" > "$OUT/cloud_risks.csv"
-for sql in "$ROOT"/*_risks.sql; do
-  name="$(basename "$sql" _risks.sql)"
-  if steampipe plugin list 2>/dev/null | grep -q "turbot/${name}@"; then
-    steampipe query --output csv "$sql" 2>/dev/null | tail -n +2 >> "$OUT/cloud_risks.csv" || true
-  fi
-done
-echo "    $(( $(wc -l < "$OUT/cloud_risks.csv") - 1 )) 件"
-fi
-
-lap "クラウド設定"
-echo "==> [3/7] シードドメインを決定"
+echo "==> [1/5] シードドメインを決定"
 : > "$WORK/seeds.txt"
 if [[ -f "$ROOT/seeds.txt" ]]; then
   grep -vE '^\s*(#|$)' "$ROOT/seeds.txt" >> "$WORK/seeds.txt" || true
-fi
-if [[ "$MANUAL_CLOUD" == "0" ]] && steampipe plugin list 2>/dev/null | grep -q 'turbot/aws@'; then
-  steampipe query --output csv "$ROOT/aws_seeds.sql" 2>/dev/null \
-    | tail -n +2 >> "$WORK/seeds.txt" || true
 fi
 sort -u -o "$WORK/seeds.txt" "$WORK/seeds.txt"
 # seeds.txt が空でも、hosts.txt に直接指定があれば実行できるようにする
@@ -142,7 +86,7 @@ fi
 echo "    $(wc -l < "$WORK/seeds.txt") ドメイン"
 
 lap "シード"
-echo "==> [4/7] 外部偵察: subfinder -> dnsx -> naabu -> httpx"
+echo "==> [2/5] 外部偵察: subfinder -> dnsx -> naabu -> httpx"
 : > "$WORK/subs.txt"
 if [[ -s "$WORK/seeds.txt" ]]; then
   subfinder -dL "$WORK/seeds.txt" -silent -all > "$WORK/subs.txt" || true
@@ -291,7 +235,7 @@ if [[ -n "$unreachable" ]]; then
 fi
 
 lap "外部偵察"
-echo "==> [5/7] 証明書の検査"
+echo "==> [3/5] 証明書の検査"
 # 証明書の中身を読むだけなので誤検知なし
 if [[ "$MODE" == "full" ]]; then
   # 443 だけでなく、開いていた TLS 候補ポートも検査する
@@ -309,7 +253,7 @@ else
 fi
 
 lap "証明書"
-echo "==> [6/7] DNS/ネットワーク層の検査"
+echo "==> [4/5] DNS/ネットワーク層の検査"
 : > "$OUT/netfindings.jsonl"
 : > "$OUT/dns_risks.jsonl"
 if [[ "$MODE" == "full" ]]; then
@@ -365,7 +309,7 @@ if [[ "$MODE" == "full" ]]; then
 fi
 
 lap "ネットワーク層"
-echo "==> [7/7] Web の指摘検出 (2回照合)"
+echo "==> [5/5] Web の指摘検出 (2回照合)"
 : > "$OUT/findings.jsonl"
 if [[ "$MODE" == "full" ]]; then
   jq -r '.url' "$OUT/http.jsonl" 2>/dev/null | sort -u > "$WORK/urls.txt" || : > "$WORK/urls.txt"

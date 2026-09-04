@@ -19,17 +19,6 @@ nuclei-templates
   https://github.com/projectdiscovery/nuclei-templates
 
 ---------------------------------------------------------------------
-Steampipe
-  Copyright (c) Turbot HQ, Inc.
-  License: AGPL-3.0（本体・FDW）
-  https://github.com/turbot/steampipe
-
-Steampipe プラグイン (aws / azure / gcp)
-  Copyright (c) Turbot HQ, Inc.
-  License: Apache-2.0
-  https://hub.steampipe.io
-
----------------------------------------------------------------------
 Nmap
   Copyright (c) Nmap Software LLC
   License: Nmap Public Source License (NPSL)

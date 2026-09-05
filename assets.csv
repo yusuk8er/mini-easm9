@@ -1,2 +1,3 @@
-﻿host,owner,state,ip,cname,cloud_provider,cloud_resource_type,cloud_resource_id,port,status,title,tech,cpe,findings
-scanme.nmap.org,,shadow,45.33.32.156,,,,,80,200,Go ahead and ScanMe!,Apache HTTP Server:2.4.7;Ubuntu,cpe:2.3:a:apache:http_server:2.4.7:*:*:*:*:*:*:*,medium:CVE-2023-48795;medium:ssh-weak-algo-supported
+﻿host,owner,state,ip,cname,cloud_provider,port,status,title,tech,cpe,findings
+staging.zonetransfer.me,,shadow,3.163.189.105;3.163.189.110;3.163.189.125;3.163.189.4,dc8smvz8l4jlg.cloudfront.net;www.sydneyoperahouse.com,aws,80,403,ERROR: The request could not be satisfied,Amazon CloudFront;Amazon Web Services,,
+www.zonetransfer.me,,shadow,5.196.105.14,,,443,301,301 Moved Permanently,Apache HTTP Server;HSTS,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,

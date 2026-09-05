@@ -80,6 +80,12 @@
   .sub{font-family:var(--mono);font-size:11px;color:var(--muted);word-break:break-all}
   .flag{display:inline-block;font-size:11px;padding:2px 7px;border:1px solid currentColor;white-space:nowrap}
   .f-alert{color:var(--alarm)} .f-unmapped{color:var(--amber)}
+  .d-new{background:var(--alarm);color:#fff;font-size:10px;padding:1px 6px;
+         border-radius:var(--radius);margin-left:6px;white-space:nowrap}
+  .d-removed{background:#8a938c;color:#fff;font-size:10px;padding:1px 6px;
+             border-radius:var(--radius);margin-left:6px;white-space:nowrap}
+  tr.dl-removed{opacity:.55}
+  tr.dl-removed .host{text-decoration:line-through}
   .f-out{color:var(--muted)} .f-ok{color:var(--pine)}
   tr.r-alert td:first-child{box-shadow:inset 3px 0 0 var(--alarm)}
   tr.r-unmapped td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
@@ -168,22 +174,28 @@ const CFG={
     title:'セキュリティリスク',
     striplabel:'1指摘＝1目盛り／高いほど深刻',
     placeholder:'ホスト, 内容で絞り込み',
-    filters:[['all','すべて'],['confirmed','確認済み'],['single','要確認'],['critical','致命的'],['high','高']],
+    filters:[['all','すべて'],['new','新規'],['confirmed','確認済み'],['single','要確認'],['critical','致命的'],['high','高']],
     cols:[['host','対象'],['detail','内容'],['source','検出元'],['severity','深刻度']],
     data:()=>RISKS,
     cls:r=>SEV_CLS[r.severity]||'out',
     tiles:d=>{
-      const c={critical:0,high:0,confirmed:0,single:0};
-      d.forEach(r=>{if(c[r.severity]!==undefined)c[r.severity]++;c[r.confidence]!==undefined&&c[r.confidence]++});
-      return [['指摘',d.length,''],['致命的',c.critical,'alarm'],['高',c.high,'alarm'],['要確認',c.single,'amber']];
+      const live=d.filter(r=>r.delta!=='removed');
+      const c={critical:0,high:0,single:0};
+      live.forEach(r=>{if(c[r.severity]!==undefined)c[r.severity]++;if(r.confidence==='single')c.single++});
+      const nw=d.filter(r=>r.delta==='new').length;
+      const rm=d.filter(r=>r.delta==='removed').length;
+      return [['指摘',live.length,''],['新規',nw,'alarm'],['致命的+高',c.critical+c.high,'alarm'],['解消',rm,'']];
     },
-    match:(r,f)=>f==='confirmed'||f==='single'?r.confidence===f:r.severity===f,
-    sort:(a,b)=>(SEV_ORDER[a.severity]??9)-(SEV_ORDER[b.severity]??9)
+    match:(r,f)=>f==='new'?r.delta==='new'
+                :f==='confirmed'||f==='single'?r.confidence===f
+                :r.severity===f,
+    sort:(a,b)=>((a.delta==='new'?0:a.delta==='removed'?2:1)-(b.delta==='new'?0:b.delta==='removed'?2:1))
+                ||(SEV_ORDER[a.severity]??9)-(SEV_ORDER[b.severity]??9)
                 ||(a.confidence==='confirmed'?0:1)-(b.confidence==='confirmed'?0:1)
                 ||a.host.localeCompare(b.host),
     search:r=>r.host+r.detail+r.risk_id+r.owner,
     row:r=>`
-      <td><div class="host">${esc(r.host)}</div>
+      <td><div class="host">${esc(r.host)}${deltaTag(r)}</div>
           ${r.owner?`<div class="sub">${esc(r.owner)}</div>`:'<div class="sub">持ち主不明</div>'}</td>
       <td class="col-hide"><div class="sub">${esc(r.detail)}</div>
           <div class="sub" style="opacity:.6">${esc(r.risk_id)}</div></td>
@@ -195,28 +207,37 @@ const CFG={
     title:'外部公開資産',
     striplabel:'1資産＝1目盛り／高いほど要確認',
     placeholder:'ホスト, 持ち主, 技術で絞り込み',
-    filters:[['all','すべて'],['shadow','持ち主不明'],['known','判明済み']],
+    filters:[['all','すべて'],['new','新規'],['shadow','持ち主不明'],['known','判明済み'],['removed','消滅']],
     cols:[['host','ホスト'],['owner','持ち主'],['cloud','クラウド'],['state','判定']],
     data:()=>ASSETS,
     cls:r=>ASSET_CLS[r.state]||'ok',
     tiles:d=>{
+      const live=d.filter(r=>r.delta!=='removed');
       const c={shadow:0,known:0};
-      d.forEach(r=>{if(c[r.state]!==undefined)c[r.state]++});
-      const cloudish=d.filter(r=>r.cloud_provider).length;
-      return [['資産',d.length,''],['持ち主不明',c.shadow,'alarm'],['判明済み',c.known,''],['クラウド上と推定',cloudish,'amber']];
+      live.forEach(r=>{if(c[r.state]!==undefined)c[r.state]++});
+      const nw=d.filter(r=>r.delta==='new').length;
+      const rm=d.filter(r=>r.delta==='removed').length;
+      return [['資産',live.length,''],['新規',nw,'alarm'],['持ち主不明',c.shadow,'amber'],['消滅',rm,'']];
     },
-    match:(r,f)=>r.state===f,
-    sort:(a,b)=>({shadow:0,known:1}[a.state]??9)-({shadow:0,known:1}[b.state]??9)
+    match:(r,f)=>f==='new'||f==='removed'?r.delta===f:(r.state===f&&r.delta!=='removed'),
+    sort:(a,b)=>((a.delta==='new'?0:a.delta==='removed'?2:1)-(b.delta==='new'?0:b.delta==='removed'?2:1))
+                ||({shadow:0,known:1}[a.state]??9)-({shadow:0,known:1}[b.state]??9)
                 ||a.host.localeCompare(b.host),
     search:r=>r.host+r.owner+r.tech+r.ip+r.cname+r.cloud_resource_type,
     row:r=>`
-      <td><div class="host">${esc(r.host)||'(名前なし)'}</div>
+      <td><div class="host">${esc(r.host)||'(名前なし)'}${deltaTag(r)}</div>
           <div class="sub">${esc(r.ip||r.cname||'')}</div></td>
       <td class="col-hide">${r.owner?`<div class="sub">${esc(r.owner)}</div>`:'<span class="flag f-alert">不明</span>'}</td>
       <td class="col-hide"><div class="sub">${esc(r.cloud_provider||'—')}${r.cloud_resource_type?' / '+esc(r.cloud_resource_type):''}</div></td>
       <td><span class="flag f-${ASSET_CLS[r.state]||'ok'}">${ASSET_LABEL[r.state]||r.state}</span></td>`
   }
 };
+
+function deltaTag(r){
+  if(r.delta==='new')return '<span class="d-new">NEW</span>';
+  if(r.delta==='removed')return '<span class="d-removed">消滅</span>';
+  return '';
+}
 
 function esc(x){return String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
@@ -258,7 +279,7 @@ function render(){
     `<th data-k="${k}" tabindex="0"${i>0&&i<cfg.cols.length-1?' class="col-hide"':''}>${l}</th>`).join('')+'</tr>';
 
   document.getElementById('rows').innerHTML=v.map(r=>
-    `<tr class="r-${cfg.cls(r)}">${cfg.row(r)}</tr>`).join('');
+    `<tr class="r-${cfg.cls(r)} dl-${r.delta||'base'}">${cfg.row(r)}</tr>`).join('');
 
   document.getElementById('empty').hidden=v.length>0;
   document.getElementById('striphint').textContent=`${v.length} / ${all.length} 件表示`;
@@ -283,6 +304,12 @@ document.getElementById('strip').onclick=e=>{
 };
 
 async function grab(name,demo){
+  // build_report.py が生成した単一HTMLでは、データが埋め込まれている。
+  // file:// で開いても fetch が使えないため、こちらを優先して読む
+  const key = name.indexOf('risks') >= 0 ? 'risks' : 'assets';
+  if(window.__EMBEDDED__ && window.__EMBEDDED__[key] !== undefined){
+    return {rows:parseCSV(window.__EMBEDDED__[key]), live:true};
+  }
   try{
     const r=await fetch(name,{cache:'no-store'});
     if(!r.ok)throw 0;
@@ -296,8 +323,11 @@ async function grab(name,demo){
   ASSETS=a.rows; RISKS=r.rows;
   document.getElementById('meta').textContent=
     `${RISKS.length} risks · ${ASSETS.length} assets · ${new Date().toISOString().slice(0,10)}`;
-  document.getElementById('src').textContent=
-    (a.live||r.live)?'source: assets.csv / risks.csv':'source: サンプルデータ（CSVが見つかりません）';
+  const stamp = (window.__EMBEDDED__ && window.__EMBEDDED__.generated) || '';
+  document.getElementById('src').textContent =
+    (a.live||r.live)
+      ? (stamp ? 'スキャン日時: ' + stamp : 'source: assets.csv / risks.csv')
+      : 'source: サンプルデータ（CSVが見つかりません）';
   render();
 })();
 </script>

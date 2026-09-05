@@ -41,6 +41,11 @@ MODE="${MODE:-full}"
 # 失敗時にログを探さなくても原因が追える
 DBG="$OUT/debug"
 mkdir -p "$DBG"
+
+# 前回の結果を退避する。リポジトリ直下の CSV は前回実行時にコミットされたもの。
+# 上書きする前に確保しておき、差分の算出に使う
+cp "$ROOT/assets.csv" "$OUT/prev_assets.csv" 2>/dev/null || true
+cp "$ROOT/risks.csv"  "$OUT/prev_risks.csv"  2>/dev/null || true
 {
   echo "date: $(date -u +%FT%TZ)"
   echo "mode: $MODE"
@@ -133,14 +138,29 @@ fi
 
 live_count=$(wc -l < "$WORK/live.txt")
 echo "    名前解決できたホスト $live_count 件"
-# 生存ホストが多い場合は、止めずにポート数を自動で絞る。
-# 1ホストあたり約2.5分かかるため、300件を超えると2時間の枠に収まらない
+# 生存ホストの数に応じて、処理を段階的に軽くする。
+# 実測では 2,500 ホストで外部偵察だけに 77 分を要し、時間内に完了しない。
 MAX_LIVE="${MAX_LIVE:-300}"
 TOP_PORTS=1000
-if [[ "$live_count" -gt "$MAX_LIVE" ]]; then
+SKIP_SERVICE_ID=0
+# nmap のバージョン特定に使うプローブの強度（0〜9、既定は7）。
+# 高いほどバージョンを特定しやすいが、送信するプローブが増えて時間がかかる
+NMAP_INTENSITY="${NMAP_INTENSITY:-5}"
+NUCLEI_LIMIT="${NUCLEI_LIMIT:-800}"
+
+if [[ "$live_count" -gt 1000 ]]; then
+  TOP_PORTS=50
+  SKIP_SERVICE_ID=1
+  echo "    !! 生存ホストが $live_count 件と非常に多いため、次のとおり縮退します"
+  echo "       ・ポートスキャン: 上位50のみ"
+  echo "       ・サービス識別  : スキップ"
+  echo "       ・指摘検出      : 先頭 $NUCLEI_LIMIT URL のみ"
+  echo "    !! 全件を診断するには seeds.txt を分割し、複数回に分けて実行してください"
+elif [[ "$live_count" -gt "$MAX_LIVE" ]]; then
   TOP_PORTS=100
+  NMAP_INTENSITY=3
   echo "    !! 生存ホストが $live_count 件のため、ポートスキャンを上位100に絞ります"
-  echo "    !! （上位1000で回すには seeds.txt の分割を検討してください）"
+  echo "       サービス識別のプローブ強度も下げます（5→3）"
 fi
 
 # ポートスキャン。開いているポートは接続できた事実なので誤検知なし
@@ -173,15 +193,32 @@ if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
   # サービス識別: nmap -sV でバナーからサービスとバージョンを判定する。
   # 観測した応答そのものなので confirmed として扱える。
   # 対象は naabu が見つけた開放ポートに限定し、追加のポート探索はしない
-  if command -v nmap >/dev/null 2>&1 && [[ -s "$WORK/hostports.txt" ]]; then
+  if [[ "$SKIP_SERVICE_ID" == "1" ]]; then
+    : > "$OUT/services.jsonl"
+    echo "    サービス識別をスキップ（ホスト数が多いため）"
+  elif command -v nmap >/dev/null 2>&1 && [[ -s "$WORK/hostports.txt" ]]; then
     cut -d: -f1 "$WORK/hostports.txt" | sort -u > "$WORK/nmap_hosts.txt"
     nmap_ports=$(cut -d: -f2 "$WORK/hostports.txt" | sort -un | paste -sd, -)
     if [[ -n "$nmap_ports" ]]; then
-      echo "    nmap: $(wc -l < "$WORK/nmap_hosts.txt") ホスト / ポート $nmap_ports"
-      # -n は名前解決を省略するが、-iL にホスト名を渡す場合は解決が必要なので付けない
-      timeout 1200 nmap -sV --version-intensity 4 -Pn -T4 \
-        -p "$nmap_ports" -iL "$WORK/nmap_hosts.txt" \
-        -oX "$WORK/nmap.xml" > "$WORK/nmap.out" 2> "$WORK/nmap.err" || true
+      nmap_n=$(wc -l < "$WORK/nmap_hosts.txt")
+      echo "    nmap: $nmap_n ホスト / ポート $nmap_ports / 強度 $NMAP_INTENSITY"
+
+      # 大量のホストを1回で投げるとタイムアウトで打ち切られ、
+      # XMLが途中で切れて全件が無駄になる。500ホストずつに分割して実行する
+      : > "$WORK/nmap_all.xml"
+      split -l 500 -d "$WORK/nmap_hosts.txt" "$WORK/nmap_part_"
+      part_no=0
+      for part in "$WORK"/nmap_part_*; do
+        part_no=$((part_no + 1))
+        # -n は名前解決を省略するが、-iL にホスト名を渡す場合は解決が必要なので付けない
+        timeout 900 nmap -sV --version-intensity "$NMAP_INTENSITY" -Pn -T4 --max-retries 1 \
+          --host-timeout 30s -p "$nmap_ports" -iL "$part" \
+          -oX "$WORK/nmap_${part_no}.xml" >> "$WORK/nmap.out" 2>> "$WORK/nmap.err" || true
+        [[ -s "$WORK/nmap_${part_no}.xml" ]] && cat "$WORK/nmap_${part_no}.xml" >> "$WORK/nmap_all.xml"
+      done
+      python3 "$ROOT/nmap2jsonl.py" "$WORK/nmap_all.xml" "$OUT/services.jsonl" \
+        2> "$DBG/nmap2jsonl.err" || true
+      cp "$WORK/nmap_all.xml" "$WORK/nmap.xml" 2>/dev/null || true
       # 診断用に入出力を残す
       cp "$WORK/nmap_hosts.txt" "$DBG/nmap_hosts.txt" 2>/dev/null || true
       echo "$nmap_ports" > "$DBG/nmap_ports.txt"
@@ -189,18 +226,9 @@ if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
       cp "$WORK/nmap.out" "$DBG/nmap.out" 2>/dev/null || true
       cp "$WORK/nmap.xml" "$DBG/nmap.xml" 2>/dev/null || true
 
-      if [[ ! -s "$WORK/nmap.xml" ]]; then
-        echo "    !! nmap がXMLを出力しませんでした（debug/nmap.err を参照）"
-        [[ -s "$WORK/nmap.err" ]] && head -5 "$WORK/nmap.err" | sed 's/^/       /'
-        [[ -s "$WORK/nmap.out" ]] && head -5 "$WORK/nmap.out" | sed 's/^/       /'
-        : > "$OUT/services.jsonl"
-      else
-        python3 "$ROOT/nmap2jsonl.py" "$WORK/nmap.xml" "$OUT/services.jsonl" \
-          2> "$DBG/nmap2jsonl.err" || true
-        if [[ ! -s "$OUT/services.jsonl" ]]; then
-          echo "    !! XMLは出たが解析結果が0件（debug/nmap.xml を参照）"
-          head -c 300 "$WORK/nmap.xml" | sed 's/^/       /'
-        fi
+      if [[ ! -s "$OUT/services.jsonl" ]]; then
+        echo "    !! サービス識別の結果が0件（debug/nmap.err を参照）"
+        [[ -s "$WORK/nmap.err" ]] && tail -3 "$WORK/nmap.err" | sed 's/^/       /'
       fi
     else
       : > "$OUT/services.jsonl"
@@ -312,7 +340,16 @@ lap "ネットワーク層"
 echo "==> [5/5] Web の指摘検出 (2回照合)"
 : > "$OUT/findings.jsonl"
 if [[ "$MODE" == "full" ]]; then
-  jq -r '.url' "$OUT/http.jsonl" 2>/dev/null | sort -u > "$WORK/urls.txt" || : > "$WORK/urls.txt"
+  jq -r '.url' "$OUT/http.jsonl" 2>/dev/null | sort -u > "$WORK/urls_all.txt" || : > "$WORK/urls_all.txt"
+  url_total=$(wc -l < "$WORK/urls_all.txt")
+  if [[ "$url_total" -gt "$NUCLEI_LIMIT" ]]; then
+    # 指摘検出は対象URL数に比例する。時間内に終わらせるため上限を設ける
+    head -n "$NUCLEI_LIMIT" "$WORK/urls_all.txt" > "$WORK/urls.txt"
+    echo "    対象URL $url_total 件のうち先頭 $NUCLEI_LIMIT 件を検査します"
+    echo "    （NUCLEI_LIMIT で変更できます。残り $(( url_total - NUCLEI_LIMIT )) 件は未検査）"
+  else
+    cp "$WORK/urls_all.txt" "$WORK/urls.txt"
+  fi
 
   # 1回目
   nuclei -config "$ROOT/nuclei-config.yaml" -l "$WORK/urls.txt" \
@@ -342,6 +379,11 @@ echo "==> 正規化"
 python3 "$ROOT/normalize.py" "$OUT"
 cp "$OUT/assets.csv" "$ROOT/assets.csv" 2>/dev/null || true
 cp "$OUT/risks.csv"  "$ROOT/risks.csv"  2>/dev/null || true
+
+# 結果を埋め込んだ単一HTMLを作る。
+# file:// で開けるため、ダウンロードしてダブルクリックするだけで閲覧できる
+python3 "$ROOT/build_report.py" "$OUT" || true
+cp "$OUT/report.html" "$ROOT/report.html" 2>/dev/null || true
 
 lap "正規化"
 printf '    合計 %d分\n' "$(( ($(date +%s) - _T0) / 60 ))"

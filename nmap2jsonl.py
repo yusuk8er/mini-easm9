@@ -23,6 +23,7 @@ nmap -sV はバナーを読んでサービスとバージョンを判定する�
 使い方: nmap2jsonl.py <nmap.xml> <出力.jsonl>
 """
 import json
+import re
 import sys
 from xml.etree import ElementTree
 
@@ -30,14 +31,38 @@ from xml.etree import ElementTree
 def main():
     src, dst = sys.argv[1], sys.argv[2]
     rows = []
+    hosts = []
     try:
-        tree = ElementTree.parse(src)
-    except (FileNotFoundError, ElementTree.ParseError):
+        raw = open(src, encoding="utf-8", errors="replace").read()
+    except FileNotFoundError:
         open(dst, "w").close()
-        print("    サービス識別 0 件 (nmap の出力が読めません)")
+        print("    サービス識別 0 件 (nmap の出力がありません)")
         return
 
-    for host in tree.getroot().findall("host"):
+    # 分割実行した複数のXMLを連結したファイルにも対応する。
+    # 途中で打ち切られた断片は読み飛ばし、読めた分だけを採用する
+    chunks = re.split(r"(?=<\?xml )", raw)
+    for chunk in chunks:
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        try:
+            hosts.extend(ElementTree.fromstring(chunk).findall("host"))
+        except ElementTree.ParseError:
+            # 末尾が切れている場合、最後の </host> までを拾い直す
+            end = chunk.rfind("</host>")
+            if end == -1:
+                continue
+            patched = chunk[:end + 7] + "</nmaprun>"
+            start = patched.find("<nmaprun")
+            if start == -1:
+                continue
+            try:
+                hosts.extend(ElementTree.fromstring(patched[start:]).findall("host"))
+            except ElementTree.ParseError:
+                continue
+
+    for host in hosts:
         # ホスト名を優先し、無ければ IP
         names = [h.get("name") for h in host.findall("hostnames/hostname")
                  if h.get("name")]

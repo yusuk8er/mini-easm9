@@ -46,6 +46,20 @@ CLOUD_HINTS = (
 )
 
 
+def as_text(value):
+    """外部ツールの出力は型が揺れることがあるため、安全に文字列へ寄せる。"""
+    return value if isinstance(value, str) else ""
+
+
+def as_list(value):
+    """文字列のリストとして扱えるものだけを取り出す。"""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, (list, tuple)):
+        return [x for x in value if isinstance(x, str)]
+    return []
+
+
 def load_owners(path):
     """owners.yaml を読む。PyYAML なしで済むよう単純なコロン区切りで扱う。"""
     owners = []
@@ -134,6 +148,8 @@ def cpe_from_tech(tech_list):
     """
     out = []
     for t in tech_list or []:
+        if not isinstance(t, str):
+            continue
         name, _, ver = t.partition(":")
         key = name.strip().lower()
         vendor_product = TECH_TO_CPE.get(key)
@@ -162,6 +178,21 @@ def extract_cpe(rec):
     raw = rec.get("cpe") or rec.get("cpes") or []
     if isinstance(raw, str):
         raw = [raw]
+    elif isinstance(raw, dict):
+        # httpx のバージョンによっては {"cpe": [...]} のような辞書で返る
+        raw = raw.get("cpe") or raw.get("cpes") or list(raw.values())
+
+    # 要素が文字列でないものは取り除く（辞書やnullが混ざることがある）
+    flat = []
+    for item in raw if isinstance(raw, (list, tuple)) else []:
+        if isinstance(item, str):
+            flat.append(item)
+        elif isinstance(item, (list, tuple)):
+            flat.extend(x for x in item if isinstance(x, str))
+        elif isinstance(item, dict):
+            flat.extend(str(v) for v in item.values() if isinstance(v, str))
+    raw = [c for c in flat if c.startswith("cpe:")]
+
     if not raw:
         # httpx が CPE を返さない場合は tech から組み立てる
         return sorted(set(cpe_from_tech(rec.get("tech", []))))
@@ -169,7 +200,7 @@ def extract_cpe(rec):
     # tech から 製品名 -> バージョン の対応を作る
     versions = {}
     for t in rec.get("tech", []) or []:
-        if ":" in t:
+        if isinstance(t, str) and ":" in t:
             name, _, ver = t.partition(":")
             versions[name.lower().replace(" ", "_")] = ver.strip()
 
@@ -205,7 +236,7 @@ def guess_cloud(cnames):
     クラウドの認証情報は使用せず、DNSの応答だけで判定する。
     自社アカウントに存在するかまでは分からないため、あくまで参考情報。
     """
-    for c in cnames or []:
+    for c in as_list(cnames):
         cl = c.lower()
         for needle, prov in CLOUD_HINTS:
             if needle in cl:
@@ -241,7 +272,7 @@ PRIVATE_PREFIXES = ("127.", "10.", "192.168.", "169.254.", "0.", "::1", "fe80:",
 
 
 def is_private(ip):
-    ip = (ip or "").strip()
+    ip = as_text(ip).strip()
     if not ip:
         return False
     if ip.startswith(PRIVATE_PREFIXES):
@@ -274,17 +305,17 @@ def build_risks(out, owners, waf_hosts):
     #    ポート由来の指摘に「実際に何が動いているか」を添えるために使う
     svc_map = {}
     for r in read_jsonl(out / "services.jsonl"):
-        host = (r.get("host") or r.get("ip") or "").lower()
+        host = (as_text(r.get("host")) or as_text(r.get("ip"))).lower()
         port = r.get("port")
         if not host or port is None:
             continue
         # extrainfo は "Ubuntu Linux; protocol 2.0" のように冗長なことが多いため、
         # 一覧の可読性を優先して version / product だけを使う
-        label = (r.get("version") or r.get("product") or "").strip()
+        label = (as_text(r.get("version")) or as_text(r.get("product"))).strip()
         if label:
             svc_map[(host, port)] = label
             # IP でも引けるようにしておく
-            ip = (r.get("ip") or "").strip()
+            ip = as_text(r.get("ip")).strip()
             if ip:
                 svc_map[(ip, port)] = label
 
@@ -296,7 +327,7 @@ def build_risks(out, owners, waf_hosts):
     # 1. 開放ポート（TCP接続が成立した事実）
     for r in read_jsonl(out / "ports.jsonl"):
         port = r.get("port")
-        host = (r.get("host") or r.get("ip") or "").lower()
+        host = (as_text(r.get("host")) or as_text(r.get("ip"))).lower()
         # スキャン元マシン自身や社内NWを誤って報告しない
         if is_private(r.get("ip")) or is_private(host):
             continue
@@ -307,7 +338,7 @@ def build_risks(out, owners, waf_hosts):
 
     # 2. 証明書（中身を読んだ結果）
     for r in read_jsonl(out / "tls.jsonl"):
-        host = (r.get("host") or "").lower()
+        host = as_text(r.get("host")).lower()
         if not host:
             continue
         if r.get("expired"):
@@ -326,9 +357,9 @@ def build_risks(out, owners, waf_hosts):
 
     # 3. 乗っ取り可能な DNS レコード（CNAME先が存在しない）
     for r in read_jsonl(out / "dns.jsonl"):
-        host = (r.get("host") or "").lower()
-        cnames = r.get("cname") or []
-        if cnames and not (r.get("a") or []):
+        host = as_text(r.get("host")).lower()
+        cnames = as_list(r.get("cname"))
+        if cnames and not as_list(r.get("a")):
             add(host, "high", "confirmed", "dangling-cname",
                 f"Dangling CNAME (possible takeover): {cnames[0]}", "dnsx")
 
@@ -336,13 +367,13 @@ def build_risks(out, owners, waf_hosts):
     #    ポート番号だけでは分からない「実際に何が動いているか」を補う
     svc_by_host = {}
     for r in read_jsonl(out / "services.jsonl"):
-        host = (r.get("host") or r.get("ip") or "").lower()
-        svc = (r.get("service") or r.get("protocol") or "").lower()
+        host = (as_text(r.get("host")) or as_text(r.get("ip"))).lower()
+        svc = (as_text(r.get("service")) or as_text(r.get("protocol"))).lower()
         # nmap は http-proxy / ms-wbt-server 等の別名を返すため寄せる
         svc = {"ms-wbt-server": "rdp", "microsoft-ds": "smb",
                "ms-sql-s": "mssql", "postgres": "postgresql"}.get(svc, svc)
         port = r.get("port")
-        ver = r.get("version") or ""
+        ver = as_text(r.get("version"))
         if not host or not svc:
             continue
         svc_by_host.setdefault(host, []).append(f"{svc}:{port}")
@@ -368,14 +399,14 @@ def build_risks(out, owners, waf_hosts):
 
     # 7. ネットワーク層の指摘（nuclei の network/dns/ssl テンプレート）
     for r in read_jsonl(out / "netfindings.jsonl"):
-        host = (r.get("host") or "").lower().split(":")[0]
+        host = as_text(r.get("host")).lower().split(":")[0]
         info = r.get("info") or {}
         add(host, info.get("severity", "medium"), r.get("confidence", "single"),
             r.get("template-id", ""), info.get("name", ""), "nuclei-net")
 
     # 8. Web の指摘（nuclei）
     for r in read_jsonl(out / "findings.jsonl"):
-        host = (r.get("host") or "").lower().split(":")[0]
+        host = as_text(r.get("host")).lower().split(":")[0]
         info = r.get("info") or {}
         conf = r.get("confidence", "single")
         # WAF の背後にあるホストは応答が歪むため確度を下げる
@@ -407,7 +438,7 @@ def main(outdir):
     for rec in read_jsonl(out / "dns.jsonl"):
         host = rec.get("host", "").lower()
         if host:
-            dns_map[host] = (rec.get("a") or [], rec.get("cname") or [])
+            dns_map[host] = (as_list(rec.get("a")), as_list(rec.get("cname")))
 
     findings = {}
     for f in read_jsonl(out / "findings.jsonl"):
@@ -419,10 +450,10 @@ def main(outdir):
     rows = []
     seen = set()
     for h in read_jsonl(out / "http.jsonl"):
-        host = (h.get("host") or h.get("input") or "").lower()
+        host = (as_text(h.get("host")) or as_text(h.get("input"))).lower()
         ips, cnames = dns_map.get(host, ([], []))
         prov = guess_cloud(cnames)
-        url_host = (h.get("url") or "").replace("https://", "").replace("http://", "")
+        url_host = as_text(h.get("url")).replace("https://", "").replace("http://", "")
         key = h.get("url", host)
         if key in seen:
             continue
@@ -437,7 +468,7 @@ def main(outdir):
             "port": h.get("port", ""),
             "status": h.get("status_code", ""),
             "title": (h.get("title") or "").replace("\n", " ")[:80],
-            "tech": ";".join(h.get("tech", []) or []),
+            "tech": ";".join(str(x) for x in (h.get("tech") or []) if x),
             "cpe": ";".join(extract_cpe(h)),
             "findings": ";".join(sorted(findings.get(url_host.split(":")[0], []))),
         }
@@ -458,7 +489,7 @@ def main(outdir):
     # 実際に WAF 製品が検出されたホストだけを対象にする。
     waf_hosts = set()
     for h in read_jsonl(out / "http.jsonl"):
-        host = (h.get("host") or "").lower()
+        host = as_text(h.get("host")).lower()
         if not host:
             continue
         waf = h.get("waf")

@@ -1,11 +1,11 @@
-# 列挙せず、そのまま調査対象にするホスト名（1行1ホスト）
-#
-# サブドメイン列挙が暴走するドメインや、
-# DNS には載っているが列挙では見つからないホストを書く。
-#
-# 例（badssl.com は証明書に1万件のSANが入っているため列挙対象にしない）:
-# expired.badssl.com
-# self-signed.badssl.com
-# wrong.host.badssl.com
-# untrusted-root.badssl.com
-# tls-v1-0.badssl.com
+# hosts.txt
+rc4.badssl.com
+3des.badssl.com
+null.badssl.com
+dh480.badssl.com
+tls-v1-0.badssl.com
+tls-v1-1.badssl.com
+expired.badssl.com
+self-signed.badssl.com
+wrong.host.badssl.com
+scanme.nmap.org

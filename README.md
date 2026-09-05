@@ -35,7 +35,6 @@ hosts.txt ──┘                   │                          │
                                                             ↓
                                               assets.csv / risks.csv
                                                             ↓
-                                        git commit ──> git diff ──> Slack
 ```
 
 ## 判定の2分類
@@ -148,7 +147,7 @@ sudo apt-get install -y nmap dnsutils
 
 chmod +x *.sh
 ./scan.sh
-./report.sh
+python3 summary.py snapshots
 ```
 
 シードドメインは Route53 のパブリックゾーン（AWS分）と
@@ -164,6 +163,20 @@ chmod +x *.sh
 ワイルドカード証明書を長く運用している企業や、CI/CDで検証環境を自動生成している場合、
 1ドメインで数百〜数千件になることは珍しくありません。
 
+
+## 結果の見方
+
+### 1. Actions のサマリー（ダウンロード不要）
+
+実行が終わると、Actions の実行画面に結果が表示されます。
+**多くの週はここを見るだけで足ります。**
+
+- 資産数・持ち主不明・指摘件数と、前回比
+- 新規の指摘（深刻度順）
+- 新しく見つかった資産／消滅した資産
+- 持ち主不明の一覧（折りたたみ）
+
+### 2. report.html（詳しく見るとき）
 
 ## 画面で見る
 

@@ -133,12 +133,6 @@ jobs:
           git commit -m "scan $(date -u +%F)" || echo "変更なし"
           git push || echo "push できませんでした"
 
-      - name: report
-        env:
-          WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          bash report.sh > report.md || true
-          cat report.md >> $GITHUB_STEP_SUMMARY
-          if [ -n "$WEBHOOK" ]; then
-            jq -Rs '{text: .}' report.md | curl -sS -X POST -H 'Content-Type: application/json' -d @- "$WEBHOOK"
-          fi
+      - name: summary
+        if: always()
+        run: python3 summary.py snapshots >> "$GITHUB_STEP_SUMMARY" || true

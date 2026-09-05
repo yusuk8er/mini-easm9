@@ -1,17 +1,49 @@
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-08-30 20:04 UTC
-Nmap scan report for scanme.nmap.org (45.33.32.156)
-Host is up (0.049s latency).
-Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-09-05 09:20 UTC
+Nmap scan report for office.zonetransfer.me (4.23.39.254)
+Host is up.
 
-PORT      STATE  SERVICE    VERSION
-22/tcp    open   ssh        OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13 (Ubuntu Linux; protocol 2.0)
-80/tcp    open   http       Apache httpd 2.4.7 ((Ubuntu))
-443/tcp   closed https
-8080/tcp  closed http-proxy
-8443/tcp  closed https-alt
-9929/tcp  open   nping-echo Nping echo
-31337/tcp open   tcpwrapped
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+PORT     STATE    SERVICE        VERSION
+80/tcp   filtered http
+81/tcp   filtered hosts2-ns
+443/tcp  filtered https
+4000/tcp filtered remoteanything
+8080/tcp filtered http-proxy
+8443/tcp filtered https-alt
+
+Nmap scan report for staging.zonetransfer.me (13.226.238.91)
+Host is up (0.0064s latency).
+Other addresses for staging.zonetransfer.me (not scanned): 13.226.238.21 13.226.238.86 13.226.238.124 2600:9000:201f:5800:7:60:4d00:93a1 2600:9000:201f:1a00:7:60:4d00:93a1 2600:9000:201f:5000:7:60:4d00:93a1 2600:9000:201f:8800:7:60:4d00:93a1 2600:9000:201f:7800:7:60:4d00:93a1 2600:9000:201f:ea00:7:60:4d00:93a1 2600:9000:201f:f000:7:60:4d00:93a1 2600:9000:201f:b600:7:60:4d00:93a1
+rDNS record for 13.226.238.91: server-13-226-238-91.iad61.r.cloudfront.net
+
+PORT     STATE    SERVICE        VERSION
+80/tcp   open     http           Amazon CloudFront httpd
+81/tcp   filtered hosts2-ns
+443/tcp  open     ssl/https?
+4000/tcp filtered remoteanything
+8080/tcp filtered http-proxy
+8443/tcp filtered https-alt
+
+Nmap scan report for testing.zonetransfer.me (5.196.105.14)
+Host is up (0.087s latency).
+
+PORT     STATE  SERVICE     VERSION
+80/tcp   open   http        Apache httpd (Sparkles)
+81/tcp   open   http        Apache httpd
+443/tcp  open   ssl/http    Apache httpd (Rainbows and XSS<script>alert(1)</script>)
+4000/tcp open   http        Node.js (Express middleware)
+8080/tcp open   http-proxy?
+8443/tcp closed https-alt
+
+Nmap scan report for www.zonetransfer.me (5.196.105.14)
+Host is up (0.087s latency).
+
+PORT     STATE  SERVICE     VERSION
+80/tcp   open   http        Apache httpd (Sparkles)
+81/tcp   open   http        Apache httpd
+443/tcp  open   ssl/http    Apache httpd (Rainbows and XSS<script>alert(1)</script>)
+4000/tcp open   http        Node.js (Express middleware)
+8080/tcp open   http-proxy?
+8443/tcp closed https-alt
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 6.61 seconds
+Nmap done: 4 IP addresses (4 hosts up) scanned in 15.61 seconds

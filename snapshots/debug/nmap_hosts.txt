@@ -1,1 +1,4 @@
-scanme.nmap.org
+office.zonetransfer.me
+staging.zonetransfer.me
+testing.zonetransfer.me
+www.zonetransfer.me

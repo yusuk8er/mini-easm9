@@ -1,0 +1,2 @@
+{"host":"nsztm1.digi.ninja","risk_id":"dns-zone-transfer","severity":"high","detail":"DNS zone transfer (AXFR) allowed for zonetransfer.me"}
+{"host":"nsztm2.digi.ninja","risk_id":"dns-zone-transfer","severity":"high","detail":"DNS zone transfer (AXFR) allowed for zonetransfer.me"}

@@ -392,6 +392,15 @@ def build_risks(out, owners, waf_hosts):
             add(host, "medium", "confirmed", f"{svc}-banner",
                 f"{label} (mail service banner discloses version)", "nmap")
 
+    # 5.5 設定上の不備（nmap の NSE スクリプト）
+    #     応答をそのまま読んでいるだけなので誤検知は発生しない
+    for r in read_jsonl(out / "nse_findings.jsonl"):
+        host = (as_text(r.get("host")) or as_text(r.get("ip"))).lower()
+        if not host or is_private(r.get("ip")):
+            continue
+        add(host, as_text(r.get("severity")) or "medium", "confirmed",
+            as_text(r.get("risk_id")), as_text(r.get("detail")), "nmap-nse")
+
     # 6. DNS サーバの検査（dig の応答そのもの）
     for r in read_jsonl(out / "dns_risks.jsonl"):
         add((r.get("host") or "").lower(), r.get("severity", "medium"), "confirmed",

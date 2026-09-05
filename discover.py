@@ -47,7 +47,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-UA = "mini-easm/1.0 (asset discovery; contact: security team)"
+UA = "Yusuk8er-easm/1.0 (asset discovery; contact: security team)"
 TIMEOUT = 60
 RETRY = 3
 SLEEP = 2.0   # crt.sh に負荷をかけないための待ち時間

@@ -86,7 +86,7 @@ example.com
 ## 4. まず asset モードで実行する
 
 1. リポジトリ画面の「Actions」タブを開く
-2. 左メニューの「mini-easm」をクリック
+2. 左メニューの「Yusuk8er-easm」をクリック
 3. 右側の「Run workflow」を押す
 4. **モードに `asset` を入力**
 5. 「Run workflow」を押す

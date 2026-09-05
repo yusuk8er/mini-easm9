@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# mini-easm: 外部公開資産の棚卸し + ネットワーク診断
+# Yusuk8er-easm: 外部公開資産の棚卸し + ネットワーク診断
 #
 # 誤検知を抑えるための方針:
 #   1. バージョンバナーからの推測でCVEを判定しない
@@ -211,8 +211,16 @@ if [[ "$MODE" == "full" ]] && command -v naabu >/dev/null 2>&1; then
       for part in "$WORK"/nmap_part_*; do
         part_no=$((part_no + 1))
         # -n は名前解決を省略するが、-iL にホスト名を渡す場合は解決が必要なので付けない
+        # NSE スクリプトで設定上の不備も同時に確認する。
+        # いずれも参照系で、応答を読むだけなので誤検知が発生しない。
+        #   ssl-enum-ciphers  : 弱い暗号スイート・古いプロトコル
+        #   smb2-security-mode: SMB署名の要求設定
+        #   ftp-anon          : 匿名FTPの可否
+        #   rdp-ntlm-info     : RDPの構成情報
+        #   ssh2-enum-algos   : SSHの鍵交換・暗号アルゴリズム
         timeout 900 nmap -sV --version-intensity "$NMAP_INTENSITY" -Pn -T4 --max-retries 1 \
-          --host-timeout 30s -p "$nmap_ports" -iL "$part" \
+          --script "ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos" \
+          --script-timeout 40s --host-timeout 90s -p "$nmap_ports" -iL "$part" \
           -oX "$WORK/nmap_${part_no}.xml" >> "$WORK/nmap.out" 2>> "$WORK/nmap.err" || true
         [[ -s "$WORK/nmap_${part_no}.xml" ]] && cat "$WORK/nmap_${part_no}.xml" >> "$WORK/nmap_all.xml"
       done

@@ -1,4 +1,4 @@
-# mini-easm
+# Yusuk8er-easm
 
 外部公開資産の棚卸しとシャドーIT検出に絞った、
 サーバもDBもWeb UIも持たない最小構成のASM。
@@ -266,6 +266,7 @@ nuclei が high / critical のみ実行されます。
 |---|---|---|
 | 開いているポート | naabu | confirmed（接続成立の事実） |
 | 動いているサービスとバージョン | nmap -sV | confirmed（バナー観測） |
+| 設定上の不備（暗号スイート、SMB署名、匿名FTP等） | nmap NSE | confirmed（応答の内容そのもの） |
 | 非標準ポートで動くDB・リモートアクセス | nmap -sV | confirmed。ポート番号では判定できないものを補う |
 | SSH / RDP / Telnet / VNC / SMB の外部公開 | naabu + nmap -sV | confirmed |
 | データベースの外部公開 | naabu + nmap -sV | confirmed |
@@ -357,3 +358,25 @@ high      ssh-exposed                SSH exposed to internet (22/tcp) - OpenSSH 
 対象が `ServerTokens Prod` などでバナーを絞っている場合、
 外部からバージョンを知る手段がないためです。これは対象側の設定として正しく、
 「取れないほうが健全」と考えてください。
+
+
+## 設定上の不備の検出（NSE）
+
+サービス識別と同時に、nmap の NSE スクリプトで設定の不備を確認します。
+いずれも応答を読むだけで、推測を含まないため誤検知が発生しません。
+
+| risk_id | 深刻度 | 内容 | スクリプト |
+|---|---|---|---|
+| `tls-old-protocol` | critical〜medium | SSLv2 / SSLv3 / TLS 1.0 / 1.1 の有効化 | ssl-enum-ciphers |
+| `tls-weak-cipher` | critical〜medium | RC4 / DES / 3DES / NULL / EXPORT / 匿名鍵交換 / MD5 | ssl-enum-ciphers |
+| `tls-weak-config` | high | nmap の総合評価が最低水準 | ssl-enum-ciphers |
+| `ssh-weak-algorithm` | medium | DH group1、ssh-rsa(SHA-1)、HMAC-MD5、Arcfour、3DES-CBC | ssh2-enum-algos |
+| `smb-signing-not-required` | medium | SMB署名が必須になっていない | smb2-security-mode |
+| `ftp-anonymous-login` | high | 匿名FTPログインが可能 | ftp-anon |
+| `rdp-info-disclosure` | medium | RDPがドメイン名・ホスト名を開示 | rdp-ntlm-info |
+
+**この領域は、構成情報に基づく脆弱性管理では検出できません。**
+パッケージのバージョンが最新でも、設定が危険というケースを補います。
+
+実行するスクリプトはいずれも参照系で、`--script-timeout 40s` を設定しています。
+対象への負荷は限定的ですが、通信は発生します。

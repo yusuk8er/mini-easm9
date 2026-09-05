@@ -1,3 +1,2 @@
-vulnweb.com
-zonetransfer.me
-ginandjuice.shop
+# 調査対象ドメイン（1行1件）
+# 自社が保有・管理するドメインのみを記載してください

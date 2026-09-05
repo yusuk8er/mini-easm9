@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2026 Yusuke Hirose
+
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mini-easm — 外部公開資産</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16181d; --muted:#6d7370; --paper:#eceeec; --card:#fff;
+    --rule:#d3d7d4; --pine:#1b4d3e; --alarm:#a3231c; --amber:#8a5a00;
+    --sans:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+       font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 64px}
+
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:20px}
+  h1{font-size:19px;font-weight:600;margin:0;letter-spacing:.01em}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+
+  .strip{display:flex;gap:2px;height:44px;align-items:flex-end;margin-bottom:6px;
+         padding:0;border-bottom:1px solid var(--rule);overflow:hidden}
+  .tick{flex:1 1 3px;min-width:2px;background:var(--rule);cursor:pointer;
+        border:0;padding:0;transition:height .15s}
+  .tick:focus-visible{outline:2px solid var(--pine);outline-offset:1px}
+  .tick.s-ok{height:40%;background:#b9c0bb}
+  .tick.s-out{height:60%;background:#8a938c}
+  .tick.s-unmapped{height:85%;background:var(--amber)}
+  .tick.s-alert{height:100%;background:var(--alarm)}
+  .striplabel{font-family:var(--mono);font-size:11px;color:var(--muted);
+              display:flex;justify-content:space-between;margin-bottom:26px}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+         gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:26px}
+  .tile{background:var(--card);padding:14px 16px}
+  .tile dt{font-size:12px;color:var(--muted);text-transform:none;margin:0 0 4px}
+  .tile dd{margin:0;font-family:var(--mono);font-size:26px;font-weight:500;line-height:1}
+  .tile dd.alarm{color:var(--alarm)}
+  .tile dd.amber{color:var(--amber)}
+
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .chip{font-family:var(--sans);font-size:13px;padding:5px 12px;border:1px solid var(--rule);
+        background:var(--card);color:var(--ink);cursor:pointer;border-radius:0}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  input[type=search]{flex:1;min-width:180px;font-family:var(--mono);font-size:13px;
+        padding:6px 10px;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:0}
+  input[type=search]:focus-visible{outline:2px solid var(--pine);outline-offset:-1px;border-color:var(--pine)}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--rule)}
+  th{font-size:12px;font-weight:600;color:var(--muted);text-align:left;padding:9px 12px;
+     border-bottom:1px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none}
+  th:focus-visible{outline:2px solid var(--pine);outline-offset:-2px}
+  td{padding:10px 12px;border-bottom:1px solid #e8eae8;font-size:13px;vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .host{font-family:var(--mono);font-weight:500;word-break:break-all}
+  .sub{font-family:var(--mono);font-size:11px;color:var(--muted);word-break:break-all}
+  .flag{display:inline-block;font-size:11px;padding:2px 7px;border:1px solid currentColor;white-space:nowrap}
+  .f-alert{color:var(--alarm)} .f-unmapped{color:var(--amber)}
+  .d-new{background:var(--alarm);color:#fff;font-size:10px;padding:1px 6px;
+         border-radius:var(--radius);margin-left:6px;white-space:nowrap}
+  .d-removed{background:#8a938c;color:#fff;font-size:10px;padding:1px 6px;
+             border-radius:var(--radius);margin-left:6px;white-space:nowrap}
+  tr.dl-removed{opacity:.55}
+  tr.dl-removed .host{text-decoration:line-through}
+  .f-out{color:var(--muted)} .f-ok{color:var(--pine)}
+  tr.r-alert td:first-child{box-shadow:inset 3px 0 0 var(--alarm)}
+  tr.r-unmapped td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
+  .empty{padding:40px 12px;text-align:center;color:var(--muted);font-size:14px}
+  .note{margin-top:18px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:640px){.col-hide{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1 id="h1">セキュリティリスク</h1>
+  <span class="meta" id="meta">読み込み中…</span>
+</header>
+
+<div class="controls" style="margin-bottom:18px">
+  <button class="chip" id="v-risk" aria-pressed="true" onclick="setView('risk')">リスク</button>
+  <button class="chip" id="v-asset" aria-pressed="false" onclick="setView('asset')">資産</button>
+</div>
+
+<div class="strip" id="strip" role="img" aria-label="資産ごとの状態を1本の目盛りで表した帯"></div>
+<div class="striplabel"><span>1資産＝1目盛り／高いほど要確認</span><span id="striphint"></span></div>
+
+<dl class="tiles" id="tiles"></dl>
+
+<div class="controls" id="filters"></div>
+
+<table id="tbl">
+  <thead id="thead"></thead>
+  <tbody id="rows"></tbody>
+</table>
+<p class="empty" id="empty" hidden>該当なし</p>
+
+<p class="note" id="src"></p>
+
+</div>
+<script>window.__EMBEDDED__ = {"assets": "host,owner,state,ip,cname,cloud_provider,port,status,title,tech,cpe,findings,delta\r\nexpired.badssl.com,,shadow,104.154.89.105,,,1002,400,400 The plain HTTP request was sent to HTTPS port,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nexpired.badssl.com,,shadow,104.154.89.105,,,1010,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nexpired.badssl.com,,shadow,104.154.89.105,,,1011,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nexpired.badssl.com,,shadow,104.154.89.105,,,443,200,expired.badssl.com,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nexpired.badssl.com,,shadow,104.154.89.105,,,80,301,301 Moved Permanently,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nrest.vulnweb.com,,shadow,18.215.71.186,,,80,200,Invicti Vulnerable REST API,Apache HTTP Server:2.4.25;Debian;PHP:7.1.26,cpe:2.3:a:apache:http_server:2.4.25:*:*:*:*:*:*:*;cpe:2.3:a:php:php:7.1.26:*:*:*:*:*:*:*,high:wordpress-db-exposure;medium:mysql-dump,new\r\nrest.vulnweb.com,,shadow,18.215.71.186,,,8081,200,,Apache HTTP Server:2.4.25;Debian;PHP:7.1.26,cpe:2.3:a:apache:http_server:2.4.25:*:*:*:*:*:*:*;cpe:2.3:a:php:php:7.1.26:*:*:*:*:*:*:*,high:wordpress-db-exposure;medium:mysql-dump,new\r\nscanme.nmap.org,,shadow,45.33.32.156,,,80,200,Go ahead and ScanMe!,Apache HTTP Server:2.4.7;Ubuntu,cpe:2.3:a:apache:http_server:2.4.7:*:*:*:*:*:*:*,,new\r\nself-signed.badssl.com,,shadow,104.154.89.105,,,1002,400,400 The plain HTTP request was sent to HTTPS port,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nself-signed.badssl.com,,shadow,104.154.89.105,,,1010,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nself-signed.badssl.com,,shadow,104.154.89.105,,,1011,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nself-signed.badssl.com,,shadow,104.154.89.105,,,443,200,self-signed.badssl.com,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nself-signed.badssl.com,,shadow,104.154.89.105,,,80,301,301 Moved Permanently,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nstaging.zonetransfer.me,,shadow,13.32.164.38;13.32.164.48;13.32.164.67;13.32.164.70,dc8smvz8l4jlg.cloudfront.net;www.sydneyoperahouse.com,aws,80,403,ERROR: The request could not be satisfied,Amazon CloudFront;Amazon Web Services,,,same\r\ntestasp.vulnweb.com,,shadow,44.238.29.244,,,80,200,acuforum forums,DreamWeaver;IIS:8.5;Microsoft ASP.NET;Windows Server,cpe:2.3:a:microsoft:asp.net:*:*:*:*:*:*:*:*;cpe:2.3:a:microsoft:internet_information_services:8.5:*:*:*:*:*:*:*,,new\r\ntestaspnet.vulnweb.com,,shadow,44.238.29.244,,,80,200,acublog news,IIS:8.5;Microsoft ASP.NET:2.0.50727;Microsoft Visual Studio;Windows Server,cpe:2.3:a:microsoft:asp.net:2.0.50727:*:*:*:*:*:*:*;cpe:2.3:a:microsoft:internet_information_services:8.5:*:*:*:*:*:*:*,medium:aspx-debug-mode,new\r\ntesting.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,4000,200,GraphQLab,Express;Node.js,cpe:2.3:a:nodejs:node.js:*:*:*:*:*:*:*:*;cpe:2.3:a:openjsf:express:*:*:*:*:*:*:*:*,,same\r\ntesting.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,443,301,301 Moved Permanently,Apache HTTP Server;HSTS,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,,same\r\ntesting.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,80,301,301 Moved Permanently,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,,same\r\ntesting.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,81,404,404 Not Found,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,,same\r\ntls-v1-0.badssl.com,,shadow,104.154.89.105,,,1002,400,400 The plain HTTP request was sent to HTTPS port,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\ntls-v1-0.badssl.com,,shadow,104.154.89.105,,,1010,200,tls-v1-0.badssl.com,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\ntls-v1-0.badssl.com,,shadow,104.154.89.105,,,1011,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\ntls-v1-0.badssl.com,,shadow,104.154.89.105,,,443,301,301 Moved Permanently,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\ntls-v1-0.badssl.com,,shadow,104.154.89.105,,,80,301,301 Moved Permanently,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nwrong.host.badssl.com,,shadow,104.154.89.105,,,1002,400,400 The plain HTTP request was sent to HTTPS port,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nwrong.host.badssl.com,,shadow,104.154.89.105,,,1010,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nwrong.host.badssl.com,,shadow,104.154.89.105,,,1011,421,,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nwrong.host.badssl.com,,shadow,104.154.89.105,,,443,200,wrong.host.badssl.com,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nwrong.host.badssl.com,,shadow,104.154.89.105,,,80,301,301 Moved Permanently,Nginx:1.10.3;Ubuntu,cpe:2.3:a:nginx:nginx:1.10.3:*:*:*:*:*:*:*,,new\r\nwww.zonetransfer.me,,shadow,5.196.105.14,,,4000,200,GraphQLab,Express;Node.js,cpe:2.3:a:nodejs:node.js:*:*:*:*:*:*:*:*;cpe:2.3:a:openjsf:express:*:*:*:*:*:*:*:*,,same\r\nwww.zonetransfer.me,,shadow,5.196.105.14,,,443,301,301 Moved Permanently,Apache HTTP Server;HSTS,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,,same\r\nwww.zonetransfer.me,,shadow,5.196.105.14,,,80,301,301 Moved Permanently,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,,same\r\nwww.zonetransfer.me,,shadow,5.196.105.14,,,81,404,404 Not Found,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,,same\r\n", "risks": "host,owner,severity,confidence,risk_id,detail,source,delta\r\nexpired.badssl.com,,high,confirmed,tls-expired,TLS certificate expired (not_after: 2015-04-12T23:59:59Z),tlsx,new\r\nnsztm1.digi.ninja,,high,confirmed,dns-zone-transfer,DNS zone transfer (AXFR) allowed for zonetransfer.me,dig,same\r\nnsztm2.digi.ninja,,high,confirmed,dns-zone-transfer,DNS zone transfer (AXFR) allowed for zonetransfer.me,dig,same\r\nrest.vulnweb.com,,high,confirmed,wordpress-db-exposure,WordPress Database Backup File - Exposure,nuclei,new\r\nscanme.nmap.org,,high,confirmed,ssh-exposed,SSH exposed to internet (22/tcp) - OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13,naabu,new\r\nrest.vulnweb.com,,medium,confirmed,mysql-dump,MySQL - Dump Files,nuclei,new\r\nself-signed.badssl.com,,medium,confirmed,tls-self-signed,Self-signed TLS certificate,tlsx,new\r\ntestaspnet.vulnweb.com,,medium,confirmed,aspx-debug-mode,ASP.NET Debugging Enabled,nuclei,new\r\ntesting.zonetransfer.me,,medium,confirmed,tls-mismatch,TLS certificate hostname mismatch,tlsx,same\r\nwrong.host.badssl.com,,medium,confirmed,tls-mismatch,TLS certificate hostname mismatch,tlsx,new\r\n", "summary": {"assets_new": 25, "assets_removed": 0, "risks_new": 7, "risks_resolved": 0, "has_prev": true}, "generated": "2026-09-05 20:06 JST"};</script>
+<script>
+const DEMO_ASSETS = `host,owner,state,ip,cname,cloud_provider,cloud_resource_type,cloud_resource_id,port,status,title,tech
+assets.example.co.jp,広報チーム,known,,d1x.cloudfront.net,aws,cloudfront,arn:aws:cloudfront::1,443,200,Assets,CloudFront
+api.example.co.jp,プラットフォーム部,known,,alb-prod.elb.amazonaws.com,aws,alb,arn:aws:elb:prod,443,200,API,nginx
+db.example.co.jp,,shadow,203.0.113.20,,,,,3306,,,
+old-cms.example.co.jp,,shadow,203.0.113.44,,,,,443,200,Corporate,WordPress;PHP
+vpn.example.co.jp,情報システム部,known,198.51.100.7,,,,,443,200,SSL VPN,FortiOS
+demo.example.co.jp,営業企画,known,,demo-app.azurewebsites.net,azure,known,,443,200,Demo,ASP.NET
+gone.example.co.jp,,shadow,,deleted.s3.amazonaws.com,aws,known,,,,,
+campaign.example.jp,,shadow,,site.netlify.app,saas,known,,443,200,Campaign,`;
+
+const DEMO_RISKS = `host,owner,severity,confidence,risk_id,detail,source
+arn:aws:s3:::backup-prod,,critical,confirmed,s3-public-access,S3バケット backup-prod がパブリックアクセス可能,steampipe
+db.example.co.jp,,critical,confirmed,mysql-exposed,MySQL が外部公開 (3306/tcp),naabu
+sg-0abc123,,critical,confirmed,sg-open-to-world,セキュリティグループ web-sg が 3389/tcp を 0.0.0.0/0 に開放,steampipe
+db.example.co.jp,,high,confirmed,ssh-exposed,SSH が外部公開 (22/tcp),naabu
+gone.example.co.jp,,high,confirmed,dangling-cname,CNAME先が解決できない: deleted.s3.amazonaws.com（乗っ取りの可能性）,dnsx
+old-cms.example.co.jp,,high,confirmed,git-config-exposure,.git/config が公開されている,nuclei
+old-cms.example.co.jp,,high,confirmed,tls-expired,証明書が失効済み (期限 2025-04-01),tlsx
+old-cms.example.co.jp,,medium,confirmed,tls-old-version,古いTLSバージョンが有効 (tls10),tlsx
+demo.example.co.jp,営業企画,medium,single,exposed-panel,管理画面が公開,nuclei
+api.example.co.jp,プラットフォーム部,medium,single,missing-hsts,HSTS ヘッダなし,nuclei`;
+
+function parseCSV(t){
+  if(t.charCodeAt(0)===0xFEFF)t=t.slice(1);   // Excel用のBOMを除去
+  const rows=[];let f='',row=[],q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){ if(c==='"'){ if(t[i+1]==='"'){f+='"';i++} else q=false } else f+=c }
+    else if(c==='"')q=true;
+    else if(c===','){row.push(f);f=''}
+    else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''}
+    else if(c!=='\r')f+=c}
+  if(f||row.length){row.push(f);rows.push(row)}
+  const head=rows.shift()||[];
+  return rows.filter(r=>r.length>1).map(r=>Object.fromEntries(head.map((h,i)=>[h.trim(),(r[i]||'').trim()])));
+}
+
+const ASSET_LABEL={shadow:'持ち主不明',known:'判明済み'};
+const ASSET_CLS={shadow:'alert',known:'ok'};
+const SEV_LABEL={critical:'致命的',high:'高',medium:'中',low:'低'};
+const SEV_CLS={critical:'alert',high:'alert',medium:'unmapped',low:'out'};
+const SEV_ORDER={critical:0,high:1,medium:2,low:3};
+
+let VIEW='risk', ASSETS=[], RISKS=[], filter='all', query='', sortKey='', asc=true;
+
+const CFG={
+  risk:{
+    title:'セキュリティリスク',
+    striplabel:'1指摘＝1目盛り／高いほど深刻',
+    placeholder:'ホスト, 内容で絞り込み',
+    filters:[['all','すべて'],['new','新規'],['confirmed','確認済み'],['single','要確認'],['critical','致命的'],['high','高']],
+    cols:[['host','対象'],['detail','内容'],['source','検出元'],['severity','深刻度']],
+    data:()=>RISKS,
+    cls:r=>SEV_CLS[r.severity]||'out',
+    tiles:d=>{
+      const live=d.filter(r=>r.delta!=='removed');
+      const c={critical:0,high:0,single:0};
+      live.forEach(r=>{if(c[r.severity]!==undefined)c[r.severity]++;if(r.confidence==='single')c.single++});
+      const nw=d.filter(r=>r.delta==='new').length;
+      const rm=d.filter(r=>r.delta==='removed').length;
+      return [['指摘',live.length,''],['新規',nw,'alarm'],['致命的+高',c.critical+c.high,'alarm'],['解消',rm,'']];
+    },
+    match:(r,f)=>f==='new'?r.delta==='new'
+                :f==='confirmed'||f==='single'?r.confidence===f
+                :r.severity===f,
+    sort:(a,b)=>((a.delta==='new'?0:a.delta==='removed'?2:1)-(b.delta==='new'?0:b.delta==='removed'?2:1))
+                ||(SEV_ORDER[a.severity]??9)-(SEV_ORDER[b.severity]??9)
+                ||(a.confidence==='confirmed'?0:1)-(b.confidence==='confirmed'?0:1)
+                ||a.host.localeCompare(b.host),
+    search:r=>r.host+r.detail+r.risk_id+r.owner,
+    row:r=>`
+      <td><div class="host">${esc(r.host)}${deltaTag(r)}</div>
+          ${r.owner?`<div class="sub">${esc(r.owner)}</div>`:'<div class="sub">持ち主不明</div>'}</td>
+      <td class="col-hide"><div class="sub">${esc(r.detail)}</div>
+          <div class="sub" style="opacity:.6">${esc(r.risk_id)}</div></td>
+      <td class="col-hide"><div class="sub">${esc(r.source)}</div></td>
+      <td><span class="flag f-${SEV_CLS[r.severity]||'out'}">${SEV_LABEL[r.severity]||r.severity}</span>
+          <div class="sub">${r.confidence==='confirmed'?'確認済み':'要確認'}</div></td>`
+  },
+  asset:{
+    title:'外部公開資産',
+    striplabel:'1資産＝1目盛り／高いほど要確認',
+    placeholder:'ホスト, 持ち主, 技術で絞り込み',
+    filters:[['all','すべて'],['new','新規'],['shadow','持ち主不明'],['known','判明済み'],['removed','消滅']],
+    cols:[['host','ホスト'],['owner','持ち主'],['cloud','クラウド'],['state','判定']],
+    data:()=>ASSETS,
+    cls:r=>ASSET_CLS[r.state]||'ok',
+    tiles:d=>{
+      const live=d.filter(r=>r.delta!=='removed');
+      const c={shadow:0,known:0};
+      live.forEach(r=>{if(c[r.state]!==undefined)c[r.state]++});
+      const nw=d.filter(r=>r.delta==='new').length;
+      const rm=d.filter(r=>r.delta==='removed').length;
+      return [['資産',live.length,''],['新規',nw,'alarm'],['持ち主不明',c.shadow,'amber'],['消滅',rm,'']];
+    },
+    match:(r,f)=>f==='new'||f==='removed'?r.delta===f:(r.state===f&&r.delta!=='removed'),
+    sort:(a,b)=>((a.delta==='new'?0:a.delta==='removed'?2:1)-(b.delta==='new'?0:b.delta==='removed'?2:1))
+                ||({shadow:0,known:1}[a.state]??9)-({shadow:0,known:1}[b.state]??9)
+                ||a.host.localeCompare(b.host),
+    search:r=>r.host+r.owner+r.tech+r.ip+r.cname+r.cloud_resource_type,
+    row:r=>`
+      <td><div class="host">${esc(r.host)||'(名前なし)'}${deltaTag(r)}</div>
+          <div class="sub">${esc(r.ip||r.cname||'')}</div></td>
+      <td class="col-hide">${r.owner?`<div class="sub">${esc(r.owner)}</div>`:'<span class="flag f-alert">不明</span>'}</td>
+      <td class="col-hide"><div class="sub">${esc(r.cloud_provider||'—')}${r.cloud_resource_type?' / '+esc(r.cloud_resource_type):''}</div></td>
+      <td><span class="flag f-${ASSET_CLS[r.state]||'ok'}">${ASSET_LABEL[r.state]||r.state}</span></td>`
+  }
+};
+
+function deltaTag(r){
+  if(r.delta==='new')return '<span class="d-new">NEW</span>';
+  if(r.delta==='removed')return '<span class="d-removed">消滅</span>';
+  return '';
+}
+
+function esc(x){return String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function setView(v){
+  VIEW=v; filter='all'; query=''; sortKey='';
+  document.getElementById('v-risk').setAttribute('aria-pressed',v==='risk');
+  document.getElementById('v-asset').setAttribute('aria-pressed',v==='asset');
+  document.getElementById('h1').textContent=CFG[v].title;
+  render();
+}
+
+function view(){
+  const cfg=CFG[VIEW];
+  let d=cfg.data().filter(r=>{
+    if(filter!=='all'&&!cfg.match(r,filter))return false;
+    if(!query)return true;
+    return cfg.search(r).toLowerCase().includes(query);
+  });
+  d.sort(sortKey?((a,b)=>((a[sortKey]||'')<(b[sortKey]||'')?-1:(a[sortKey]||'')>(b[sortKey]||'')?1:0)*(asc?1:-1)):cfg.sort);
+  return d;
+}
+
+function render(){
+  const cfg=CFG[VIEW], all=cfg.data(), v=view();
+
+  document.getElementById('tiles').innerHTML=cfg.tiles(all)
+    .map(([k,n,cl])=>`<div class="tile"><dt>${k}</dt><dd class="${cl}">${n}</dd></div>`).join('');
+
+  document.getElementById('strip').innerHTML=all.map((r,i)=>{
+    const c=cfg.cls(r);
+    return `<button class="tick s-${c}" data-i="${i}" aria-label="${esc(r.host)}"></button>`;
+  }).join('');
+
+  document.getElementById('filters').innerHTML=
+    cfg.filters.map(([f,l])=>`<button class="chip" data-f="${f}" aria-pressed="${filter===f}">${l}</button>`).join('')
+    +`<input type="search" id="q" placeholder="${cfg.placeholder}" aria-label="絞り込み" value="${esc(query)}">`;
+
+  document.getElementById('thead').innerHTML='<tr>'+cfg.cols.map(([k,l],i)=>
+    `<th data-k="${k}" tabindex="0"${i>0&&i<cfg.cols.length-1?' class="col-hide"':''}>${l}</th>`).join('')+'</tr>';
+
+  document.getElementById('rows').innerHTML=v.map(r=>
+    `<tr class="r-${cfg.cls(r)} dl-${r.delta||'base'}">${cfg.row(r)}</tr>`).join('');
+
+  document.getElementById('empty').hidden=v.length>0;
+  document.getElementById('striphint').textContent=`${v.length} / ${all.length} 件表示`;
+  document.querySelector('.striplabel span').textContent=cfg.striplabel;
+  bind();
+}
+
+function bind(){
+  document.querySelectorAll('#filters .chip').forEach(b=>b.onclick=()=>{filter=b.dataset.f;render()});
+  const q=document.getElementById('q');
+  if(q)q.oninput=e=>{query=e.target.value.toLowerCase().trim();render()};
+  document.querySelectorAll('#thead th').forEach(th=>{
+    const go=()=>{const k=th.dataset.k;asc=(sortKey===k)?!asc:true;sortKey=k;render()};
+    th.onclick=go;
+    th.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}};
+  });
+}
+
+document.getElementById('strip').onclick=e=>{
+  const t=e.target.closest('.tick');if(!t)return;
+  query=(CFG[VIEW].data()[t.dataset.i]||{}).host?.toLowerCase()||'';render();
+};
+
+async function grab(name,demo){
+  // build_report.py が生成した単一HTMLでは、データが埋め込まれている。
+  // file:// で開いても fetch が使えないため、こちらを優先して読む
+  const key = name.indexOf('risks') >= 0 ? 'risks' : 'assets';
+  if(window.__EMBEDDED__ && window.__EMBEDDED__[key] !== undefined){
+    return {rows:parseCSV(window.__EMBEDDED__[key]), live:true};
+  }
+  try{
+    const r=await fetch(name,{cache:'no-store'});
+    if(!r.ok)throw 0;
+    return {rows:parseCSV(await r.text()),live:true};
+  }catch{ return {rows:parseCSV(demo),live:false}; }
+}
+
+(async()=>{
+  const a=await grab('assets.csv',DEMO_ASSETS);
+  const r=await grab('risks.csv',DEMO_RISKS);
+  ASSETS=a.rows; RISKS=r.rows;
+  document.getElementById('meta').textContent=
+    `${RISKS.length} risks · ${ASSETS.length} assets · ${new Date().toISOString().slice(0,10)}`;
+  const stamp = (window.__EMBEDDED__ && window.__EMBEDDED__.generated) || '';
+  document.getElementById('src').textContent =
+    (a.live||r.live)
+      ? (stamp ? 'スキャン日時: ' + stamp : 'source: assets.csv / risks.csv')
+      : 'source: サンプルデータ（CSVが見つかりません）';
+  render();
+})();
+</script>
+</body>
+</html>

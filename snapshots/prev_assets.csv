@@ -1,0 +1,10 @@
+﻿host,owner,state,ip,cname,cloud_provider,port,status,title,tech,cpe,findings
+staging.zonetransfer.me,,shadow,13.226.238.124;13.226.238.21;13.226.238.86;13.226.238.91,dc8smvz8l4jlg.cloudfront.net;www.sydneyoperahouse.com,aws,80,403,ERROR: The request could not be satisfied,Amazon CloudFront;Amazon Web Services,,
+testing.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,4000,200,GraphQLab,Express;Node.js,cpe:2.3:a:nodejs:node.js:*:*:*:*:*:*:*:*;cpe:2.3:a:openjsf:express:*:*:*:*:*:*:*:*,
+testing.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,443,301,301 Moved Permanently,Apache HTTP Server;HSTS,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,
+testing.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,80,301,301 Moved Permanently,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,
+testing.zonetransfer.me,,shadow,5.196.105.14,www.zonetransfer.me,,81,404,404 Not Found,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,
+www.zonetransfer.me,,shadow,5.196.105.14,,,4000,200,GraphQLab,Express;Node.js,cpe:2.3:a:nodejs:node.js:*:*:*:*:*:*:*:*;cpe:2.3:a:openjsf:express:*:*:*:*:*:*:*:*,
+www.zonetransfer.me,,shadow,5.196.105.14,,,443,301,301 Moved Permanently,Apache HTTP Server;HSTS,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,
+www.zonetransfer.me,,shadow,5.196.105.14,,,80,301,301 Moved Permanently,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,
+www.zonetransfer.me,,shadow,5.196.105.14,,,81,404,404 Not Found,Apache HTTP Server,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,

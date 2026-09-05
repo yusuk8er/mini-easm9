@@ -1,4 +1,11 @@
 ﻿host,owner,severity,confidence,risk_id,detail,source
+expired.badssl.com,,high,confirmed,tls-expired,TLS certificate expired (not_after: 2015-04-12T23:59:59Z),tlsx
 nsztm1.digi.ninja,,high,confirmed,dns-zone-transfer,DNS zone transfer (AXFR) allowed for zonetransfer.me,dig
 nsztm2.digi.ninja,,high,confirmed,dns-zone-transfer,DNS zone transfer (AXFR) allowed for zonetransfer.me,dig
+rest.vulnweb.com,,high,confirmed,wordpress-db-exposure,WordPress Database Backup File - Exposure,nuclei
+scanme.nmap.org,,high,confirmed,ssh-exposed,SSH exposed to internet (22/tcp) - OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13,naabu
+rest.vulnweb.com,,medium,confirmed,mysql-dump,MySQL - Dump Files,nuclei
+self-signed.badssl.com,,medium,confirmed,tls-self-signed,Self-signed TLS certificate,tlsx
+testaspnet.vulnweb.com,,medium,confirmed,aspx-debug-mode,ASP.NET Debugging Enabled,nuclei
 testing.zonetransfer.me,,medium,confirmed,tls-mismatch,TLS certificate hostname mismatch,tlsx
+wrong.host.badssl.com,,medium,confirmed,tls-mismatch,TLS certificate hostname mismatch,tlsx

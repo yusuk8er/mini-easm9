@@ -1,67 +1,334 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE nmaprun>
 <?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
-<!-- Nmap 7.94SVN scan initiated Sat Sep  5 09:20:53 2026 as: nmap -sV -&#45;version-intensity 4 -Pn -T4 -p 80,81,443,4000,8080,8443 -iL /tmp/tmp.qr9tW1tUbL/nmap_hosts.txt -oX /tmp/tmp.qr9tW1tUbL/nmap.xml -->
-<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 4 -Pn -T4 -p 80,81,443,4000,8080,8443 -iL /tmp/tmp.qr9tW1tUbL/nmap_hosts.txt -oX /tmp/tmp.qr9tW1tUbL/nmap.xml" start="1788600053" startstr="Sat Sep  5 09:20:53 2026" version="7.94SVN" xmloutputversion="1.05">
-<scaninfo type="connect" protocol="tcp" numservices="6" services="80-81,443,4000,8080,8443"/>
+<!-- Nmap 7.94SVN scan initiated Sat Sep  5 10:42:01 2026 as: nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;host-timeout 30s -p 22,80,81,443,1002,1010,1011,4000,8080,8081,8443,9929,31337 -iL /tmp/tmp.pY9FjgbiFk/nmap_part_00 -oX /tmp/tmp.pY9FjgbiFk/nmap_1.xml -->
+<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;host-timeout 30s -p 22,80,81,443,1002,1010,1011,4000,8080,8081,8443,9929,31337 -iL /tmp/tmp.pY9FjgbiFk/nmap_part_00 -oX /tmp/tmp.pY9FjgbiFk/nmap_1.xml" start="1788604921" startstr="Sat Sep  5 10:42:01 2026" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="13" services="22,80-81,443,1002,1010-1011,4000,8080-8081,8443,9929,31337"/>
 <verbose level="0"/>
 <debugging level="0"/>
-<host starttime="1788600054" endtime="1788600056"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="expired.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="12126" rttvar="5108" to="100000"/>
+</host>
+<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="4.23.39.254" addrtype="ipv4"/>
 <hostnames>
 <hostname name="office.zonetransfer.me" type="user"/>
 </hostnames>
-<ports><port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
 <port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
 <port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
 <port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
 </host>
-<host starttime="1788600054" endtime="1788600068"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="13.226.238.91" addrtype="ipv4"/>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="18.215.71.186" addrtype="ipv4"/>
+<hostnames>
+<hostname name="rest.vulnweb.com" type="user"/>
+<hostname name="ec2-18-215-71-186.compute-1.amazonaws.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.25" extrainfo="(Debian)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.25</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.25" extrainfo="(Debian)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.25</cpe></service></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="17854" rttvar="13445" to="100000"/>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="45.33.32.156" addrtype="ipv4"/>
+<hostnames>
+<hostname name="scanme.nmap.org" type="user"/>
+<hostname name="scanme.nmap.org" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" product="OpenSSH" version="6.6.1p1 Ubuntu 2ubuntu2.13" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:6.6.1p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.7" extrainfo="(Ubuntu)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.7</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="closed" reason="conn-refused" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="nping-echo" product="Nping echo" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="31337"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="tcpwrapped" method="probed" conf="8"/></port>
+</ports>
+<times srtt="49901" rttvar="2536" to="100000"/>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="self-signed.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="12511" rttvar="5375" to="100000"/>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="13.32.164.67" addrtype="ipv4"/>
 <hostnames>
 <hostname name="staging.zonetransfer.me" type="user"/>
-<hostname name="server-13-226-238-91.iad61.r.cloudfront.net" type="PTR"/>
+<hostname name="server-13-32-164-67.ord58.r.cloudfront.net" type="PTR"/>
 </hostnames>
-<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Amazon CloudFront httpd" method="probed" conf="10"/></port>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Amazon CloudFront httpd" method="probed" conf="10"/></port>
 <port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
 <port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" tunnel="ssl" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
 <port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="6390" rttvar="4895" to="100000"/>
+<times srtt="2643" rttvar="2949" to="100000"/>
 </host>
-<host starttime="1788600054" endtime="1788600068"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="44.238.29.244" addrtype="ipv4"/>
+<hostnames>
+<hostname name="testasp.vulnweb.com" type="user"/>
+<hostname name="ec2-44-238-29-244.us-west-2.compute.amazonaws.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="8.5" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:internet_information_services:8.5</cpe><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="64152" rttvar="48184" to="256888"/>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="44.238.29.244" addrtype="ipv4"/>
+<hostnames>
+<hostname name="testaspnet.vulnweb.com" type="user"/>
+<hostname name="ec2-44-238-29-244.us-west-2.compute.amazonaws.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="8.5" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:internet_information_services:8.5</cpe><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="63814" rttvar="63814" to="319070"/>
+</host>
+<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="44.228.249.3" addrtype="ipv4"/>
+<hostnames>
+<hostname name="testhtml5.vulnweb.com" type="user"/>
+<hostname name="ec2-44-228-249-3.us-west-2.compute.amazonaws.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="5.196.105.14" addrtype="ipv4"/>
 <hostnames>
 <hostname name="testing.zonetransfer.me" type="user"/>
 </hostnames>
-<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Sparkles" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Sparkles" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
 <port protocol="tcp" portid="81"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
 <port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Rainbows and XSS&lt;script&gt;alert(1)&lt;/script&gt;" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
+<port protocol="tcp" portid="1002"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="closed" reason="conn-refused" reason_ttl="0"/></port>
 <port protocol="tcp" portid="4000"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Node.js" extrainfo="Express middleware" method="probed" conf="10"><cpe>cpe:/a:nodejs:node.js</cpe></service></port>
-<port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="tcpwrapped" method="probed" conf="8"/></port>
+<port protocol="tcp" portid="8081"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="87217" rttvar="21674" to="173913"/>
+<times srtt="103235" rttvar="5610" to="125675"/>
 </host>
-<host starttime="1788600054" endtime="1788600068"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="44.228.249.3" addrtype="ipv4"/>
+<hostnames>
+<hostname name="testphp.vulnweb.com" type="user"/>
+<hostname name="ec2-44-228-249-3.us-west-2.compute.amazonaws.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="tls-v1-0.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="11783" rttvar="3988" to="100000"/>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="wrong.host.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="12676" rttvar="5123" to="100000"/>
+</host>
+<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="44.228.249.3" addrtype="ipv4"/>
+<hostnames>
+<hostname name="www.vulnweb.com" type="user"/>
+<hostname name="ec2-44-228-249-3.us-west-2.compute.amazonaws.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
+<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
+<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+</host>
+<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="5.196.105.14" addrtype="ipv4"/>
 <hostnames>
 <hostname name="www.zonetransfer.me" type="user"/>
 </hostnames>
-<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Sparkles" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Sparkles" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
 <port protocol="tcp" portid="81"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
 <port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Rainbows and XSS&lt;script&gt;alert(1)&lt;/script&gt;" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
+<port protocol="tcp" portid="1002"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1011"><state state="closed" reason="conn-refused" reason_ttl="0"/></port>
 <port protocol="tcp" portid="4000"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Node.js" extrainfo="Express middleware" method="probed" conf="10"><cpe>cpe:/a:nodejs:node.js</cpe></service></port>
 <port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8081"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="87260" rttvar="22354" to="176676"/>
+<times srtt="101909" rttvar="4732" to="120837"/>
 </host>
-<runstats><finished time="1788600068" timestr="Sat Sep  5 09:21:08 2026" summary="Nmap done at Sat Sep  5 09:21:08 2026; 4 IP addresses (4 hosts up) scanned in 15.61 seconds" elapsed="15.61" exit="success"/><hosts up="4" down="0" total="4"/>
+<runstats><finished time="1788604944" timestr="Sat Sep  5 10:42:24 2026" summary="Nmap done at Sat Sep  5 10:42:24 2026; 15 IP addresses (15 hosts up) scanned in 23.24 seconds" elapsed="23.24" exit="success"/><hosts up="15" down="0" total="15"/>
 </runstats>
 </nmaprun>

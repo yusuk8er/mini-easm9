@@ -1,49 +1,293 @@
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-09-05 09:20 UTC
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-09-05 10:42 UTC
+Nmap scan report for expired.badssl.com (104.154.89.105)
+Host is up (0.012s latency).
+rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            nginx 1.10.3 (Ubuntu)
+81/tcp    filtered hosts2-ns
+443/tcp   open     ssl/http        nginx 1.10.3 (Ubuntu)
+1002/tcp  open     ssl/http        nginx 1.10.3
+1010/tcp  open     ssl/http        nginx 1.10.3
+1011/tcp  open     ssl/http        nginx 1.10.3
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
 Nmap scan report for office.zonetransfer.me (4.23.39.254)
 Host is up.
 
-PORT     STATE    SERVICE        VERSION
-80/tcp   filtered http
-81/tcp   filtered hosts2-ns
-443/tcp  filtered https
-4000/tcp filtered remoteanything
-8080/tcp filtered http-proxy
-8443/tcp filtered https-alt
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    filtered http
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
 
-Nmap scan report for staging.zonetransfer.me (13.226.238.91)
-Host is up (0.0064s latency).
-Other addresses for staging.zonetransfer.me (not scanned): 13.226.238.21 13.226.238.86 13.226.238.124 2600:9000:201f:5800:7:60:4d00:93a1 2600:9000:201f:1a00:7:60:4d00:93a1 2600:9000:201f:5000:7:60:4d00:93a1 2600:9000:201f:8800:7:60:4d00:93a1 2600:9000:201f:7800:7:60:4d00:93a1 2600:9000:201f:ea00:7:60:4d00:93a1 2600:9000:201f:f000:7:60:4d00:93a1 2600:9000:201f:b600:7:60:4d00:93a1
-rDNS record for 13.226.238.91: server-13-226-238-91.iad61.r.cloudfront.net
+Nmap scan report for rest.vulnweb.com (18.215.71.186)
+Host is up (0.018s latency).
+rDNS record for 18.215.71.186: ec2-18-215-71-186.compute-1.amazonaws.com
 
-PORT     STATE    SERVICE        VERSION
-80/tcp   open     http           Amazon CloudFront httpd
-81/tcp   filtered hosts2-ns
-443/tcp  open     ssl/https?
-4000/tcp filtered remoteanything
-8080/tcp filtered http-proxy
-8443/tcp filtered https-alt
+PORT      STATE    SERVICE        VERSION
+22/tcp    filtered ssh
+80/tcp    open     http           Apache httpd 2.4.25 ((Debian))
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  open     http           Apache httpd 2.4.25 ((Debian))
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.050s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+
+PORT      STATE  SERVICE         VERSION
+22/tcp    open   ssh             OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13 (Ubuntu Linux; protocol 2.0)
+80/tcp    open   http            Apache httpd 2.4.7 ((Ubuntu))
+81/tcp    closed hosts2-ns
+443/tcp   closed https
+1002/tcp  closed windows-icfw
+1010/tcp  closed surf
+1011/tcp  closed unknown
+4000/tcp  closed remoteanything
+8080/tcp  closed http-proxy
+8081/tcp  closed blackice-icecap
+8443/tcp  closed https-alt
+9929/tcp  open   nping-echo      Nping echo
+31337/tcp open   tcpwrapped
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap scan report for self-signed.badssl.com (104.154.89.105)
+Host is up (0.013s latency).
+rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            nginx 1.10.3 (Ubuntu)
+81/tcp    filtered hosts2-ns
+443/tcp   open     ssl/http        nginx 1.10.3 (Ubuntu)
+1002/tcp  open     ssl/http        nginx 1.10.3
+1010/tcp  open     ssl/http        nginx 1.10.3
+1011/tcp  open     ssl/http        nginx 1.10.3
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap scan report for staging.zonetransfer.me (13.32.164.67)
+Host is up (0.0026s latency).
+Other addresses for staging.zonetransfer.me (not scanned): 13.32.164.70 13.32.164.48 13.32.164.38 2600:9000:24d0:de00:7:60:4d00:93a1 2600:9000:24d0:c600:7:60:4d00:93a1 2600:9000:24d0:1a00:7:60:4d00:93a1 2600:9000:24d0:c200:7:60:4d00:93a1 2600:9000:24d0:400:7:60:4d00:93a1 2600:9000:24d0:a600:7:60:4d00:93a1 2600:9000:24d0:e800:7:60:4d00:93a1 2600:9000:24d0:3c00:7:60:4d00:93a1
+rDNS record for 13.32.164.67: server-13-32-164-67.ord58.r.cloudfront.net
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            Amazon CloudFront httpd
+81/tcp    filtered hosts2-ns
+443/tcp   open     ssl/https?
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+
+Nmap scan report for testasp.vulnweb.com (44.238.29.244)
+Host is up (0.064s latency).
+rDNS record for 44.238.29.244: ec2-44-238-29-244.us-west-2.compute.amazonaws.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            Microsoft IIS httpd 8.5
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Nmap scan report for testaspnet.vulnweb.com (44.238.29.244)
+Host is up (0.064s latency).
+rDNS record for 44.238.29.244: ec2-44-238-29-244.us-west-2.compute.amazonaws.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            Microsoft IIS httpd 8.5
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Nmap scan report for testhtml5.vulnweb.com (44.228.249.3)
+Host is up.
+rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    filtered http
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
 
 Nmap scan report for testing.zonetransfer.me (5.196.105.14)
-Host is up (0.087s latency).
+Host is up (0.10s latency).
 
-PORT     STATE  SERVICE     VERSION
-80/tcp   open   http        Apache httpd (Sparkles)
-81/tcp   open   http        Apache httpd
-443/tcp  open   ssl/http    Apache httpd (Rainbows and XSS<script>alert(1)</script>)
-4000/tcp open   http        Node.js (Express middleware)
-8080/tcp open   http-proxy?
-8443/tcp closed https-alt
+PORT      STATE  SERVICE         VERSION
+22/tcp    closed ssh
+80/tcp    open   http            Apache httpd (Sparkles)
+81/tcp    open   http            Apache httpd
+443/tcp   open   ssl/http        Apache httpd (Rainbows and XSS<script>alert(1)</script>)
+1002/tcp  closed windows-icfw
+1010/tcp  closed surf
+1011/tcp  closed unknown
+4000/tcp  open   http            Node.js (Express middleware)
+8080/tcp  open   tcpwrapped
+8081/tcp  closed blackice-icecap
+8443/tcp  closed https-alt
+9929/tcp  closed nping-echo
+31337/tcp closed Elite
+
+Nmap scan report for testphp.vulnweb.com (44.228.249.3)
+Host is up.
+rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    filtered http
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+
+Nmap scan report for tls-v1-0.badssl.com (104.154.89.105)
+Host is up (0.012s latency).
+rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            nginx 1.10.3 (Ubuntu)
+81/tcp    filtered hosts2-ns
+443/tcp   open     ssl/http        nginx 1.10.3 (Ubuntu)
+1002/tcp  open     ssl/http        nginx 1.10.3
+1010/tcp  open     ssl/http        nginx 1.10.3
+1011/tcp  open     ssl/http        nginx 1.10.3
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap scan report for wrong.host.badssl.com (104.154.89.105)
+Host is up (0.013s latency).
+rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    open     http            nginx 1.10.3 (Ubuntu)
+81/tcp    filtered hosts2-ns
+443/tcp   open     ssl/http        nginx 1.10.3 (Ubuntu)
+1002/tcp  open     ssl/http        nginx 1.10.3
+1010/tcp  open     ssl/http        nginx 1.10.3
+1011/tcp  open     ssl/http        nginx 1.10.3
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap scan report for www.vulnweb.com (44.228.249.3)
+Host is up.
+rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
+
+PORT      STATE    SERVICE         VERSION
+22/tcp    filtered ssh
+80/tcp    filtered http
+81/tcp    filtered hosts2-ns
+443/tcp   filtered https
+1002/tcp  filtered windows-icfw
+1010/tcp  filtered surf
+1011/tcp  filtered unknown
+4000/tcp  filtered remoteanything
+8080/tcp  filtered http-proxy
+8081/tcp  filtered blackice-icecap
+8443/tcp  filtered https-alt
+9929/tcp  filtered nping-echo
+31337/tcp filtered Elite
 
 Nmap scan report for www.zonetransfer.me (5.196.105.14)
-Host is up (0.087s latency).
+Host is up (0.10s latency).
 
-PORT     STATE  SERVICE     VERSION
-80/tcp   open   http        Apache httpd (Sparkles)
-81/tcp   open   http        Apache httpd
-443/tcp  open   ssl/http    Apache httpd (Rainbows and XSS<script>alert(1)</script>)
-4000/tcp open   http        Node.js (Express middleware)
-8080/tcp open   http-proxy?
-8443/tcp closed https-alt
+PORT      STATE  SERVICE         VERSION
+22/tcp    closed ssh
+80/tcp    open   http            Apache httpd (Sparkles)
+81/tcp    open   http            Apache httpd
+443/tcp   open   ssl/http        Apache httpd (Rainbows and XSS<script>alert(1)</script>)
+1002/tcp  closed windows-icfw
+1010/tcp  closed surf
+1011/tcp  closed unknown
+4000/tcp  open   http            Node.js (Express middleware)
+8080/tcp  open   http-proxy?
+8081/tcp  closed blackice-icecap
+8443/tcp  closed https-alt
+9929/tcp  closed nping-echo
+31337/tcp closed Elite
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 4 IP addresses (4 hosts up) scanned in 15.61 seconds
+Nmap done: 15 IP addresses (15 hosts up) scanned in 23.24 seconds

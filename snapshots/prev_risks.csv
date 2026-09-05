@@ -1,0 +1,4 @@
+﻿host,owner,severity,confidence,risk_id,detail,source
+nsztm1.digi.ninja,,high,confirmed,dns-zone-transfer,DNS zone transfer (AXFR) allowed for zonetransfer.me,dig
+nsztm2.digi.ninja,,high,confirmed,dns-zone-transfer,DNS zone transfer (AXFR) allowed for zonetransfer.me,dig
+testing.zonetransfer.me,,medium,confirmed,tls-mismatch,TLS certificate hostname mismatch,tlsx

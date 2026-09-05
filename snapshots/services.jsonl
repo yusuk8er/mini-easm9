@@ -1,10 +1,28 @@
+{"host": "3des.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
+{"host": "3des.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "https", "product": "", "version": "", "extrainfo": ""}
+{"host": "3des.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "3des.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "3des.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
+{"host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "https", "product": "", "version": "", "extrainfo": ""}
+{"host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "expired.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
 {"host": "expired.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
 {"host": "expired.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "expired.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "expired.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
-{"host": "rest.vulnweb.com", "ip": "18.215.71.186", "port": 80, "service": "http", "product": "Apache httpd", "version": "Apache httpd 2.4.25", "extrainfo": "(Debian)"}
-{"host": "rest.vulnweb.com", "ip": "18.215.71.186", "port": 8081, "service": "http", "product": "Apache httpd", "version": "Apache httpd 2.4.25", "extrainfo": "(Debian)"}
+{"host": "null.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
+{"host": "null.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "https", "product": "", "version": "", "extrainfo": ""}
+{"host": "null.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "null.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "null.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
+{"host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "https", "product": "", "version": "", "extrainfo": ""}
+{"host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "scanme.nmap.org", "ip": "45.33.32.156", "port": 22, "service": "ssh", "product": "OpenSSH", "version": "OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13", "extrainfo": "Ubuntu Linux; protocol 2.0"}
 {"host": "scanme.nmap.org", "ip": "45.33.32.156", "port": 80, "service": "http", "product": "Apache httpd", "version": "Apache httpd 2.4.7", "extrainfo": "(Ubuntu)"}
 {"host": "scanme.nmap.org", "ip": "45.33.32.156", "port": 9929, "service": "nping-echo", "product": "Nping echo", "version": "Nping echo", "extrainfo": ""}
@@ -14,27 +32,18 @@
 {"host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
-{"host": "staging.zonetransfer.me", "ip": "13.32.164.67", "port": 80, "service": "http", "product": "Amazon CloudFront httpd", "version": "Amazon CloudFront httpd", "extrainfo": ""}
-{"host": "staging.zonetransfer.me", "ip": "13.32.164.67", "port": 443, "service": "https", "product": "", "version": "", "extrainfo": ""}
-{"host": "testasp.vulnweb.com", "ip": "44.238.29.244", "port": 80, "service": "http", "product": "Microsoft IIS httpd", "version": "Microsoft IIS httpd 8.5", "extrainfo": ""}
-{"host": "testaspnet.vulnweb.com", "ip": "44.238.29.244", "port": 80, "service": "http", "product": "Microsoft IIS httpd", "version": "Microsoft IIS httpd 8.5", "extrainfo": ""}
-{"host": "testing.zonetransfer.me", "ip": "5.196.105.14", "port": 80, "service": "http", "product": "Apache httpd", "version": "Apache httpd", "extrainfo": "Sparkles"}
-{"host": "testing.zonetransfer.me", "ip": "5.196.105.14", "port": 81, "service": "http", "product": "Apache httpd", "version": "Apache httpd", "extrainfo": ""}
-{"host": "testing.zonetransfer.me", "ip": "5.196.105.14", "port": 443, "service": "http", "product": "Apache httpd", "version": "Apache httpd", "extrainfo": "Rainbows and XSS<script>alert(1)</script>"}
-{"host": "testing.zonetransfer.me", "ip": "5.196.105.14", "port": 4000, "service": "http", "product": "Node.js", "version": "Node.js", "extrainfo": "Express middleware"}
-{"host": "testing.zonetransfer.me", "ip": "5.196.105.14", "port": 8080, "service": "tcpwrapped", "product": "", "version": "", "extrainfo": ""}
 {"host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
 {"host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
 {"host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
+{"host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
+{"host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
+{"host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 80, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
 {"host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 443, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": "Ubuntu"}
 {"host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 1002, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 1010, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
 {"host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 1011, "service": "http", "product": "nginx", "version": "nginx 1.10.3", "extrainfo": ""}
-{"host": "www.zonetransfer.me", "ip": "5.196.105.14", "port": 80, "service": "http", "product": "Apache httpd", "version": "Apache httpd", "extrainfo": "Sparkles"}
-{"host": "www.zonetransfer.me", "ip": "5.196.105.14", "port": 81, "service": "http", "product": "Apache httpd", "version": "Apache httpd", "extrainfo": ""}
-{"host": "www.zonetransfer.me", "ip": "5.196.105.14", "port": 443, "service": "http", "product": "Apache httpd", "version": "Apache httpd", "extrainfo": "Rainbows and XSS<script>alert(1)</script>"}
-{"host": "www.zonetransfer.me", "ip": "5.196.105.14", "port": 4000, "service": "http", "product": "Node.js", "version": "Node.js", "extrainfo": "Express middleware"}
-{"host": "www.zonetransfer.me", "ip": "5.196.105.14", "port": 8080, "service": "http-proxy", "product": "", "version": "", "extrainfo": ""}

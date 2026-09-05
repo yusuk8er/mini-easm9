@@ -1,0 +1,46 @@
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "3des.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "3des.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "medium", "detail": "弱い暗号スイートが有効 (3DES) (443/tcp)", "host": "3des.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "3des.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "3des.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "dh480.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "expired.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "expired.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "medium", "detail": "弱い暗号スイートが有効 (3DES) (443/tcp)", "host": "expired.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "expired.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "expired.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "null.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "null.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "critical", "detail": "弱い暗号スイートが有効 (NULL暗号, 匿名鍵交換) (443/tcp)", "host": "null.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-config", "severity": "high", "detail": "TLS設定の総合評価が最低水準 (443/tcp)", "host": "null.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "null.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "null.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "high", "detail": "弱い暗号スイートが有効 (RC4) (443/tcp)", "host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "rc4.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "ssh-weak-algorithm", "severity": "medium", "detail": "SSHで弱いアルゴリズムが有効 (DH group1, ssh-rsa(SHA-1), HMAC-MD5, Arcfour, 3DES-CBC) (22/tcp)", "host": "scanme.nmap.org", "ip": "45.33.32.156", "port": 22}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "medium", "detail": "弱い暗号スイートが有効 (3DES) (443/tcp)", "host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "self-signed.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "medium", "detail": "弱い暗号スイートが有効 (3DES) (443/tcp)", "host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "tls-v1-0.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "medium", "detail": "弱い暗号スイートが有効 (3DES) (443/tcp)", "host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "tls-v1-1.badssl.com", "ip": "104.154.89.105", "port": 1011}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (443/tcp)", "host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (443/tcp)", "host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-weak-cipher", "severity": "medium", "detail": "弱い暗号スイートが有効 (3DES) (443/tcp)", "host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 443}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.0 が有効 (1010/tcp)", "host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 1010}
+{"risk_id": "tls-old-protocol", "severity": "medium", "detail": "TLSv1.1 が有効 (1011/tcp)", "host": "wrong.host.badssl.com", "ip": "104.154.89.105", "port": 1011}

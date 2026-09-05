@@ -1,12 +1,464 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE nmaprun>
 <?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
-<!-- Nmap 7.94SVN scan initiated Sat Sep  5 10:42:01 2026 as: nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;host-timeout 30s -p 22,80,81,443,1002,1010,1011,4000,8080,8081,8443,9929,31337 -iL /tmp/tmp.pY9FjgbiFk/nmap_part_00 -oX /tmp/tmp.pY9FjgbiFk/nmap_1.xml -->
-<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;host-timeout 30s -p 22,80,81,443,1002,1010,1011,4000,8080,8081,8443,9929,31337 -iL /tmp/tmp.pY9FjgbiFk/nmap_part_00 -oX /tmp/tmp.pY9FjgbiFk/nmap_1.xml" start="1788604921" startstr="Sat Sep  5 10:42:01 2026" version="7.94SVN" xmloutputversion="1.05">
-<scaninfo type="connect" protocol="tcp" numservices="13" services="22,80-81,443,1002,1010-1011,4000,8080-8081,8443,9929,31337"/>
+<!-- Nmap 7.94SVN scan initiated Sat Sep  5 13:08:21 2026 as: nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;script ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos -&#45;script-timeout 40s -&#45;host-timeout 90s -p 22,80,443,1002,1010,1011,8080,8443,9929,31337 -iL /tmp/tmp.PMIhrjnqRW/nmap_part_00 -oX /tmp/tmp.PMIhrjnqRW/nmap_1.xml -->
+<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;script ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos -&#45;script-timeout 40s -&#45;host-timeout 90s -p 22,80,443,1002,1010,1011,8080,8443,9929,31337 -iL /tmp/tmp.PMIhrjnqRW/nmap_part_00 -oX /tmp/tmp.PMIhrjnqRW/nmap_1.xml" start="1788613701" startstr="Sat Sep  5 13:08:21 2026" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="10" services="22,80,443,1002,1010-1011,8080,8443,9929,31337"/>
 <verbose level="0"/>
 <debugging level="0"/>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788613702" endtime="1788613739"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="3des.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" tunnel="ssl" method="table" conf="3"/><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA (dh 1024) - D&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA (dh 1024) - D&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA (dh 1024) - D&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: D"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">D</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">D</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">D</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">D</elem>
+</script></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="34641" rttvar="12790" to="100000"/>
+</host>
+<host starttime="1788613702" endtime="1788613740"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="dh480.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" tunnel="ssl" method="table" conf="3"/><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 480) - C&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 480) - B&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 480) of lower strength than certificate key&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 480) - C&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 480) - B&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 480) of lower strength than certificate key&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (dh 480) - C&#xa;      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (dh 480) - B&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (dh 480) - C&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 480) - C&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (dh 480) - B&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 480) - B&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 480) of lower strength than certificate key&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">B</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 480) of lower strength than certificate key</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">B</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 480) of lower strength than certificate key</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">B</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">B</elem>
+</table>
+<table>
+<elem key="kex_info">dh 480</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">B</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 480) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="36059" rttvar="12962" to="100000"/>
+</host>
+<host starttime="1788613702" endtime="1788613740"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="104.154.89.105" addrtype="ipv4"/>
 <hostnames>
 <hostname name="expired.badssl.com" type="user"/>
@@ -14,85 +466,1053 @@
 </hostnames>
 <ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
 <port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_GCM_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_GCM_SHA384 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
 <port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
 <port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="12126" rttvar="5108" to="100000"/>
+<times srtt="35619" rttvar="12725" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="4.23.39.254" addrtype="ipv4"/>
+<host starttime="1788613702" endtime="1788613742"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
 <hostnames>
-<hostname name="office.zonetransfer.me" type="user"/>
+<hostname name="null.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
 </hostnames>
 <ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" tunnel="ssl" method="table" conf="3"/><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_NULL_SHA (secp256r1) - F&#xa;      TLS_ECDH_anon_WITH_NULL_SHA (secp256r1) - F&#xa;      TLS_RSA_WITH_NULL_SHA (rsa 2048) - F&#xa;      TLS_ECDH_anon_WITH_AES_256_CBC_SHA (secp256r1) - F&#xa;      TLS_DH_anon_WITH_AES_256_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - F&#xa;      TLS_ECDH_anon_WITH_AES_128_CBC_SHA (secp256r1) - F&#xa;      TLS_DH_anon_WITH_AES_128_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_SEED_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - F&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Anonymous key exchange, score capped at F&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_NULL_SHA (secp256r1) - F&#xa;      TLS_ECDH_anon_WITH_NULL_SHA (secp256r1) - F&#xa;      TLS_RSA_WITH_NULL_SHA (rsa 2048) - F&#xa;      TLS_ECDH_anon_WITH_AES_256_CBC_SHA (secp256r1) - F&#xa;      TLS_DH_anon_WITH_AES_256_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - F&#xa;      TLS_ECDH_anon_WITH_AES_128_CBC_SHA (secp256r1) - F&#xa;      TLS_DH_anon_WITH_AES_128_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_SEED_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - F&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Anonymous key exchange, score capped at F&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_NULL_SHA (secp256r1) - F&#xa;      TLS_ECDH_anon_WITH_NULL_SHA (secp256r1) - F&#xa;      TLS_RSA_WITH_NULL_SHA256 (rsa 2048) - F&#xa;      TLS_RSA_WITH_NULL_SHA (rsa 2048) - F&#xa;      TLS_ECDH_anon_WITH_AES_256_CBC_SHA (secp256r1) - F&#xa;      TLS_DH_anon_WITH_AES_256_GCM_SHA384 (dh 1024) - F&#xa;      TLS_DH_anon_WITH_AES_256_CBC_SHA256 (dh 1024) - F&#xa;      TLS_DH_anon_WITH_AES_256_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - F&#xa;      TLS_ECDH_anon_WITH_AES_128_CBC_SHA (secp256r1) - F&#xa;      TLS_DH_anon_WITH_AES_128_GCM_SHA256 (dh 1024) - F&#xa;      TLS_DH_anon_WITH_AES_128_CBC_SHA256 (dh 1024) - F&#xa;      TLS_DH_anon_WITH_AES_128_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_SEED_CBC_SHA (dh 1024) - F&#xa;      TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - F&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Anonymous key exchange, score capped at F&#xa;  least strength: F"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_SEED_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Anonymous key exchange, score capped at F</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_SEED_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Anonymous key exchange, score capped at F</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_NULL_SHA256</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_NULL_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDH_anon_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_SEED_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">F</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Anonymous key exchange, score capped at F</elem>
+</table>
+</table>
+<elem key="least strength">F</elem>
+</script></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
 <port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
+<times srtt="37869" rttvar="14432" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="18.215.71.186" addrtype="ipv4"/>
+<host starttime="1788613702" endtime="1788613740"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
 <hostnames>
-<hostname name="rest.vulnweb.com" type="user"/>
-<hostname name="ec2-18-215-71-186.compute-1.amazonaws.com" type="PTR"/>
+<hostname name="rc4.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
 </hostnames>
 <ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.25" extrainfo="(Debian)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.25</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" tunnel="ssl" method="table" conf="3"/><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_RC4_128_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_RC4_128_SHA (rsa 2048) - C&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Broken cipher RC4 is deprecated by RFC 7465&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_RC4_128_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_RC4_128_SHA (rsa 2048) - C&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Broken cipher RC4 is deprecated by RFC 7465&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_RC4_128_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_RC4_128_SHA (rsa 2048) - C&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Broken cipher RC4 is deprecated by RFC 7465&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_RC4_128_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_RC4_128_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Broken cipher RC4 is deprecated by RFC 7465</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_RC4_128_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_RC4_128_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Broken cipher RC4 is deprecated by RFC 7465</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_RC4_128_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_RC4_128_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Broken cipher RC4 is deprecated by RFC 7465</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.25" extrainfo="(Debian)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.25</cpe></service></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
 <port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="17854" rttvar="13445" to="100000"/>
+<times srtt="35162" rttvar="12630" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788613702" endtime="1788613727"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="45.33.32.156" addrtype="ipv4"/>
 <hostnames>
 <hostname name="scanme.nmap.org" type="user"/>
 <hostname name="scanme.nmap.org" type="PTR"/>
 </hostnames>
-<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" product="OpenSSH" version="6.6.1p1 Ubuntu 2ubuntu2.13" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:6.6.1p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" product="OpenSSH" version="6.6.1p1 Ubuntu 2ubuntu2.13" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:6.6.1p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssh2-enum-algos" output="&#xa;  kex_algorithms: (8)&#xa;      curve25519-sha256@libssh.org&#xa;      ecdh-sha2-nistp256&#xa;      ecdh-sha2-nistp384&#xa;      ecdh-sha2-nistp521&#xa;      diffie-hellman-group-exchange-sha256&#xa;      diffie-hellman-group-exchange-sha1&#xa;      diffie-hellman-group14-sha1&#xa;      diffie-hellman-group1-sha1&#xa;  server_host_key_algorithms: (4)&#xa;      ssh-rsa&#xa;      ssh-dss&#xa;      ecdsa-sha2-nistp256&#xa;      ssh-ed25519&#xa;  encryption_algorithms: (16)&#xa;      aes128-ctr&#xa;      aes192-ctr&#xa;      aes256-ctr&#xa;      arcfour256&#xa;      arcfour128&#xa;      aes128-gcm@openssh.com&#xa;      aes256-gcm@openssh.com&#xa;      chacha20-poly1305@openssh.com&#xa;      aes128-cbc&#xa;      3des-cbc&#xa;      blowfish-cbc&#xa;      cast128-cbc&#xa;      aes192-cbc&#xa;      aes256-cbc&#xa;      arcfour&#xa;      rijndael-cbc@lysator.liu.se&#xa;  mac_algorithms: (19)&#xa;      hmac-md5-etm@openssh.com&#xa;      hmac-sha1-etm@openssh.com&#xa;      umac-64-etm@openssh.com&#xa;      umac-128-etm@openssh.com&#xa;      hmac-sha2-256-etm@openssh.com&#xa;      hmac-sha2-512-etm@openssh.com&#xa;      hmac-ripemd160-etm@openssh.com&#xa;      hmac-sha1-96-etm@openssh.com&#xa;      hmac-md5-96-etm@openssh.com&#xa;      hmac-md5&#xa;      hmac-sha1&#xa;      umac-64@openssh.com&#xa;      umac-128@openssh.com&#xa;      hmac-sha2-256&#xa;      hmac-sha2-512&#xa;      hmac-ripemd160&#xa;      hmac-ripemd160@openssh.com&#xa;      hmac-sha1-96&#xa;      hmac-md5-96&#xa;  compression_algorithms: (2)&#xa;      none&#xa;      zlib@openssh.com"><table key="kex_algorithms">
+<elem>curve25519-sha256@libssh.org</elem>
+<elem>ecdh-sha2-nistp256</elem>
+<elem>ecdh-sha2-nistp384</elem>
+<elem>ecdh-sha2-nistp521</elem>
+<elem>diffie-hellman-group-exchange-sha256</elem>
+<elem>diffie-hellman-group-exchange-sha1</elem>
+<elem>diffie-hellman-group14-sha1</elem>
+<elem>diffie-hellman-group1-sha1</elem>
+</table>
+<table key="server_host_key_algorithms">
+<elem>ssh-rsa</elem>
+<elem>ssh-dss</elem>
+<elem>ecdsa-sha2-nistp256</elem>
+<elem>ssh-ed25519</elem>
+</table>
+<table key="encryption_algorithms">
+<elem>aes128-ctr</elem>
+<elem>aes192-ctr</elem>
+<elem>aes256-ctr</elem>
+<elem>arcfour256</elem>
+<elem>arcfour128</elem>
+<elem>aes128-gcm@openssh.com</elem>
+<elem>aes256-gcm@openssh.com</elem>
+<elem>chacha20-poly1305@openssh.com</elem>
+<elem>aes128-cbc</elem>
+<elem>3des-cbc</elem>
+<elem>blowfish-cbc</elem>
+<elem>cast128-cbc</elem>
+<elem>aes192-cbc</elem>
+<elem>aes256-cbc</elem>
+<elem>arcfour</elem>
+<elem>rijndael-cbc@lysator.liu.se</elem>
+</table>
+<table key="mac_algorithms">
+<elem>hmac-md5-etm@openssh.com</elem>
+<elem>hmac-sha1-etm@openssh.com</elem>
+<elem>umac-64-etm@openssh.com</elem>
+<elem>umac-128-etm@openssh.com</elem>
+<elem>hmac-sha2-256-etm@openssh.com</elem>
+<elem>hmac-sha2-512-etm@openssh.com</elem>
+<elem>hmac-ripemd160-etm@openssh.com</elem>
+<elem>hmac-sha1-96-etm@openssh.com</elem>
+<elem>hmac-md5-96-etm@openssh.com</elem>
+<elem>hmac-md5</elem>
+<elem>hmac-sha1</elem>
+<elem>umac-64@openssh.com</elem>
+<elem>umac-128@openssh.com</elem>
+<elem>hmac-sha2-256</elem>
+<elem>hmac-sha2-512</elem>
+<elem>hmac-ripemd160</elem>
+<elem>hmac-ripemd160@openssh.com</elem>
+<elem>hmac-sha1-96</elem>
+<elem>hmac-md5-96</elem>
+</table>
+<table key="compression_algorithms">
+<elem>none</elem>
+<elem>zlib@openssh.com</elem>
+</table>
+</script></port>
 <port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="2.4.7" extrainfo="(Ubuntu)" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.7</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
 <port protocol="tcp" portid="443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
 <port protocol="tcp" portid="1002"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
 <port protocol="tcp" portid="1010"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
 <port protocol="tcp" portid="1011"><state state="closed" reason="conn-refused" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8080"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="nping-echo" product="Nping echo" method="probed" conf="10"/></port>
 <port protocol="tcp" portid="31337"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="tcpwrapped" method="probed" conf="8"/></port>
 </ports>
-<times srtt="49901" rttvar="2536" to="100000"/>
+<times srtt="45671" rttvar="5712" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788613702" endtime="1788613742"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="104.154.89.105" addrtype="ipv4"/>
 <hostnames>
 <hostname name="self-signed.badssl.com" type="user"/>
@@ -100,150 +1520,416 @@
 </hostnames>
 <ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
 <port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_GCM_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_GCM_SHA384 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
 <port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
 <port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="12511" rttvar="5375" to="100000"/>
+<times srtt="35768" rttvar="12083" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="13.32.164.67" addrtype="ipv4"/>
-<hostnames>
-<hostname name="staging.zonetransfer.me" type="user"/>
-<hostname name="server-13-32-164-67.ord58.r.cloudfront.net" type="PTR"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Amazon CloudFront httpd" method="probed" conf="10"/></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" tunnel="ssl" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-<times srtt="2643" rttvar="2949" to="100000"/>
-</host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="44.238.29.244" addrtype="ipv4"/>
-<hostnames>
-<hostname name="testasp.vulnweb.com" type="user"/>
-<hostname name="ec2-44-238-29-244.us-west-2.compute.amazonaws.com" type="PTR"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="8.5" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:internet_information_services:8.5</cpe><cpe>cpe:/o:microsoft:windows</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-<times srtt="64152" rttvar="48184" to="256888"/>
-</host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="44.238.29.244" addrtype="ipv4"/>
-<hostnames>
-<hostname name="testaspnet.vulnweb.com" type="user"/>
-<hostname name="ec2-44-238-29-244.us-west-2.compute.amazonaws.com" type="PTR"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Microsoft IIS httpd" version="8.5" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:internet_information_services:8.5</cpe><cpe>cpe:/o:microsoft:windows</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-<times srtt="63814" rttvar="63814" to="319070"/>
-</host>
-<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="44.228.249.3" addrtype="ipv4"/>
-<hostnames>
-<hostname name="testhtml5.vulnweb.com" type="user"/>
-<hostname name="ec2-44-228-249-3.us-west-2.compute.amazonaws.com" type="PTR"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-</host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="5.196.105.14" addrtype="ipv4"/>
-<hostnames>
-<hostname name="testing.zonetransfer.me" type="user"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Sparkles" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Rainbows and XSS&lt;script&gt;alert(1)&lt;/script&gt;" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
-<port protocol="tcp" portid="1002"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="closed" reason="conn-refused" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Node.js" extrainfo="Express middleware" method="probed" conf="10"><cpe>cpe:/a:nodejs:node.js</cpe></service></port>
-<port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="tcpwrapped" method="probed" conf="8"/></port>
-<port protocol="tcp" portid="8081"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-<times srtt="103235" rttvar="5610" to="125675"/>
-</host>
-<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="44.228.249.3" addrtype="ipv4"/>
-<hostnames>
-<hostname name="testphp.vulnweb.com" type="user"/>
-<hostname name="ec2-44-228-249-3.us-west-2.compute.amazonaws.com" type="PTR"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-</host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788613702" endtime="1788613741"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="104.154.89.105" addrtype="ipv4"/>
 <hostnames>
 <hostname name="tls-v1-0.badssl.com" type="user"/>
@@ -251,21 +1937,833 @@
 </hostnames>
 <ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
 <port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_GCM_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_GCM_SHA384 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
 <port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
 <port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="11783" rttvar="3988" to="100000"/>
+<times srtt="34461" rttvar="12879" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1788613702" endtime="1788613742"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="104.154.89.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="tls-v1-1.badssl.com" type="user"/>
+<hostname name="105.89.154.104.bc.googleusercontent.com" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_GCM_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_GCM_SHA384 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
+<port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="35744" rttvar="15176" to="100000"/>
+</host>
+<host starttime="1788613702" endtime="1788613744"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="104.154.89.105" addrtype="ipv4"/>
 <hostnames>
 <hostname name="wrong.host.badssl.com" type="user"/>
@@ -273,62 +2771,415 @@
 </hostnames>
 <ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
 <port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" extrainfo="Ubuntu" ostype="Linux" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  TLSv1.2: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (secp256r1) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA256 (dh 2048) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (secp256r1) - C&#xa;      TLS_RSA_WITH_AES_128_GCM_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_GCM_SHA384 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA256 (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_3DES_EDE_CBC_SHA (rsa 2048) - C&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      64-bit block cipher 3DES vulnerable to SWEET32 attack&#xa;  least strength: C"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<table key="TLSv1.2">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_GCM_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_GCM_SHA384</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA256</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_3DES_EDE_CBC_SHA</elem>
+<elem key="strength">C</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 2048</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>64-bit block cipher 3DES vulnerable to SWEET32 attack</elem>
+</table>
+</table>
+<elem key="least strength">C</elem>
+</script></port>
 <port protocol="tcp" portid="1002"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
+<port protocol="tcp" portid="1010"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.0: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.0">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
+<port protocol="tcp" portid="1011"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" version="1.10.3" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.10.3</cpe></service><script id="ssl-enum-ciphers" output="&#xa;  TLSv1.1: &#xa;    ciphers: &#xa;      TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_256_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (rsa 2048) - A&#xa;      TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (secp256r1) - A&#xa;      TLS_DHE_RSA_WITH_AES_128_CBC_SHA (dh 1024) - A&#xa;      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (dh 1024) - A&#xa;      TLS_RSA_WITH_AES_128_CBC_SHA (rsa 2048) - A&#xa;      TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (rsa 2048) - A&#xa;    compressors: &#xa;      NULL&#xa;    cipher preference: server&#xa;    warnings: &#xa;      Key exchange (dh 1024) of lower strength than certificate key&#xa;  least strength: A"><table key="TLSv1.1">
+<table key="ciphers">
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_256_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">secp256r1</elem>
+<elem key="name">TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">dh 1024</elem>
+<elem key="name">TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_AES_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+<table>
+<elem key="kex_info">rsa 2048</elem>
+<elem key="name">TLS_RSA_WITH_CAMELLIA_128_CBC_SHA</elem>
+<elem key="strength">A</elem>
+</table>
+</table>
+<table key="compressors">
+<elem>NULL</elem>
+</table>
+<elem key="cipher preference">server</elem>
+<table key="warnings">
+<elem>Key exchange (dh 1024) of lower strength than certificate key</elem>
+</table>
+</table>
+<elem key="least strength">A</elem>
+</script></port>
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 <port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
 <port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
 </ports>
-<times srtt="12676" rttvar="5123" to="100000"/>
+<times srtt="35858" rttvar="11601" to="100000"/>
 </host>
-<host starttime="1788604923" endtime="1788604925"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="44.228.249.3" addrtype="ipv4"/>
-<hostnames>
-<hostname name="www.vulnweb.com" type="user"/>
-<hostname name="ec2-44-228-249-3.us-west-2.compute.amazonaws.com" type="PTR"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http" method="table" conf="3"/></port>
-<port protocol="tcp" portid="81"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="hosts2-ns" method="table" conf="3"/></port>
-<port protocol="tcp" portid="443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1002"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="filtered" reason="no-response" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="remoteanything" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-</host>
-<host starttime="1788604923" endtime="1788604944"><status state="up" reason="user-set" reason_ttl="0"/>
-<address addr="5.196.105.14" addrtype="ipv4"/>
-<hostnames>
-<hostname name="www.zonetransfer.me" type="user"/>
-</hostnames>
-<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Sparkles" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
-<port protocol="tcp" portid="81"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
-<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" extrainfo="Rainbows and XSS&lt;script&gt;alert(1)&lt;/script&gt;" tunnel="ssl" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service></port>
-<port protocol="tcp" portid="1002"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="windows-icfw" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1010"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="surf" method="table" conf="3"/></port>
-<port protocol="tcp" portid="1011"><state state="closed" reason="conn-refused" reason_ttl="0"/></port>
-<port protocol="tcp" portid="4000"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Node.js" extrainfo="Express middleware" method="probed" conf="10"><cpe>cpe:/a:nodejs:node.js</cpe></service></port>
-<port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8081"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="blackice-icecap" method="table" conf="3"/></port>
-<port protocol="tcp" portid="8443"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
-<port protocol="tcp" portid="9929"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="nping-echo" method="table" conf="3"/></port>
-<port protocol="tcp" portid="31337"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="Elite" method="table" conf="3"/></port>
-</ports>
-<times srtt="101909" rttvar="4732" to="120837"/>
-</host>
-<runstats><finished time="1788604944" timestr="Sat Sep  5 10:42:24 2026" summary="Nmap done at Sat Sep  5 10:42:24 2026; 15 IP addresses (15 hosts up) scanned in 23.24 seconds" elapsed="23.24" exit="success"/><hosts up="15" down="0" total="15"/>
+<runstats><finished time="1788613744" timestr="Sat Sep  5 13:09:04 2026" summary="Nmap done at Sat Sep  5 13:09:04 2026; 10 IP addresses (10 hosts up) scanned in 43.11 seconds" elapsed="43.11" exit="success"/><hosts up="10" down="0" total="10"/>
 </runstats>
 </nmaprun>

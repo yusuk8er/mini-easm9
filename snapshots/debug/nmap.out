@@ -1,6 +1,6 @@
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-09-05 13:08 UTC
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-09-06 20:17 UTC
 Nmap scan report for 3des.badssl.com (104.154.89.105)
-Host is up (0.035s latency).
+Host is up (0.013s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -90,7 +90,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for dh480.badssl.com (104.154.89.105)
-Host is up (0.036s latency).
+Host is up (0.012s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -178,7 +178,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for expired.badssl.com (104.154.89.105)
-Host is up (0.036s latency).
+Host is up (0.017s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -304,7 +304,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for null.badssl.com (104.154.89.105)
-Host is up (0.038s latency).
+Host is up (0.017s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -417,7 +417,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for rc4.badssl.com (104.154.89.105)
-Host is up (0.035s latency).
+Host is up (0.013s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -501,7 +501,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for scanme.nmap.org (45.33.32.156)
-Host is up (0.046s latency).
+Host is up (0.051s latency).
 Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
 
 PORT      STATE  SERVICE      VERSION
@@ -573,7 +573,7 @@ PORT      STATE  SERVICE      VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for self-signed.badssl.com (104.154.89.105)
-Host is up (0.036s latency).
+Host is up (0.014s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -699,7 +699,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for tls-v1-0.badssl.com (104.154.89.105)
-Host is up (0.034s latency).
+Host is up (0.013s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -825,7 +825,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for tls-v1-1.badssl.com (104.154.89.105)
-Host is up (0.036s latency).
+Host is up (0.018s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -951,7 +951,7 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap scan report for wrong.host.badssl.com (104.154.89.105)
-Host is up (0.036s latency).
+Host is up (0.012s latency).
 rDNS record for 104.154.89.105: 105.89.154.104.bc.googleusercontent.com
 
 PORT      STATE    SERVICE    VERSION
@@ -1077,4 +1077,4 @@ PORT      STATE    SERVICE    VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 10 IP addresses (10 hosts up) scanned in 43.11 seconds
+Nmap done: 10 IP addresses (10 hosts up) scanned in 34.46 seconds

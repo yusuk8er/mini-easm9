@@ -25,7 +25,7 @@ file:// で開いた場合はブラウザの制限により fetch が失敗す�
 各行に delta 列を付ける。
 
   new     : 今回はじめて現れた
-  removed : 前回はあったが今回は無い
+  removed : 前回はあったが今回は検出されなかった（停止とは限らない）
   same    : 変化なし
   base    : 前回の結果が無いため判定できない（初回実行）
 
@@ -57,12 +57,14 @@ def read_rows(path):
 def key_of(row, kind):
     """行を一意に識別するキー。"""
     if kind == "assets":
-        return (row.get("host", ""), str(row.get("port", "")))
+        # ポートを含めると、応答の有無が変わっただけで
+        # 「消えて新しく現れた」と誤判定される。ホスト名だけで同一性を見る
+        return (row.get("host", ""),)
     return (row.get("host", ""), row.get("risk_id", ""), row.get("detail", ""))
 
 
 def diff_rows(cur, prev, kind, has_prev):
-    """delta 列を付けた行のリストを返す。消滅した行も末尾に加える。"""
+    """delta 列を付けた行のリストを返す。今回検出されなかった行も末尾に加える。"""
     prev_keys = {key_of(r, kind) for r in prev}
     cur_keys = {key_of(r, kind) for r in cur}
 

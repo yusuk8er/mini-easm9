@@ -44,7 +44,9 @@ def read_rows(path):
 
 def key_of(row, kind):
     if kind == "assets":
-        return (row.get("host", ""), str(row.get("port", "")))
+        # ポートを含めると、応答の有無が変わっただけで
+        # 「消えて新しく現れた」と誤判定される。ホスト名だけで同一性を見る
+        return (row.get("host", ""),)
     return (row.get("host", ""), row.get("risk_id", ""), row.get("detail", ""))
 
 
@@ -145,11 +147,14 @@ def main():
         L.append("")
 
     if gone_assets:
-        L.append(f"### 消滅した資産 {len(gone_assets)} 件")
+        L.append(f"### 今回は検出されなかった資産 {len(gone_assets)} 件")
         L.append("")
         L += table(["ホスト", "持ち主"],
                    [[r.get("host", ""), r.get("owner") or "不明"]
                     for r in gone_assets[:MAX_ROWS]])
+        L.append("")
+        L.append("停止したとは限りません。一時的な応答遅延や、"
+                 "スキャン元IPの遮断でも同じ結果になります。")
         L.append("")
 
     # ---- 初回は全件の要約を出す ----

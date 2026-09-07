@@ -29,7 +29,7 @@ import sys
 from pathlib import Path
 
 FIELDS = [
-    "host", "owner", "state", "ip", "cname",
+    "host", "owner", "state", "reachable", "ip", "cname",
     "port", "status", "title", "tech", "cpe", "findings",
 ]
 
@@ -457,6 +457,7 @@ def main(outdir):
             "host": host,
             "owner": "",
             "state": "",
+            "reachable": "yes",
             "ip": ";".join(sorted(ips)),
             "cname": ";".join(sorted(c.rstrip(".") for c in cnames)),
             "port": h.get("port", ""),
@@ -469,6 +470,28 @@ def main(outdir):
         row["owner"] = find_owner(host, owners)
         row["state"] = classify(row, row["owner"])
         rows.append(row)
+
+    # 名前解決はできたが、HTTPで応答が無かったホストも記録する。
+    # DNSにAレコードがある以上、実在する資産である。
+    # HTTP以外で稼働している（VPN・SSH等）、あるいは
+    # スキャン元のIPを遮断している可能性があり、「存在しない」とは言えない。
+    responded = {r["host"] for r in rows}
+    for host, (ips, cnames) in sorted(dns_map.items()):
+        if host in responded or not ips:
+            continue
+        if all(is_private(ip) for ip in ips):
+            continue
+        r2 = {k: "" for k in FIELDS}
+        r2.update({
+            "host": host,
+            "reachable": "no",
+            "ip": ";".join(sorted(ips)),
+            "cname": ";".join(sorted(c.rstrip(".") for c in cnames)),
+            "findings": ";".join(sorted(findings.get(host, []))),
+        })
+        r2["owner"] = find_owner(host, owners)
+        r2["state"] = classify(r2, r2["owner"])
+        rows.append(r2)
 
     rows.sort(key=lambda r: (r["host"], str(r["port"])))
 
@@ -488,8 +511,10 @@ def main(outdir):
     conf = sum(1 for r in risks if r["confidence"] == "confirmed")
     print(f"    assets.csv: {len(rows)} 行")
     print(f"    risks.csv:  {len(risks)} 件 (確認済み {conf} / 要確認 {len(risks) - conf})")
+    unreach = sum(1 for r in rows if r.get("reachable") == "no")
     print(f"    持ち主不明 {counts.get('shadow', 0)} / "
-          f"判明済み {counts.get('known', 0)}")
+          f"判明済み {counts.get('known', 0)} / "
+          f"応答なし {unreach}")
 
 
 if __name__ == "__main__":

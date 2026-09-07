@@ -58,6 +58,14 @@ mkdir -p "$DBG"
 # 上書きする前に確保しておき、差分の算出に使う
 cp "$ROOT/assets.csv" "$OUT/prev_assets.csv" 2>/dev/null || true
 cp "$ROOT/risks.csv"  "$OUT/prev_risks.csv"  2>/dev/null || true
+
+# 中間ファイルを初期化する。
+# モードを切り替えた際、前回の実行で作られたファイルが残っていると、
+# 今回スキャンしていない対象の検出結果が混ざってしまう
+for f in dns.jsonl ports.jsonl services.jsonl nse_findings.jsonl \
+         http.jsonl tls.jsonl dns_risks.jsonl netfindings.jsonl findings.jsonl; do
+  : > "$OUT/$f"
+done
 {
   echo "date: $(date -u +%FT%TZ)"
   echo "mode: $MODE"
@@ -285,7 +293,8 @@ else
   cp "$WORK/live.txt" "$WORK/hostports.txt"
 fi
 
-httpx -l "$WORK/hostports.txt" -silent -json \
+# 一時的な応答遅延で資産を取りこぼさないよう、余裕を持たせる
+httpx -l "$WORK/hostports.txt" -silent -json -timeout 10 -retries 2 \
       -status-code -title -tech-detect -tls-grab -cpe -cdn \
       -rate-limit 50 > "$OUT/http.jsonl" || true
 echo "    $(wc -l < "$OUT/http.jsonl") エンドポイント"

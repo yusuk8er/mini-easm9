@@ -85,7 +85,6 @@
   .d-removed{background:#8a938c;color:#fff;font-size:10px;padding:1px 6px;
              border-radius:var(--radius);margin-left:6px;white-space:nowrap}
   tr.dl-removed{opacity:.55}
-  tr.dl-removed .host{text-decoration:line-through}
   .f-out{color:var(--muted)} .f-ok{color:var(--pine)}
   tr.r-alert td:first-child{box-shadow:inset 3px 0 0 var(--alarm)}
   tr.r-unmapped td:first-child{box-shadow:inset 3px 0 0 var(--amber)}
@@ -204,7 +203,7 @@ const CFG={
     title:'外部公開資産',
     striplabel:'1資産＝1目盛り／高いほど要確認',
     placeholder:'ホスト, 持ち主, 技術で絞り込み',
-    filters:[['all','すべて'],['new','新規'],['shadow','持ち主不明'],['known','判明済み'],['removed','消滅']],
+    filters:[['all','すべて'],['new','新規'],['shadow','持ち主不明'],['known','判明済み'],['removed','今回なし']],
     cols:[['host','ホスト'],['owner','持ち主'],['tech','技術'],['state','判定']],
     data:()=>ASSETS,
     cls:r=>ASSET_CLS[r.state]||'ok',
@@ -214,7 +213,7 @@ const CFG={
       live.forEach(r=>{if(c[r.state]!==undefined)c[r.state]++});
       const nw=d.filter(r=>r.delta==='new').length;
       const rm=d.filter(r=>r.delta==='removed').length;
-      return [['資産',live.length,''],['新規',nw,'alarm'],['持ち主不明',c.shadow,'amber'],['消滅',rm,'']];
+      return [['資産',live.length,''],['新規',nw,'alarm'],['持ち主不明',c.shadow,'amber'],['前回のみ',rm,'']];
     },
     match:(r,f)=>f==='new'||f==='removed'?r.delta===f:(r.state===f&&r.delta!=='removed'),
     sort:(a,b)=>((a.delta==='new'?0:a.delta==='removed'?2:1)-(b.delta==='new'?0:b.delta==='removed'?2:1))
@@ -232,7 +231,7 @@ const CFG={
 
 function deltaTag(r){
   if(r.delta==='new')return '<span class="d-new">NEW</span>';
-  if(r.delta==='removed')return '<span class="d-removed">消滅</span>';
+  if(r.delta==='removed')return '<span class="d-removed">応答なし</span>';
   return '';
 }
 

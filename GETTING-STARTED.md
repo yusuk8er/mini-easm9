@@ -88,7 +88,7 @@ example.com
 1. リポジトリ画面の「Actions」タブを開く
 2. 左メニューの「Yusuk8er-easm」をクリック
 3. 右側の「Run workflow」を押す
-4. **モードに `asset` を入力**
+4. **モードに `asset` を入力**（綴りを間違えると停止します）
 5. 「Run workflow」を押す
 
 `asset` モードでは資産の棚卸しだけを行い、ポートスキャンも

@@ -368,3 +368,10 @@ high      ssh-exposed                SSH exposed to internet (22/tcp) - OpenSSH 
 
 実行するスクリプトはいずれも参照系で、`--script-timeout 40s` を設定しています。
 対象への負荷は限定的ですが、通信は発生します。
+
+
+## サブドメインの発見について
+
+外部偵察では、subfinder に加えて証明書透明性ログ(crt.sh)を直接取得し、
+subfinder の取りこぼしを補完します。両者は統合され、dnsx で名前解決して
+実在するものだけが残ります。

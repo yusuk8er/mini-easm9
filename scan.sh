@@ -37,6 +37,18 @@ trap 'rm -rf "$WORK"' EXIT
 # 診断の深さ。既定は full。asset を指定すると資産棚卸しのみ
 MODE="${MODE:-full}"
 
+# 想定外のモード名（タイプミス等）で意図せず full が走るのを防ぐ。
+# discover 以外は通常スキャン扱いになるため、duscover のような打ち間違いが
+# 攻撃的な通信を伴う full スキャンにつながる。有効な値だけを許可する。
+case "$MODE" in
+  asset|full|discover) ;;
+  *)
+    echo "!! 不明なモード: '$MODE'" >&2
+    echo "!! 有効な値: asset / full / discover" >&2
+    exit 1
+    ;;
+esac
+
 # 診断情報の保存先。アーティファクトに同梱されるので、
 # 失敗時にログを探さなくても原因が追える
 DBG="$OUT/debug"
@@ -95,6 +107,24 @@ echo "==> [2/5] 外部偵察: subfinder -> dnsx -> naabu -> httpx"
 : > "$WORK/subs.txt"
 if [[ -s "$WORK/seeds.txt" ]]; then
   subfinder -dL "$WORK/seeds.txt" -silent -all > "$WORK/subs.txt" || true
+  sub_n=$(wc -l < "$WORK/subs.txt")
+
+  # subfinder は APIキーなしだと使えるデータソースが限られ、取りこぼすことがある。
+  # 証明書透明性ログ(crt.sh)を直接引いて補完する。失敗しても subfinder の結果で続行。
+  : > "$WORK/crt.txt"
+  while read -r seed; do
+    [[ -z "$seed" ]] && continue
+    url="https://crt.sh/?q=%25.${seed}&output=json"
+    curl -s --max-time 60 -A "Yusuk8er-easm/1.0" "$url" 2>/dev/null \
+      | jq -r '.[]?.name_value // empty' 2>/dev/null \
+      | tr 'A-Z' 'a-z' | sed 's/^\*\.//' \
+      | grep -E '^[a-z0-9._-]+\.[a-z]{2,}$' >> "$WORK/crt.txt" || true
+  done < "$WORK/seeds.txt"
+  crt_n=$(sort -u "$WORK/crt.txt" 2>/dev/null | wc -l)
+
+  # 両者を統合して重複を除く
+  cat "$WORK/crt.txt" >> "$WORK/subs.txt"
+  echo "    subfinder $sub_n 件 / crt.sh $crt_n 件"
 fi
 
 # hosts.txt があれば、列挙を経由せずそのまま対象に加える。

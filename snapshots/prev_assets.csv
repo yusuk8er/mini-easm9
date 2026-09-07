@@ -1,6 +1,5 @@
 ﻿host,owner,state,ip,cname,port,status,title,tech,cpe,findings
-athena.future.co.jp,,shadow,113.38.80.40,,443,200,,HSTS,cpe:2.3:a:cisco:adaptive-security-appliance-software:*:*:*:*:*:*:*:*,
+caspar.future.co.jp,,shadow,23.46.30.14;23.46.30.37,a568.b.akamai.net;caspar.future.co.jp-v1.edgesuite.net,443,200,,Akamai;HSTS,,
 nasa.future.co.jp,,shadow,13.196.7.98;176.34.41.129,,443,403,403 Forbidden,Amazon ELB;Amazon Web Services,,
 note.future.co.jp,,shadow,18.176.100.108,,443,302,,Envoy;HSTS,,
-vpn-gate01.future.co.jp,,shadow,113.157.212.6;113.38.80.39,,443,200,,HSTS,cpe:2.3:a:cisco:adaptive-security-appliance-software:*:*:*:*:*:*:*:*,
-www.future.co.jp,,shadow,23.217.104.236;23.217.104.240,a1807.b.akamai.net;www.future.co.jp-v1.edgesuite.net,443,200,フューチャー株式会社,Akamai;Apache HTTP Server;Google Tag Manager;jQuery,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,
+www.future.co.jp,,shadow,23.47.48.204;23.47.48.231,a1807.b.akamai.net;www.future.co.jp-v1.edgesuite.net,443,200,フューチャー株式会社,Akamai;Apache HTTP Server;Google Tag Manager;jQuery,cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*,

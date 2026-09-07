@@ -29,22 +29,9 @@ import sys
 from pathlib import Path
 
 FIELDS = [
-    "host", "owner", "state", "ip", "cname", "cloud_provider",
+    "host", "owner", "state", "ip", "cname",
     "port", "status", "title", "tech", "cpe", "findings",
 ]
-
-CLOUD_HINTS = (
-    ("amazonaws.com", "aws"), ("cloudfront.net", "aws"), ("awsglobalaccelerator.com", "aws"),
-    ("azurewebsites.net", "azure"), ("blob.core.windows.net", "azure"),
-    ("cloudapp.azure.com", "azure"), ("azurefd.net", "azure"), ("trafficmanager.net", "azure"),
-    ("googleusercontent.com", "gcp"), ("run.app", "gcp"), ("appspot.com", "gcp"),
-    ("storage.googleapis.com", "gcp"),
-    ("herokuapp.com", "saas"), ("netlify.app", "saas"), ("vercel.app", "saas"),
-    ("github.io", "saas"), ("firebaseapp.com", "saas"), ("pages.dev", "saas"),
-    ("squarespace.com", "saas"), ("wixsite.com", "saas"), ("shopify.com", "saas"),
-    ("hubspot.net", "saas"), ("sendgrid.net", "saas"), ("zendesk.com", "saas"),
-)
-
 
 def as_text(value):
     """外部ツールの出力は型が揺れることがあるため、安全に文字列へ寄せる。"""
@@ -93,9 +80,7 @@ def classify(row, owner):
     known  : 持ち主が判明している
 
     クラウド連携を行わない構成のため、「自社アカウントに存在するか」による
-    クラウドの認証情報を扱わないため、「自社アカウントに存在するか」による
-    判定は行わない。CNAME から推定した事業者は cloud_provider 列に
-    参考情報として残す。
+    持ち主台帳（owners.yaml）に載っているかどうかだけで判定する。
     """
     return "known" if owner else "shadow"
 
@@ -228,20 +213,6 @@ def read_jsonl(path):
                 yield json.loads(line)
             except json.JSONDecodeError:
                 continue
-
-
-def guess_cloud(cnames):
-    """CNAME の文字列からクラウド事業者を推定する。
-
-    クラウドの認証情報は使用せず、DNSの応答だけで判定する。
-    自社アカウントに存在するかまでは分からないため、あくまで参考情報。
-    """
-    for c in as_list(cnames):
-        cl = c.lower()
-        for needle, prov in CLOUD_HINTS:
-            if needle in cl:
-                return prov
-    return ""
 
 
 RISK_FIELDS = [
@@ -449,20 +420,35 @@ def main(outdir):
         if host:
             dns_map[host] = (as_list(rec.get("a")), as_list(rec.get("cname")))
 
+    # 先に指摘を算出する。assets.csv の findings 列に、
+    # nuclei だけでなく全ての検出元の結果を反映させるため
+    waf_hosts = set()
+    for h in read_jsonl(out / "http.jsonl"):
+        host = as_text(h.get("host")).lower()
+        if not host:
+            continue
+        # cdn_name は「IPがそのクラウド事業者のもの」を示すだけで
+        # WAF の有無とは無関係なので、判定に使ってはいけない
+        if h.get("waf") or as_text(h.get("cdn_type")).lower() == "waf":
+            waf_hosts.add(host)
+
+    risks = build_risks(out, owners, waf_hosts)
+
+    # assets.csv の findings 列には CVE のみを入れる。
+    # 設定不備や到達性の指摘は risks.csv 側で確認する
     findings = {}
-    for f in read_jsonl(out / "findings.jsonl"):
-        host = (f.get("host") or "").lower()
-        sev = (f.get("info") or {}).get("severity", "")
-        name = f.get("template-id", "")
-        findings.setdefault(host, []).append(f"{sev}:{name}")
+    for r in risks:
+        host = as_text(r.get("host")).lower()
+        rid = as_text(r.get("risk_id"))
+        if not host or not rid.upper().startswith("CVE-"):
+            continue
+        findings.setdefault(host, set()).add(f"{r.get('severity', '')}:{rid}")
 
     rows = []
     seen = set()
     for h in read_jsonl(out / "http.jsonl"):
         host = (as_text(h.get("host")) or as_text(h.get("input"))).lower()
         ips, cnames = dns_map.get(host, ([], []))
-        prov = guess_cloud(cnames)
-        url_host = as_text(h.get("url")).replace("https://", "").replace("http://", "")
         key = h.get("url", host)
         if key in seen:
             continue
@@ -473,13 +459,12 @@ def main(outdir):
             "state": "",
             "ip": ";".join(sorted(ips)),
             "cname": ";".join(sorted(c.rstrip(".") for c in cnames)),
-            "cloud_provider": prov,
             "port": h.get("port", ""),
             "status": h.get("status_code", ""),
             "title": (h.get("title") or "").replace("\n", " ")[:80],
             "tech": ";".join(str(x) for x in (h.get("tech") or []) if x),
             "cpe": ";".join(extract_cpe(h)),
-            "findings": ";".join(sorted(findings.get(url_host.split(":")[0], []))),
+            "findings": ";".join(sorted(findings.get(host, []))),
         }
         row["owner"] = find_owner(host, owners)
         row["state"] = classify(row, row["owner"])
@@ -492,20 +477,6 @@ def main(outdir):
         w.writeheader()
         w.writerows(rows)
 
-    # WAF の背後は応答が歪むため確度を下げる。
-    # ただし cdn_name は「IPがそのクラウド事業者のもの」を示すだけで
-    # WAF の有無とは無関係なので、判定に使ってはいけない。
-    # 実際に WAF 製品が検出されたホストだけを対象にする。
-    waf_hosts = set()
-    for h in read_jsonl(out / "http.jsonl"):
-        host = as_text(h.get("host")).lower()
-        if not host:
-            continue
-        waf = h.get("waf")
-        cdn_type = (h.get("cdn_type") or "").lower()
-        if waf or cdn_type == "waf":
-            waf_hosts.add(host)
-    risks = build_risks(out, owners, waf_hosts)
     with (out / "risks.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=RISK_FIELDS)
         w.writeheader()
@@ -514,13 +485,11 @@ def main(outdir):
     counts = {}
     for r in rows:
         counts[r["state"]] = counts.get(r["state"], 0) + 1
-    cloudish = sum(1 for r in rows if r.get("cloud_provider"))
     conf = sum(1 for r in risks if r["confidence"] == "confirmed")
     print(f"    assets.csv: {len(rows)} 行")
     print(f"    risks.csv:  {len(risks)} 件 (確認済み {conf} / 要確認 {len(risks) - conf})")
     print(f"    持ち主不明 {counts.get('shadow', 0)} / "
-          f"判明済み {counts.get('known', 0)} "
-          f"(うちクラウド上と推定 {cloudish})")
+          f"判明済み {counts.get('known', 0)}")
 
 
 if __name__ == "__main__":

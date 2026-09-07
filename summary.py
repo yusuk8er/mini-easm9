@@ -173,8 +173,8 @@ def main():
         L.append("<details>")
         L.append(f"<summary>持ち主不明の資産 {len(shadow)} 件</summary>")
         L.append("")
-        L += table(["ホスト", "推定クラウド", "技術"],
-                   [[r.get("host", ""), r.get("cloud_provider") or "-",
+        L += table(["ホスト", "ポート", "技術"],
+                   [[r.get("host", ""), r.get("port") or "-",
                      (r.get("tech") or "").replace(";", ", ")]
                     for r in shadow[:MAX_ROWS]])
         if len(shadow) > MAX_ROWS:

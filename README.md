@@ -44,15 +44,6 @@ hosts.txt ──┘                   │                          │
 | `shadow` | 持ち主台帳に載っていない | **最優先で調べる。** 分かったら `owners.yaml` に追記 |
 | `known` | 持ち主が判明している | 通常は放置でよい |
 
-これとは別に `cloud_provider` 列に、CNAME から推定したクラウド事業者が入ります
-（`aws` / `azure` / `gcp` / `saas`）。**認証情報は不要で、DNSの応答だけから判定します。**
-
-`shadow` かつ `cloud_provider` に値がある資産が、シャドーITの最有力候補です。
-
-```
-demo.example.co.jp  →  CNAME: demo.azurewebsites.net
-                       持ち主不明 + Azure上と推定 → 要調査
-```
 
 ## 関連ドメインの探索（discover）
 
@@ -110,8 +101,6 @@ OV/EV証明書を使っている場合にのみ有効です。
 - 自組織のクラウドアカウントに存在するかによる確定的な突合
 
 **持ち主台帳に基づくシャドーIT検出は、認証情報なしで動作します。**
-また `cloud_provider` 列には CNAME から推定した事業者が入るため、
-「Azure上にあるが自社はAzureを使っていない」といった判断は可能です。
 
 クラウドの設定不備を網羅的に確認したい場合は、
 Prowler や Scout Suite などのCSPMツール、
@@ -239,7 +228,6 @@ python3 -m http.server 8000
 | owner | `owners.yaml` から引いた持ち主。空なら不明 |
 | state | shadow / unmapped / managed / external |
 | ip / cname | 解決結果 |
-| cloud_provider | CNAME から推定したクラウド事業者（aws / azure / gcp / saas） |
 | port / status / title / tech | httpx の検出結果 |
 | cpe | httpx の出力、または `tech` から組み立てた CPE。**CVE特定には使わないこと** |
 | findings | 既定では空（脆弱性スキャン無効のため） |

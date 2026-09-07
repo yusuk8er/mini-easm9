@@ -1,5 +1,5 @@
-date: 2026-09-06T20:08:33Z
-mode: full
+date: 2026-09-07T03:30:06Z
+mode: duscover
 
 --- ツールの導入状況 ---
 subfinder    /home/runner/go/bin/subfinder

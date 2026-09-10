@@ -1,1 +1,4 @@
 ﻿host,owner,severity,confidence,risk_id,detail,source
+rest.vulnweb.com,,high,confirmed,wordpress-db-exposure,WordPress Database Backup File - Exposure,nuclei
+rest.vulnweb.com,,medium,confirmed,mysql-dump,MySQL - Dump Files,nuclei
+testaspnet.vulnweb.com,,medium,confirmed,aspx-debug-mode,ASP.NET Debugging Enabled,nuclei

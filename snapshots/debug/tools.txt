@@ -1,5 +1,5 @@
-date: 2026-09-07T04:06:32Z
-mode: asset
+date: 2026-09-10T06:07:51Z
+mode: full
 
 --- ツールの導入状況 ---
 subfinder    /home/runner/go/bin/subfinder

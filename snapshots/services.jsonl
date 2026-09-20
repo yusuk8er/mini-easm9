@@ -1,0 +1,4 @@
+{"host": "rest.vulnweb.com", "ip": "18.215.71.186", "port": 80, "service": "http", "product": "Apache httpd", "version": "Apache httpd 2.4.25", "extrainfo": "(Debian)"}
+{"host": "rest.vulnweb.com", "ip": "18.215.71.186", "port": 8081, "service": "http", "product": "Apache httpd", "version": "Apache httpd 2.4.25", "extrainfo": "(Debian)"}
+{"host": "testasp.vulnweb.com", "ip": "44.238.29.244", "port": 80, "service": "http", "product": "Microsoft IIS httpd", "version": "Microsoft IIS httpd 8.5", "extrainfo": ""}
+{"host": "testaspnet.vulnweb.com", "ip": "44.238.29.244", "port": 80, "service": "http", "product": "Microsoft IIS httpd", "version": "Microsoft IIS httpd 8.5", "extrainfo": ""}

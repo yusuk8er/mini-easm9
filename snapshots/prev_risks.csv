@@ -1,1 +1,2 @@
 ﻿host,owner,severity,confidence,risk_id,detail,source
+testaspnet.vulnweb.com,,medium,confirmed,aspx-debug-mode,ASP.NET Debugging Enabled,nuclei

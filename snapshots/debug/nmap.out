@@ -1,36 +1,33 @@
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-10-04 22:56 UTC
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-10-11 23:40 UTC
 Nmap scan report for rest.vulnweb.com (18.215.71.186)
-Host is up (0.031s latency).
+Host is up (0.030s latency).
 rDNS record for 18.215.71.186: ec2-18-215-71-186.compute-1.amazonaws.com
 
 PORT     STATE    SERVICE    VERSION
 80/tcp   open     http       Apache httpd 2.4.25 ((Debian))
 443/tcp  filtered https
 8080/tcp filtered http-proxy
-8081/tcp open     http       Apache httpd 2.4.25 ((Debian))
 8443/tcp filtered https-alt
 
 Nmap scan report for testasp.vulnweb.com (44.238.29.244)
-Host is up (0.053s latency).
+Host is up (0.052s latency).
 rDNS record for 44.238.29.244: ec2-44-238-29-244.us-west-2.compute.amazonaws.com
 
-PORT     STATE    SERVICE         VERSION
-80/tcp   open     http            Microsoft IIS httpd 8.5
+PORT     STATE    SERVICE    VERSION
+80/tcp   open     http       Microsoft IIS httpd 8.5
 443/tcp  filtered https
 8080/tcp filtered http-proxy
-8081/tcp filtered blackice-icecap
 8443/tcp filtered https-alt
 Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Nmap scan report for testaspnet.vulnweb.com (44.238.29.244)
-Host is up (0.051s latency).
+Host is up (0.053s latency).
 rDNS record for 44.238.29.244: ec2-44-238-29-244.us-west-2.compute.amazonaws.com
 
-PORT     STATE    SERVICE         VERSION
-80/tcp   open     http            Microsoft IIS httpd 8.5
+PORT     STATE    SERVICE    VERSION
+80/tcp   open     http       Microsoft IIS httpd 8.5
 443/tcp  filtered https
 8080/tcp filtered http-proxy
-8081/tcp filtered blackice-icecap
 8443/tcp filtered https-alt
 Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
@@ -38,34 +35,31 @@ Nmap scan report for testhtml5.vulnweb.com (44.228.249.3)
 Host is up.
 rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
 
-PORT     STATE    SERVICE         VERSION
+PORT     STATE    SERVICE    VERSION
 80/tcp   filtered http
 443/tcp  filtered https
 8080/tcp filtered http-proxy
-8081/tcp filtered blackice-icecap
 8443/tcp filtered https-alt
 
 Nmap scan report for testphp.vulnweb.com (44.228.249.3)
 Host is up.
 rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
 
-PORT     STATE    SERVICE         VERSION
+PORT     STATE    SERVICE    VERSION
 80/tcp   filtered http
 443/tcp  filtered https
 8080/tcp filtered http-proxy
-8081/tcp filtered blackice-icecap
 8443/tcp filtered https-alt
 
 Nmap scan report for www.vulnweb.com (44.228.249.3)
 Host is up.
 rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
 
-PORT     STATE    SERVICE         VERSION
+PORT     STATE    SERVICE    VERSION
 80/tcp   filtered http
 443/tcp  filtered https
 8080/tcp filtered http-proxy
-8081/tcp filtered blackice-icecap
 8443/tcp filtered https-alt
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 6 IP addresses (6 hosts up) scanned in 9.56 seconds
+Nmap done: 6 IP addresses (6 hosts up) scanned in 8.79 seconds

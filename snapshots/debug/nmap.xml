@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE nmaprun>
 <?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
-<!-- Nmap 7.94SVN scan initiated Sun Oct 11 23:40:45 2026 as: nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;script ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos -&#45;script-timeout 40s -&#45;host-timeout 90s -p 80,443,8080,8443 -iL /tmp/tmp.3kc42cbnn9/nmap_part_00 -oX /tmp/tmp.3kc42cbnn9/nmap_1.xml -->
-<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;script ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos -&#45;script-timeout 40s -&#45;host-timeout 90s -p 80,443,8080,8443 -iL /tmp/tmp.3kc42cbnn9/nmap_part_00 -oX /tmp/tmp.3kc42cbnn9/nmap_1.xml" start="1791762045" startstr="Sun Oct 11 23:40:45 2026" version="7.94SVN" xmloutputversion="1.05">
+<!-- Nmap 7.94SVN scan initiated Sun Oct 18 22:26:26 2026 as: nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;script ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos -&#45;script-timeout 40s -&#45;host-timeout 90s -p 80,443,8080,8443 -iL /tmp/tmp.OFZF4ht7Nl/nmap_part_00 -oX /tmp/tmp.OFZF4ht7Nl/nmap_1.xml -->
+<nmaprun scanner="nmap" args="nmap -sV -&#45;version-intensity 5 -Pn -T4 -&#45;max-retries 1 -&#45;script ssl-enum-ciphers,smb2-security-mode,ftp-anon,rdp-ntlm-info,ssh2-enum-algos -&#45;script-timeout 40s -&#45;host-timeout 90s -p 80,443,8080,8443 -iL /tmp/tmp.OFZF4ht7Nl/nmap_part_00 -oX /tmp/tmp.OFZF4ht7Nl/nmap_1.xml" start="1792362386" startstr="Sun Oct 18 22:26:26 2026" version="7.94SVN" xmloutputversion="1.05">
 <scaninfo type="connect" protocol="tcp" numservices="4" services="80,443,8080,8443"/>
 <verbose level="0"/>
 <debugging level="0"/>
-<host starttime="1791762046" endtime="1791762054"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1792362386" endtime="1792362394"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="18.215.71.186" addrtype="ipv4"/>
 <hostnames>
 <hostname name="rest.vulnweb.com" type="user"/>
@@ -17,9 +17,9 @@
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 </ports>
-<times srtt="30136" rttvar="30136" to="150680"/>
+<times srtt="38424" rttvar="29094" to="154800"/>
 </host>
-<host starttime="1791762046" endtime="1791762054"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1792362386" endtime="1792362394"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="44.238.29.244" addrtype="ipv4"/>
 <hostnames>
 <hostname name="testasp.vulnweb.com" type="user"/>
@@ -30,9 +30,9 @@
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 </ports>
-<times srtt="51916" rttvar="51916" to="259580"/>
+<times srtt="54950" rttvar="54950" to="274750"/>
 </host>
-<host starttime="1791762046" endtime="1791762054"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1792362386" endtime="1792362394"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="44.238.29.244" addrtype="ipv4"/>
 <hostnames>
 <hostname name="testaspnet.vulnweb.com" type="user"/>
@@ -43,9 +43,9 @@
 <port protocol="tcp" portid="8080"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="http-proxy" method="table" conf="3"/></port>
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 </ports>
-<times srtt="53310" rttvar="53310" to="266550"/>
+<times srtt="50610" rttvar="50610" to="253050"/>
 </host>
-<host starttime="1791762046" endtime="1791762054"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1792362386" endtime="1792362394"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="44.228.249.3" addrtype="ipv4"/>
 <hostnames>
 <hostname name="testhtml5.vulnweb.com" type="user"/>
@@ -57,7 +57,7 @@
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 </ports>
 </host>
-<host starttime="1791762046" endtime="1791762054"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1792362386" endtime="1792362394"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="44.228.249.3" addrtype="ipv4"/>
 <hostnames>
 <hostname name="testphp.vulnweb.com" type="user"/>
@@ -69,7 +69,7 @@
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 </ports>
 </host>
-<host starttime="1791762046" endtime="1791762054"><status state="up" reason="user-set" reason_ttl="0"/>
+<host starttime="1792362386" endtime="1792362394"><status state="up" reason="user-set" reason_ttl="0"/>
 <address addr="44.228.249.3" addrtype="ipv4"/>
 <hostnames>
 <hostname name="www.vulnweb.com" type="user"/>
@@ -81,6 +81,6 @@
 <port protocol="tcp" portid="8443"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="https-alt" method="table" conf="3"/></port>
 </ports>
 </host>
-<runstats><finished time="1791762054" timestr="Sun Oct 11 23:40:54 2026" summary="Nmap done at Sun Oct 11 23:40:54 2026; 6 IP addresses (6 hosts up) scanned in 8.79 seconds" elapsed="8.79" exit="success"/><hosts up="6" down="0" total="6"/>
+<runstats><finished time="1792362394" timestr="Sun Oct 18 22:26:34 2026" summary="Nmap done at Sun Oct 18 22:26:34 2026; 6 IP addresses (6 hosts up) scanned in 8.37 seconds" elapsed="8.37" exit="success"/><hosts up="6" down="0" total="6"/>
 </runstats>
 </nmaprun>
